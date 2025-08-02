@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>wbw的社区平台</title>
+	<!-- 添加 CSP 头
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
+	               script-src 'self' https://cdn.tailwindcss.com https://unpkg.com https://cdnjs.cloudflare.com; 
+	               style-src 'self' https://cdnjs.cloudflare.com; 
+	               img-src 'self' data: https:;">
+	<!- - 添加 Referrer-Policy - ->
+	<meta name="referrer" content="strict-origin-when-cross-origin">
+	<!- - 添加 X-XSS-Protection - ->
+	<meta http-equiv="X-XSS-Protection" content="1; mode=block"> -->
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<!--vue的资源-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.31/vue.global.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/4.0.12/vue-router.global.min.js"></script>
+	<!--marked-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/16.1.1/lib/marked.umd.min.js"></script>
+	<style>
+		.avatar {
+			background-color: #e2e8f0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: #64748b;
+			font-weight: bold;
+		}
+
+		.markdown-content {
+			font-size: 16px;
+			line-height: 1.5;
+		}
+
+		.markdown-content h1 {
+			margin: 1.5rem 0 1rem;
+			font-size: 2em;
+			padding-bottom: .1em;
+			border-bottom: solid 1px #d8d8d8;
+		}
+
+		.markdown-content h2 {
+			margin: 1.2rem 0 1rem;
+			font-size: 1.5em;
+			padding-bottom: .1em;
+			border-bottom: solid 1px #d8d8d8;
+		}
+
+		.markdown-content h3 {
+			margin: 1.2rem 0 1rem;
+			font-size: 1.2em;
+		}
+
+		.markdown-content h4 {
+			margin: 1rem 0;
+			font-size: 1.1em;
+		}
+
+		.markdown-content h5 {
+			margin: 1rem 0;
+			font-size: 1em;
+		}
+
+		.markdown-content h6 {
+			margin: 1rem 0;
+			font-size: 1em;
+			color: #666;
+		}
+
+		.markdown-content ul,
+		.markdown-content ol {
+			padding-left: 2em;
+		}
+
+		.markdown-content p {
+			margin: 1rem 0;
+		}
+
+		.markdown-content ul {
+			list-style-type: disc;
+		}
+
+		.markdown-content ol {
+			list-style-type: decimal;
+		}
+
+		.markdown-content code {
+			background-color: #f1f5f9;
+			/* padding: 0.2rem 0.4rem; */
+			border-radius: 0.25rem;
+			font-family: monospace;
+		}
+
+		.markdown-content pre {
+			background-color: #f1f5f9;
+			padding: 1rem;
+			border-radius: 0.5rem;
+			overflow-x: auto;
+			margin-bottom: 1rem;
+		}
+
+		.markdown-content blockquote {
+			margin: 0 0 1em;
+			padding: .5em 1em;
+			border-left: 5px solid #eee;
+		}
+
+		.markdown-content blockquote:first-child {
+			margin-top: 0;
+		}
+
+		.markdown-content blockquote:last-child {
+			margin-bottom: 0;
+		}
+
+		.markdown-content table {
+			border-collapse: collapse;
+			border-spacing: 0;
+			display: block;
+			width: auto;
+			overflow: auto;
+			word-break: keep-all;
+			margin: 10px;
+			font-variant-numeric: tabular-nums;
+		}
+
+		.markdown-content th,
+		.markdown-content td {
+			border: 1px solid #ddd;
+			padding: 6px 13px;
+		}
+
+		.markdown-content a {
+			color: #4f46e5;
+		}
+
+		.markdown-content a:hover {
+			color: #3730a3;
+		}
+
+		.markdown-content li+li {
+			margin-top: 1em;
+		}
+
+		.markdown-content li.task-list-item>input:first-child {
+			position: absolute;
+			left: -1.5em;
+			top: 55%;
+			transform: translateY(-50%);
+			padding: 0;
+			margin: 0;
+		}
+	</style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+	<div id="app" class="container mx-auto px-4 py-8">
+		<!-- 导航栏 -->
+		<nav class="bg-white shadow-sm rounded-lg mb-8 p-4 flex justify-between items-center">
+			<a href="#" @click="showHome" class="text-xl font-bold text-indigo-600">wbw的社区平台</a>
+			<div class="flex items-center space-x-4">
+				<template v-if="user">
+					<div class="flex items-center space-x-2">
+						<div class="w-8 h-8 rounded-full avatar"
+							:style="user.avatar_url ? `background-image: url(${user.avatar_url}); background-size: cover;` : ''">
+							<span v-if="!user.avatar_url">{{ user.username ? user.username.charAt(0).toUpperCase() : 'U'
+								}}</span>
+						</div>
+						<span class="hidden md:inline">{{ user.username }}</span>
+					</div>
+					<button @click="showProfile"
+						class="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200">个人资料</button>
+					<button @click="showNewPost"
+						class="px-3 py-1 text-sm bg-indigo-100 text-indigo-700 rounded hover:bg-indigo-200">新建</button>
+					<button @click="signOut" class="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200">登出</button>
+				</template>
+				<template v-else>
+					<button @click="showLogin"
+						class="px-3 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">登录</button>
+					<button @click="showSignUp"
+						class="px-3 py-1 text-sm bg-white border border-indigo-600 text-indigo-600 rounded hover:bg-indigo-50">注册</button>
+				</template>
+			</div>
+		</nav>
+
+		<!-- 主要内容区域 -->
+		<main>
+			<!-- 首页/文章列表 -->
+			<div v-if="currentView === 'home'" class="space-y-8">
+				<div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md">
+					<h2 class="text-2xl font-bold mb-6">欢迎来到wbw的社区平台</h2>
+					<p class="text-gray-600 mb-4">这是一个分享知识和讨论话题的地方。</p>
+
+					<div class="flex space-x-4 mb-6">
+						<button @click="showArticles"
+							class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">查看文章</button>
+						<button @click="showDiscussions"
+							class="px-4 py-2 bg-white border border-indigo-600 text-indigo-600 rounded hover:bg-indigo-50">查看讨论</button>
+					</div>
+				</div>
+
+				<div v-if="contentType === 'articles'" class="space-y-6">
+					<div class="flex justify-between items-center">
+						<h3 class="text-xl font-bold">最新文章</h3>
+						<button v-if="user" @click="showNewArticle"
+							class="px-3 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">写文章</button>
+					</div>
+
+					<div v-if="loading" class="flex justify-center py-8">
+						<div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+					</div>
+
+					<div v-else class="space-y-4">
+						<div v-for="article in articles" :key="article.id"
+							class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+							<div class="p-6">
+								<div class="flex justify-between items-start">
+									<h3 class="text-lg font-bold mb-2">
+										<a href="#" @click.prevent="showArticleDetail(article.id)"
+											class="hover:text-indigo-600">{{ article.title }}</a>
+									</h3>
+									<span class="text-sm text-gray-500">{{ formatDate(article.created_at) }}</span>
+								</div>
+								<p class="text-gray-600 mb-4 line-clamp-2">{{ article.content.substring(0, 200) }}...
+								</p>
+								<div class="flex items-center justify-between">
+									<div class="flex items-center space-x-2">
+										<div class="w-6 h-6 rounded-full avatar"
+											:style="article.avatar_url ? `background-image: url(${article.avatar_url}); background-size: cover;` : ''">
+											<span v-if="!article.avatar_url">{{ article.username ?
+												article.username.charAt(0).toUpperCase() : 'U' }}</span>
+										</div>
+										<span class="text-sm text-gray-600">{{ article.username }}</span>
+									</div>
+									<a href="#" @click.prevent="showArticleDetail(article.id)"
+										class="text-sm text-indigo-600 hover:text-indigo-800">阅读更多 →</a>
+								</div>
+							</div>
+						</div>
+
+						<div v-if="articles.length === 0"
+							class="bg-white rounded-lg shadow-sm p-6 text-center text-gray-500">
+							暂无文章
+						</div>
+					</div>
+				</div>
+
+				<div v-if="contentType === 'discussions'" class="space-y-6">
+					<div class="flex justify-between items-center">
+						<h3 class="text-xl font-bold">最新讨论</h3>
+						<button v-if="user" @click="showNewDiscussion"
+							class="px-3 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">发起讨论</button>
+					</div>
+
+					<div v-if="loading" class="flex justify-center py-8">
+						<div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+					</div>
+
+					<div v-else class="space-y-4">
+						<div v-for="discussion in discussions" :key="discussion.id"
+							class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+							<div class="p-6">
+								<div class="flex justify-between items-start">
+									<h3 class="text-lg font-bold mb-2">
+										<a href="#" @click.prevent="showDiscussionDetail(discussion.id)"
+											class="hover:text-indigo-600">{{ discussion.title }}</a>
+									</h3>
+									<span class="text-sm text-gray-500">{{ formatDate(discussion.created_at) }}</span>
+								</div>
+								<p class="text-gray-600 mb-4 line-clamp-2">{{ discussion.content.substring(0, 200) }}...
+								</p>
+								<div class="flex items-center justify-between">
+									<div class="flex items-center space-x-2">
+										<div class="w-6 h-6 rounded-full avatar"
+											:style="discussion.avatar_url ? `background-image: url(${discussion.avatar_url}); background-size: cover;` : ''">
+											<span v-if="!discussion.avatar_url">{{ discussion.username ?
+												discussion.username.charAt(0).toUpperCase() : 'U' }}</span>
+										</div>
+										<span class="text-sm text-gray-600">{{ discussion.username }}</span>
+									</div>
+									<a href="#" @click.prevent="showDiscussionDetail(discussion.id)"
+										class="text-sm text-indigo-600 hover:text-indigo-800">查看详情 →</a>
+								</div>
+							</div>
+						</div>
+
+						<div v-if="discussions.length === 0"
+							class="bg-white rounded-lg shadow-sm p-6 text-center text-gray-500">
+							暂无讨论
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 登录表单 -->
+			<div v-if="currentView === 'login'" class="max-w-md mx-auto bg-white rounded-lg shadow-sm p-6">
+				<h2 class="text-2xl font-bold mb-6 text-center">登录</h2>
+				<form @submit.prevent="signIn">
+					<div class="mb-4">
+						<label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
+						<input autocomplete="email" v-model="login.email" type="email" id="login-email" required
+							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+					</div>
+					<div class="mb-6">
+						<label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">密码</label>
+						<input autocomplete="current-password" v-model="login.password" type="password"
+							id="login-password" required
+							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+					</div>
+					<!-- 在关键交互元素上添加 aria 属性 -->
+					<button type="submit" :disabled="login.loading" :aria-busy="login.loading"
+						class="w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+						{{ login.loading ? '登录中...' : '登录' }}
+					</button>
+					<div class="mt-4 text-center text-sm text-gray-600">
+						还没有账号？ <a href="#" @click.prevent="showSignUp"
+							class="text-indigo-600 hover:text-indigo-800">注册</a>
+					</div>
+					<div v-if="login.error" class="mt-4 text-center text-sm text-red-600">
+						{{ login.error }}
+					</div>
+				</form>
+			</div>
+
+			<!-- 注册表单 -->
+			<div v-if="currentView === 'signup'" class="max-w-md mx-auto bg-white rounded-lg shadow-sm p-6">
+				<h2 class="text-2xl font-bold mb-6 text-center">注册</h2>
+				<form @submit.prevent="signUp">
+					<div class="mb-4">
+						<label for="signup-email" class="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
+						<input autocomplete="email" v-model="signup.email" type="email" id="signup-email" required
+							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+					</div>
+					<div class="mb-4">
+						<label for="signup-password" class="block text-sm font-medium text-gray-700 mb-1">密码</label>
+						<input v-model="signup.password" type="password" id="signup-password" required
+							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+					</div>
+					<div class="mb-4">
+						<label for="signup-username" class="block text-sm font-medium text-gray-700 mb-1">用户名</label>
+						<input v-model="signup.username" type="text" id="signup-username" required
+							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+					</div>
+					<button type="submit" disabled="true"
+						class="w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+						<!-- 注册 -->注册请找管理员
+					</button>
+					<div class="mt-4 text-center text-sm text-gray-600">
+						已有账号？ <a href="#" @click.prevent="showLogin"
+							class="text-indigo-600 hover:text-indigo-800">登录</a>
+					</div>
+					<div v-if="signup.error" class="mt-4 text-center text-sm text-red-600">
+						{{ signup.error }}
+					</div>
+				</form>
+			</div>
+
+			<!-- 个人资料 -->
+			<div v-if="currentView === 'profile'" class="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-6">
+				<div class="flex items-center space-x-6 mb-6">
+					<div class="w-20 h-20 rounded-full avatar"
+						:style="user.avatar_url ? `background-image: url(${user.avatar_url}); background-size: cover;` : ''">
+						<span v-if="!user.avatar_url">{{ user.username ? user.username.charAt(0).toUpperCase() : 'U'
+							}}</span>
+					</div>
+					<div>
+						<h2 class="text-2xl font-bold">{{ user.username }}
+							<!--用户tag-->
+							<span v-if="userRole" class="text-sm text-gray-500 ml-2" :class="{ 'text-purple-500': userRole === 'super_admin',
+									'text-green-500': userRole === 'admin',
+									'text-blue-500': userRole === 'user',
+									'text-gray-500': userRole === '---' || userRole === null
+								}">{{ userRole }}</span>
+						</h2>
+						<p class="text-gray-600">{{ user.bio || '这个人很懒，什么都没留下' }}</p>
+						<p class="text-sm text-gray-500">加入时间: {{ formatDate(user.created_at) }}</p>
+					</div>
+				</div>
+
+				<div class="mb-6">
+					<h3 class="text-lg font-bold mb-4">我的文章</h3>
+					<div v-if="userArticlesLoading" class="flex justify-center py-4">
+						<div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
+					</div>
+					<div v-else class="space-y-4">
+						<div v-for="article in userArticles" :key="article.id" class="border-b border-gray-100 pb-4">
+							<h4 class="font-medium">
+								<a href="#" @click.prevent="showArticleDetail(article.id)"
+									class="hover:text-indigo-600">{{ article.title }}</a>
+							</h4>
+							<p class="text-sm text-gray-500">{{ formatDate(article.created_at) }}</p>
+						</div>
+						<div v-if="userArticles.length === 0" class="text-gray-500">
+							暂无文章
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<h3 class="text-lg font-bold mb-4">我的讨论</h3>
+					<div v-if="userDiscussionsLoading" class="flex justify-center py-4">
+						<div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
+					</div>
+					<div v-else class="space-y-4">
+						<div v-for="discussion in userDiscussions" :key="discussion.id"
+							class="border-b border-gray-100 pb-4">
+							<h4 class="font-medium">
+								<a href="#" @click.prevent="showDiscussionDetail(discussion.id)"
+									class="hover:text-indigo-600">{{ discussion.title }}</a>
+							</h4>
+							<p class="text-sm text-gray-500">{{ formatDate(discussion.created_at) }}</p>
+						</div>
+						<div v-if="userDiscussions.length === 0" class="text-gray-500">
+							暂无讨论
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 新建文章 -->
+			<div v-if="currentView === 'new-article'" class="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-6">
+				<h2 class="text-2xl font-bold mb-6">写文章</h2>
+				<form @submit.prevent="createArticle">
+					<div class="mb-4">
+						<label for="article-title" class="block text-sm font-medium text-gray-700 mb-1">标题</label>
+						<input v-model="newArticle.title" type="text" id="article-title" required
+							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+					</div>
+					<div class="mb-4">
+						<label for="article-content" class="block text-sm font-medium text-gray-700 mb-1">内容
+							(支持Markdown)</label>
+						<textarea v-model="newArticle.content" id="article-content" rows="10" required
+							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono"></textarea>
+					</div>
+					<div class="flex justify-end space-x-3">
+						<button type="button" @click="showHome"
+							class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50">取消</button>
+						<button type="submit"
+							class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">{{
+							newArticle.loading ? '发布中...' : '发布' }}</button>
+					</div>
+					<div v-if="newArticle.error" class="mt-4 text-sm text-red-600">
+						{{ newArticle.error }}
+					</div>
+				</form>
+			</div>
+
+			<!-- 新建讨论 -->
+			<div v-if="currentView === 'new-discussion'" class="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-6">
+				<h2 class="text-2xl font-bold mb-6">发起讨论</h2>
+				<form @submit.prevent="createDiscussion">
+					<div class="mb-4">
+						<label for="discussion-title" class="block text-sm font-medium text-gray-700 mb-1">标题</label>
+						<input v-model="newDiscussion.title" type="text" id="discussion-title" required
+							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+					</div>
+					<div class="mb-4">
+						<label for="discussion-content" class="block text-sm font-medium text-gray-700 mb-1">内容</label>
+						<textarea v-model="newDiscussion.content" id="discussion-content" rows="6" required
+							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+					</div>
+					<div class="flex justify-end space-x-3">
+						<button type="button" @click="showHome"
+							class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50">取消</button>
+						<button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+							@click="createDiscussion">{{ newDiscussion.loading ? '发布中...' : '发布' }}</button>
+					</div>
+					<div v-if="newDiscussion.error" class="mt-4 text-sm text-red-600">
+						{{ newDiscussion.error }}
+					</div>
+				</form>
+			</div>
+
+			<!-- 文章详情 -->
+			<div v-if="currentView === 'article-detail'" class="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-6">
+				<div v-if="articleLoading" class="flex justify-center py-8">
+					<div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+				</div>
+				<div v-else>
+					<div class="mb-6">
+						<h2 class="text-2xl font-bold mb-2">{{ currentArticle.title }}</h2>
+						<div class="flex items-center justify-between mb-4">
+							<div class="flex items-center space-x-2">
+								<div class="w-8 h-8 rounded-full avatar"
+									:style="currentArticle.avatar_url ? `background-image: url(${currentArticle.avatar_url}); background-size: cover;` : ''">
+									<span v-if="!currentArticle.avatar_url">{{ currentArticle.username ?
+										currentArticle.username.charAt(0).toUpperCase() : 'U' }}</span>
+								</div>
+								<span class="text-gray-600">{{ currentArticle.username }}</span>
+							</div>
+							<span class="text-sm text-gray-500">{{ formatDate(currentArticle.created_at) }}</span>
+						</div>
+						<div class="markdown-content" v-html="renderMarkdown(currentArticle.content)"></div>
+					</div>
+
+					<div class="border-t border-gray-200 pt-6">
+						<h3 class="text-lg font-bold mb-4">评论</h3>
+
+						<div v-if="user" class="mb-6">
+							<textarea v-model="newComment.content" placeholder="写下你的评论..." rows="3"
+								class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+							<div class="flex justify-end mt-2">
+								<button @click="addComment('article')"
+									class="px-3 py-1 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">{{
+									newComment.loading ? '提交中...' : '提交评论' }}</button>
+							</div>
+						</div>
+
+						<div v-if="commentsLoading" class="flex justify-center py-4">
+							<div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500">
+							</div>
+						</div>
+
+						<div v-else class="space-y-4">
+							<div v-for="comment in comments" :key="comment.id" class="border-b border-gray-100 pb-4">
+								<div class="flex items-start space-x-3">
+									<div class="w-8 h-8 rounded-full avatar"
+										:style="comment.avatar_url ? `background-image: url(${comment.avatar_url}); background-size: cover;` : ''">
+										<span v-if="!comment.avatar_url">{{ comment.username ?
+											comment.username.charAt(0).toUpperCase() : 'U' }}</span>
+									</div>
+									<div class="flex-1">
+										<div class="flex items-center justify-between">
+											<a class="font-medium" :href="`?path=/user/${comment.userId}`">{{
+												comment.username }}<span v-if="comment.userRole"
+													class="text-sm text-gray-500 ml-2" :class="{ 'text-purple-500': userRole === 'super_admin',
+																															'text-green-500': comment.userRole === 'admin',
+																															'text-blue-500': comment.userRole === 'user',
+																															'text-gray-500': comment.userRole === '---' || comment.userRole === null
+																														}">{{ comment.userRole }}</span></a>
+											<span class="text-xs text-gray-500">{{ formatDate(comment.created_at)
+												}}</span>
+										</div>
+										<p class="text-gray-700 mt-1">{{ comment.content }}</p>
+									</div>
+								</div>
+							</div>
+
+							<div v-if="comments.length === 0" class="text-gray-500">
+								暂无评论
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 讨论详情 -->
+			<div v-if="currentView === 'discussion-detail'" class="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-6">
+				<div v-if="discussionLoading" class="flex justify-center py-8">
+					<div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+				</div>
+				<div v-else>
+					<div class="mb-6">
+						<h2 class="text-2xl font-bold mb-2">{{ currentDiscussion.title }}</h2>
+						<div class="flex items-center justify-between mb-4">
+							<div class="flex items-center space-x-2">
+								<div class="w-8 h-8 rounded-full avatar"
+									:style="currentDiscussion.avatar_url ? `background-image: url(${currentDiscussion.avatar_url}); background-size: cover;` : ''">
+									<span v-if="!currentDiscussion.avatar_url">{{ currentDiscussion.username ?
+										currentDiscussion.username.charAt(0).toUpperCase() : 'U' }}</span>
+								</div>
+								<span class="text-gray-600">{{ currentDiscussion.username }}</span>
+							</div>
+							<span class="text-sm text-gray-500">{{ formatDate(currentDiscussion.created_at) }}</span>
+						</div>
+						<div class="markdown-content" v-html="renderMarkdown(currentDiscussion.content)"></div>
+					</div>
+
+					<div class="border-t border-gray-200 pt-6">
+						<h3 class="text-lg font-bold mb-4">回复</h3>
+
+						<div v-if="user" class="mb-6">
+							<textarea v-model="newComment.content" placeholder="写下你的回复..." rows="3"
+								class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+							<div class="flex justify-end mt-2">
+								<button @click="addComment('discussion')"
+									class="px-3 py-1 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">{{
+									newComment.loading ? '提交中...' : '提交回复' }}</button>
+							</div>
+						</div>
+
+						<div v-if="commentsLoading" class="flex justify-center py-4">
+							<div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500">
+							</div>
+						</div>
+
+						<div v-else class="space-y-4">
+							<div v-for="comment in comments" :key="comment.id" class="border-b border-gray-100 pb-4">
+								<div class="flex items-start space-x-3">
+									<div class="w-8 h-8 rounded-full avatar"
+										:style="comment.avatar_url ? `background-image: url(${comment.avatar_url}); background-size: cover;` : ''">
+										<span v-if="!comment.avatar_url">{{ comment.username ?
+											comment.username.charAt(0).toUpperCase() : 'U' }}</span>
+									</div>
+									<div class="flex-1">
+										<div class="flex items-center justify-between">
+											<a class="font-medium" :href="`?path=/user/${comment.userId}`">{{
+												comment.username }}<span v-if="comment.userRole"
+													class="text-sm text-gray-500 ml-2" :class="{ 'text-purple-500': userRole === 'super_admin',
+																															'text-green-500': comment.userRole === 'admin',
+																															'text-blue-500': comment.userRole === 'user',
+																															'text-gray-500': comment.userRole === '---' || comment.userRole === null
+																														}">{{ comment.userRole }}</span></a>
+											<span class="text-xs text-gray-500">{{ formatDate(comment.created_at)
+												}}</span>
+										</div>
+										<p class="text-gray-700 mt-1">{{ comment.content }}</p>
+									</div>
+								</div>
+							</div>
+
+							<div v-if="comments.length === 0" class="text-gray-500">
+								暂无回复
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- other's profile -->
+			<div v-if="currentView === 'other-profile'" class="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-6">
+				<div class="flex items-center space-x-6 mb-6">
+					<div class="w-20 h-20 rounded-full avatar"
+						:style="other_user.avatar_url ? `background-image: url(${other_user.avatar_url}); background-size: cover;` : ''">
+						<span v-if="!other_user.avatar_url">{{ other_user.username ?
+							other_user.username.charAt(0).toUpperCase() : 'U'
+							}}</span>
+					</div>
+					<div>
+						<h2 class="text-2xl font-bold">{{ other_user.username }}
+							<!--用户tag-->
+							<span v-if="userRole" class="text-sm text-gray-500 ml-2" :class="{ 'text-purple-500': other_user.userRole === 'super_admin',
+												'text-green-500': other_user.userRole === 'admin',
+												'text-blue-500': other_user.userRole === 'user',
+												'text-gray-500': other_user.userRole === '---' || other_user.userRole === null
+											}">{{ other_user.userRole }}</span>
+						</h2>
+						<p class="text-gray-600">{{ other_user.bio || '这个人很懒，什么都没留下' }}</p>
+						<p class="text-sm text-gray-500">加入时间: {{ formatDate(other_user.created_at) }}</p>
+					</div>
+				</div>
+				<div class="mb-6">
+					<h3 class="text-lg font-bold mb-4">Ta的文章</h3>
+					<div v-if="other_user.userArticlesLoading" class="flex justify-center py-4">
+						<div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
+					</div>
+					<div v-else class="space-y-4">
+						<div v-for="article in other_user.userArticles" :key="article.id"
+							class="border-b border-gray-100 pb-4">
+							<h4 class="font-medium">
+								<a href="#" @click.prevent="showArticleDetail(article.id)"
+									class="hover:text-indigo-600">{{
+									article.title }}</a>
+							</h4>
+							<p class="text-sm text-gray-500">{{ formatDate(article.created_at) }}</p>
+						</div>
+						<div v-if="other_user.userArticles.length === 0" class="text-gray-500">
+							暂无文章
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<h3 class="text-lg font-bold mb-4">Ta的讨论</h3>
+					<div v-if="other_user.userDiscussionsLoading" class="flex justify-center py-4">
+						<div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
+					</div>
+					<div v-else class="space-y-4">
+						<div v-for="discussion in other_user.userDiscussions" :key="discussion.id"
+							class="border-b border-gray-100 pb-4">
+							<h4 class="font-medium">
+								<a href="#" @click.prevent="showDiscussionDetail(discussion.id)"
+									class="hover:text-indigo-600">{{
+									discussion.title }}</a>
+							</h4>
+							<p class="text-sm text-gray-500">{{ formatDate(discussion.created_at) }}</p>
+						</div>
+						<div v-if="other_user.userDiscussions.length === 0" class="text-gray-500">
+							暂无讨论
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	<script>
+		// 初始化 Supabase
+		const supabaseUrl = 'https://oavnsyqhnvsdfrjjdjix.supabase.co';
+		const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9hdm5zeXFobnZzZGZyampkaml4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM4NzYzMzIsImV4cCI6MjA2OTQ1MjMzMn0.tFzhp4fDhr5QW9hWUGBpVf_hG71-hMpd_S3nHKr65JQ';
+		const Supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+		// 创建自定义渲染器
+		const renderer = new marked.Renderer();
+
+		// 覆盖所有可能渲染 HTML 的方法
+		renderer.html = function ({ text: html }) {
+			// 直接返回空字符串，完全忽略 HTML
+			// return '';
+			// 或者转义 HTML 标签（显示原始代码）
+			return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+		};
+
+		// marked.setOptions({
+		// 	mangle: false,    // 不处理自动链接
+		// 	headerIds: false, // 不添加标题ID
+		// 	renderer: renderer,
+		// 	breaks: false,
+		// 	gfm: true,
+		// });
+
+		// 简单的 Markdown 渲染函数
+		const renderMarkdown = (text) => {
+			return marked.parse(text, {
+				mangle: false,    // 不处理自动链接
+				headerIds: false, // 不添加标题ID
+				renderer: renderer,
+				breaks: false,
+				gfm: true,
+			});
+		};
+
+		function jumpTo(url) {
+			// 改变浏览器地址栏的URL，但不刷新页面
+			window.history.pushState({}, '', url);
+		}
+
+		// 获取url中的请求内容
+		function getUrlQueryPath(url = location.href) {
+			let tmp = new URLSearchParams(url.split('?')[1]);
+			return tmp.get('path');
+		}
+
+		const app = {
+			data() {
+				return {
+					currentView: 'home',
+					contentType: 'articles',
+					user: null,
+					userRole: null, // 用户角色
+					loading: false,
+
+					// 登录相关
+					login: {
+						email: '',
+						password: '',
+						error: null,
+						loading: false
+					},
+
+					// 注册相关
+					signup: {
+						email: '',
+						password: '',
+						username: '',
+						error: null,
+						loading: false
+					},
+
+					// 文章列表
+					articles: [],
+
+					// 讨论列表
+					discussions: [],
+
+					// 个人资料相关
+					userArticles: [],
+					userDiscussions: [],
+					userArticlesLoading: false,
+					userDiscussionsLoading: false,
+
+					// 新建文章
+					newArticle: {
+						title: '',
+						content: '',
+						error: null,
+						loading: false
+					},
+
+					// 新建讨论
+					newDiscussion: {
+						title: '',
+						content: '',
+						error: null,
+						loading: false
+					},
+
+					// 当前查看的文章/讨论
+					currentArticle: null,
+					currentDiscussion: null,
+					articleLoading: false,
+					discussionLoading: false,
+
+					// 评论相关
+					comments: [],
+					commentsLoading: false,
+					newComment: {
+						content: ''
+					},
+
+					// 用户角色映射
+					userRoleMap: new Map(),
+
+					other_user: null
+				};
+			},
+
+			async mounted() {
+				// 检查用户是否已登录
+				const { data: { user } } = await Supabase.auth.getUser();
+				if (user) {
+					await this.fetchUserProfile(user.id);
+					// 获取用户角色
+					this.userRole = await this.fetchUserRole(user.id);
+					console.log('用户角色:', this.userRole);
+				}
+
+				// 获取文章列表
+				this.fetchArticles();
+
+				// 监听认证状态变化
+				Supabase.auth.onAuthStateChange(async (event, session) => {
+					if (event === 'SIGNED_IN' && session?.user) {
+						await this.fetchUserProfile(session.user.id);
+						this.showHome();
+					} else if (event === 'SIGNED_OUT') {
+						this.user = null;
+					}
+				});
+
+				let tmp = getUrlQueryPath();
+				if (tmp == "/home" || !tmp)
+					this.showHome();
+				else if (tmp == "/article/new") {
+					this.showNewArticle();
+				} else if (tmp == "/discussion/new") {
+					this.showNewDiscussion();
+				}
+				else if (tmp.substring(0, 9) === "/article/") {
+					this.showArticleDetail(tmp.substring(9));
+				} else if (tmp.substring(0, 11) === "/discussion/") {
+					this.showDiscussionDetail(tmp.substring(11));
+				}
+				else if (tmp == "/profile") {
+					this.showProfile();
+				}
+				else if (tmp == "/auth/login") {
+					this.showLogin();
+				}
+				else if (tmp == "/auth/signup") {
+					this.showSignup();
+				}
+				else if (tmp == "/home/articles") {
+					this.showArticles();
+				}
+				else if (tmp == "/home/discussions") {
+					this.showDiscussions();
+				}
+				else if (tmp.substring(0, 6) === "/user/") {
+					this.showUserProfile(tmp.substring(6));
+				}
+				else {
+					this.showHome();
+				}
+			},
+
+			methods: {
+				cookie() {
+					// 返回一个json，用于操作cookie
+					return {
+						get: (name) => {
+							const value = `; ${document.cookie}`;
+							const parts = value.split(`; ${name}=`);
+							if (parts.length === 2) return parts.pop().split(';').shift();
+						},
+						set: (name, value, days) => {
+							let expires = "";
+							if (days) {
+								const date = new Date();
+								date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+								expires = "; expires=" + date.toUTCString();
+							}
+							document.cookie = name + "=" + (value || "") + expires + "; path=/";
+						},
+						delete: (name) => {
+							document.cookie = name + '=; Max-Age=-99999999;';
+						},
+						getCreateTime: () => {
+							const date = new Date();
+							return date.toISOString().split('T')[0] + ' ' + date.toTimeString().split(' ')[0];
+						}
+					};
+				},
+
+				async readIndexDB() {
+					return await new Promise(async resolve => {
+						let db, name = "roles", ver = 2;
+						const request = indexedDB.open(name, ver);
+						request.onerror = (event) => {
+							console.error("为什么不允许我的 web 应用使用 IndexedDB！");
+							resolve(null);
+						};
+						// 等待 IndexedDB 打开完成
+						await new Promise(resolve => {
+							request.onsuccess = (event) => {
+								db = event.target.result;
+								resolve();
+							};
+							request.onupgradeneeded = (event) => {
+								db = event.target.result;
+								if (!db.objectStoreNames.contains('roles')) {
+									db.createObjectStore('roles', { keyPath: 'userId' });
+								}
+								resolve();
+							};
+						}).then(() => {
+							db.onerror = (event) => {
+								console.error("IndexedDB 错误:", event.target.error);
+							};
+							resolve(db);
+						});
+					});
+				},
+
+				// 通过admin_roles表获取用户角色：（user（也可以值为---）,admin,super_admin）
+				async fetchUserRole(userId) {
+					if (!userId) {
+						console.error('用户ID不能为空');
+						return null;
+					}
+					if (this.userRoleMap.has(userId)) {
+						return this.userRoleMap.get(userId);
+					}
+
+					return await this.readIndexDB().then(async db => {
+						if (this.cookie().get('userRole') === null) {
+							console.log('用户角色缓存已过期，重新获取');
+							this.cookie().delete('userRole');
+							this.userRoleMap = new Map();
+							db.transaction(['roles'], 'readwrite')
+								.objectStore('roles')
+								.clear();
+						}
+
+						// 尝试获取用户角色
+						const transaction = db.transaction(['roles'], 'readonly');
+						const store = transaction.objectStore('roles');
+						const request = store.get(userId);
+						let _result = null;
+						// 等待 IndexedDB 请求完成
+						await new Promise(resolve => {
+							request.onsuccess = () => {
+								const result = request.result;
+								if (result) {
+									console.log("从 IndexedDB 获取到角色:", result);
+									_result = result.role;
+								} else {
+									console.log("未找到角色");
+								}
+								resolve();
+							};
+							request.onerror = () => {
+								console.error("获取角色失败");
+								resolve()
+							};
+						}).then(() => { setTimeout(() => { }, 0) });
+
+						if (_result) {
+							this.userRoleMap.set(userId, _result);
+							return _result;
+						}
+
+						const { data, error } = await Supabase
+							.from('admin_roles')
+							.select('role')
+							.eq('user_id', userId)
+							.single();
+
+						if (error) {
+							console.error('获取用户角色失败:', error);
+							return null;
+						}
+
+						if (this.cookie().get('userRole') === null) {
+							this.cookie().set('userRole', 'has', 1.00 / 24); // 缓存1个小时
+						}
+						db.transaction(['roles'], 'readwrite')
+							.objectStore('roles')
+							.put({ userId, role: data.role });
+						this.userRoleMap.set(userId, data.role);
+						return data.role;
+					});
+				},
+
+				// 格式化日期
+				formatDate(dateString) {
+					const date = new Date(dateString);
+					return date.toLocaleDateString('zh-CN', {
+						year: 'numeric',
+						month: 'long',
+						day: 'numeric',
+						hour: '2-digit',
+						minute: '2-digit'
+					});
+				},
+
+				// 渲染 Markdown
+				renderMarkdown,
+
+				// 获取用户资料
+				async fetchUserProfile(userId) {
+					const { data, error } = await Supabase
+						.from('profiles')
+						.select('*')
+						.eq('id', userId)
+						.single();
+
+					if (error) {
+						console.error('获取用户资料失败:', error);
+						return;
+					}
+
+					this.user = data;
+				},
+
+				// 获取文章列表
+				async fetchArticles() {
+					this.loading = true;
+					const { data, error } = await Supabase
+						.from('articles')
+						.select(`
+                            *,
+                            profiles:user_id (username, avatar_url)
+                        `)
+						.order('created_at', { ascending: false });
+
+					this.loading = false;
+
+					if (error) {
+						console.error('获取文章失败:', error);
+						return;
+					}
+
+					// 合并文章和用户资料
+					this.articles = data.map(article => ({
+						...article,
+						username: article.profiles?.username || '未知用户',
+						avatar_url: article.profiles?.avatar_url || null
+					}));
+				},
+
+				// 获取讨论列表
+				async fetchDiscussions() {
+					this.loading = true;
+					const { data, error } = await Supabase
+						.from('discussions')
+						.select(`
+                            *,
+                            profiles:user_id (username, avatar_url)
+                        `)
+						.order('created_at', { ascending: false });
+
+					this.loading = false;
+
+					if (error) {
+						console.error('获取讨论失败:', error);
+						return;
+					}
+
+					// 合并讨论和用户资料
+					this.discussions = data.map(discussion => ({
+						...discussion,
+						username: discussion.profiles?.username || '未知用户',
+						avatar_url: discussion.profiles?.avatar_url || null
+					}));
+				},
+
+				// 获取用户文章
+				async fetchUserArticles(userId) {
+					this.userArticlesLoading = true;
+					const { data, error } = await Supabase
+						.from('articles')
+						.select('*')
+						.eq('user_id', userId)
+						.order('created_at', { ascending: false });
+
+					this.userArticlesLoading = false;
+
+					if (error) {
+						console.error('获取用户文章失败:', error);
+						return;
+					}
+
+					this.userArticles = data;
+					this.userArticles.reverse();
+				},
+
+				// 获取用户讨论
+				async fetchUserDiscussions(userId) {
+					this.userDiscussionsLoading = true;
+					let { data, error } = await Supabase
+						.from('discussions')
+						.select('*')
+						.eq('user_id', userId)
+						.order('created_at', { ascending: false });
+
+					this.userDiscussionsLoading = false;
+
+					if (error) {
+						console.error('获取用户讨论失败:', error);
+						return;
+					}
+
+					this.userDiscussions = data;
+					this.userDiscussions.reverse();
+				},
+
+				// 获取文章详情
+				async fetchArticleDetail(articleId) {
+					this.articleLoading = true;
+					const { data, error } = await Supabase
+						.from('articles')
+						.select(`
+                            *,
+                            profiles:user_id (username, avatar_url)
+                        `)
+						.eq('id', articleId)
+						.single();
+
+					this.articleLoading = false;
+
+					if (error) {
+						console.error('获取文章详情失败:', error);
+						return;
+					}
+
+					this.currentArticle = {
+						...data,
+						username: data.profiles?.username || '未知用户',
+						avatar_url: data.profiles?.avatar_url || null
+					};
+
+					// 获取评论
+					this.fetchComments('article', articleId);
+				},
+
+				// 获取讨论详情
+				async fetchDiscussionDetail(discussionId) {
+					this.discussionLoading = true;
+					const { data, error } = await Supabase
+						.from('discussions')
+						.select(`
+                            *,
+                            profiles:user_id (username, avatar_url)
+                        `)
+						.eq('id', discussionId)
+						.single();
+
+					this.discussionLoading = false;
+
+					if (error) {
+						console.error('获取讨论详情失败:', error);
+						return;
+					}
+
+					this.currentDiscussion = {
+						...data,
+						username: data.profiles?.username || '未知用户',
+						avatar_url: data.profiles?.avatar_url || null
+					};
+
+					// 获取评论
+					this.fetchComments('discussion', discussionId);
+				},
+
+				// 获取评论
+				async fetchComments(parentType, parentId) {
+					this.commentsLoading = true;
+					const { data, error } = await Supabase
+						.from('comments')
+						.select(`
+                            *,
+                            profiles:user_id (username, avatar_url)
+                        `)
+						.eq('parent_type', parentType)
+						.eq('parent_id', parentId)
+						.order('created_at', { ascending: true });
+
+					this.commentsLoading = false;
+
+					if (error) {
+						console.error('获取评论失败:', error);
+						return;
+					}
+
+					this.comments = await Promise.all(data.map(async comment => ({
+						...comment,
+						username: comment.profiles?.username || '未知用户',
+						avatar_url: comment.profiles?.avatar_url || null,
+						userRole: await this.fetchUserRole(comment.user_id),
+						userId: comment.user_id
+					})));
+
+					this.comments.reverse(); // 反转评论顺序，最旧的在底部
+				},
+
+				// 登录
+				async signIn() {
+					if (this.login.loading) return;
+					this.login.error = null;
+					// 先禁用登录按钮
+					this.login.loading = true;
+					const { data, error } = await Supabase.auth.signInWithPassword({
+						email: this.login.email,
+						password: this.login.password
+					});
+					this.login.loading = false;
+
+					if (error) {
+						this.login.error = error.message;
+						return;
+					}
+
+					await this.fetchUserProfile(data.user.id);
+					this.showHome();
+				},
+
+				// 注册
+				async signUp() {
+					if (this.signup.loading) return;
+					this.signup.error = null;
+					this.signup.loading = true;
+
+					// 1. 注册用户
+					const { data: authData, error: authError } = await Supabase.auth.signUp({
+						email: this.signup.email,
+						password: this.signup.password
+					});
+					this.signup.loading = false;
+
+					if (authError) {
+						this.signup.error = authError.message;
+						return;
+					}
+
+					// 2. 创建用户资料
+					const { error: profileError } = await Supabase
+						.from('profiles')
+						.insert({
+							id: authData.user.id,
+							username: this.signup.username,
+							bio: ''
+						});
+
+					if (profileError) {
+						this.signup.error = profileError.message;
+						return;
+					}
+
+					// 3. 获取用户资料并显示首页
+					await this.fetchUserProfile(authData.user.id);
+					this.showHome();
+				},
+
+				// 登出
+				async signOut() {
+					await Supabase.auth.signOut();
+					this.user = null;
+					this.showHome();
+				},
+
+				// 创建文章
+				async createArticle() {
+					if (this.newArticle.loading) return;
+					this.newArticle.loading = true;
+					this.newArticle.error = null;
+
+					if (!this.user) {
+						this.newArticle.error = '请先登录';
+						return;
+					}
+
+					const { error } = await Supabase
+						.from('articles')
+						.insert({
+							user_id: this.user.id,
+							title: this.newArticle.title,
+							content: this.newArticle.content
+						});
+					this.newArticle.loading = false;
+
+					if (error) {
+						this.newArticle.error = error.message;
+						return;
+					}
+
+					// 重置表单并刷新文章列表
+					this.newArticle.title = '';
+					this.newArticle.content = '';
+					this.fetchArticles();
+					this.showHome();
+				},
+
+				// 创建讨论
+				async createDiscussion() {
+					if (this.newDiscussion.loading) return;
+					this.newDiscussion.loading = true;
+					this.newDiscussion.error = null;
+
+					if (!this.user) {
+						this.newDiscussion.error = '请先登录';
+						return;
+					}
+
+					const { error } = await Supabase
+						.from('discussions')
+						.insert({
+							user_id: this.user.id,
+							title: this.newDiscussion.title,
+							content: this.newDiscussion.content
+						});
+					this.newDiscussion.loading = false;
+
+					if (error) {
+						this.newDiscussion.error = error.message;
+						return;
+					}
+
+					// 重置表单并刷新讨论列表
+					this.newDiscussion.title = '';
+					this.newDiscussion.content = '';
+					this.fetchDiscussions();
+					this.showHome();
+				},
+
+				// 添加评论
+				async addComment(parentType) {
+					if (!this.user) {
+						return;
+					}
+
+					const parentId = parentType === 'article'
+						? this.currentArticle.id
+						: this.currentDiscussion.id;
+
+					const { error } = await Supabase
+						.from('comments')
+						.insert({
+							user_id: this.user.id,
+							content: this.newComment.content,
+							parent_type: parentType,
+							parent_id: parentId
+						});
+
+					if (error) {
+						console.error('添加评论失败:', error);
+						return;
+					}
+
+					// 重置评论框并刷新评论列表
+					this.newComment.content = '';
+					this.fetchComments(parentType, parentId);
+				},
+
+				// 视图切换方法
+				showHome() {
+					jumpTo('?path=/home');
+					this.currentView = 'home';
+					this.contentType = 'articles';
+					this.fetchArticles();
+				},
+
+				showLogin() {
+					jumpTo('?path=/auth/login');
+					this.currentView = 'login';
+					this.login.error = null;
+				},
+
+				showSignUp() {
+					jumpTo('?path=/auth/signup');
+					this.currentView = 'signup';
+					this.signup.error = null;
+				},
+
+				showProfile() {
+					jumpTo('?path=/profile');
+					this.currentView = 'profile';
+					if (this.user) {
+						this.fetchUserArticles(this.user.id);
+						this.fetchUserDiscussions(this.user.id);
+					}
+				},
+
+				showArticles() {
+					jumpTo('?path=/home/articles');
+					this.contentType = 'articles';
+					this.fetchArticles();
+				},
+
+				showDiscussions() {
+					jumpTo('?path=/home/discussions');
+					this.contentType = 'discussions';
+					this.fetchDiscussions();
+				},
+
+				showNewPost() {
+					if (this.contentType === 'articles') {
+						this.showNewArticle();
+					} else {
+						this.showNewDiscussion();
+					}
+				},
+
+				showNewArticle() {
+					jumpTo('?path=/article/new');
+					this.currentView = 'new-article';
+					this.newArticle.error = null;
+				},
+
+				showNewDiscussion() {
+					jumpTo('?path=/discussion/new');
+					this.currentView = 'new-discussion';
+					this.newDiscussion.error = null;
+				},
+
+				showArticleDetail(articleId) {
+					jumpTo('?path=/article/' + articleId);
+					this.currentView = 'article-detail';
+					this.fetchArticleDetail(articleId);
+				},
+
+				showDiscussionDetail(discussionId) {
+					jumpTo('?path=/discussion/' + discussionId);
+					this.currentView = 'discussion-detail';
+					this.fetchDiscussionDetail(discussionId);
+				},
+
+				async fetchOtherUserArticles(userId) {
+					const { data, error } = await Supabase
+						.from('articles')
+						.select('*')
+						.eq('user_id', userId);
+
+					if (error) {
+						console.error('获取用户文章失败:', error);
+						return;
+					}
+
+					this.other_user.userArticles = data;
+					this.other_user.userArticles.reverse();
+				},
+
+				async fetchOtherUserDiscussions(userId) {
+					const { data, error } = await Supabase
+						.from('discussions')
+						.select('*')
+						.eq('user_id', userId);
+
+					if (error) {
+						console.error('获取用户讨论失败:', error);
+						return;
+					}
+
+					this.other_user.userDiscussions = data;
+					this.other_user.userDiscussions.reverse();
+				},
+
+				async fetchOtherUserProfile(userId) {
+					const { data, error } = await Supabase
+						.from('profiles')
+						.select('*')
+						.eq('id', userId)
+						.single();
+
+					if (error) {
+						console.error('获取用户资料失败:', error);
+						return;
+					}
+
+					this.other_user = data;
+					this.fetchOtherUserArticles(userId);
+					this.fetchOtherUserDiscussions(userId);
+					this.other_user.userRole = await this.fetchUserRole(userId);
+				},
+
+				showUserProfile(userId) {
+					jumpTo('?path=/user/' + userId);
+					this.currentView = 'other-profile';
+					this.fetchOtherUserProfile(userId);
+				}
+			}
+		};
+
+		Vue.createApp(app).mount('#app');
+	</script>
+	<script defer>
+		// 添加性能监控
+		window.addEventListener('load', () => {
+			if (window.performance) {
+				const timing = window.performance.timing;
+				console.log('页面加载耗时:', timing.loadEventEnd - timing.navigationStart, '毫秒');
+			}
+		});
+	</script>
+</body>
+
+</html>
