@@ -1,0 +1,17 @@
+{
+  "name": "wc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "wbw121124",
+  "license": "ISC",
+  "dependencies": {
+    "anchorjs": "^0.2.4",
+    "browserify": "^17.0.1",
+    "katex": "^0.16.22"
+  }
+}

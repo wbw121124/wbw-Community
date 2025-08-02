@@ -6,23 +6,137 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>wbw的社区平台</title>
 	<!-- 添加 CSP 头
-	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
-	               script-src 'self' https://cdn.tailwindcss.com https://unpkg.com https://cdnjs.cloudflare.com; 
-	               style-src 'self' https://cdnjs.cloudflare.com; 
-	               img-src 'self' data: https:;">
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https:;">
 	<!- - 添加 Referrer-Policy - ->
 	<meta name="referrer" content="strict-origin-when-cross-origin">
 	<!- - 添加 X-XSS-Protection - ->
 	<meta http-equiv="X-XSS-Protection" content="1; mode=block"> -->
-	<script src="https://cdn.tailwindcss.com"></script>
-	<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<script src="./tailwindcss-3.4.17.js"></script>
+	<script src="./supabase.js"></script>
+	<link rel="stylesheet" href="./fontawesome-free-6.7.2-web/css/all.min.css">
 	<!--vue的资源-->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.31/vue.global.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/4.0.12/vue-router.global.min.js"></script>
+	<script src="./vue.global.min.js"></script>
+	<script src="./vue-router.global.min.js"></script>
 	<!--marked-->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/16.1.1/lib/marked.umd.min.js"></script>
+	<script src="./marked.umd.min.js"></script>
+	<script src="./katex/katex.min.js"></script>
+	<link rel="stylesheet" href="./katex/katex.min.css">
+	<script src="./katex/contrib/copy-tex.min.js"></script>
+	<script src="./katex/contrib/auto-render.min.js"></script>
+	<script src="./highlight/highlight.min.js"></script>
+	<script src="./highlight/highlightjs-line-numbers.js"></script>
+	<link rel="stylesheet" href="./highlight/styles/github.min.css">
+	<script src="./codecopy/clipboard.min.js"></script>
+	<link rel="stylesheet" href="./long-cang-webfont/style.css">
 	<style>
+		.hljs::before {
+			content: "";
+			position: absolute;
+			left: 15px;
+			top: 10px;
+			overflow: visible;
+			width: 12px;
+			height: 12px;
+			border-radius: 16px;
+			box-shadow: 20px 0 #fdbc40, 40px 0 #35cd4b;
+			-webkit-box-shadow: 20px 0 #fdbc40, 40px 0 #35cd4b;
+			background-color: #fc625d;
+			white-space: nowrap;
+			text-indent: 75px;
+			font-size: 16px;
+			line-height: 12px;
+			font-weight: 700;
+		}
+
+		/* for block of code */
+		.hljs-ln-code {
+			/*padding-left: 10px;*/
+			padding-left: 0.5em !important;
+		}
+
+		.hljs-prt {
+			/* background-color: #2b2b2b; */
+			border-radius: 1em;
+			/* box-shadow: 0 10px 30px 0px rgb(0 0 0 / 40%); */
+		}
+
+		pre code {
+			tab-size: 4;
+			/*新宋体*/
+			font-family: Consolas, 'Courier New', monospace;
+		}
+
+		code table,
+		code th,
+		code td,
+		code tr {
+			border: none !important;
+			padding: 0 !important;
+		}
+
+		.hljs-ln-n::before {
+			color: #666;
+		}
+
+		.hljs {
+			border-radius: 1em;
+			position: relative;
+			display: block;
+			overflow-x: hidden;
+			/* color: #999; */
+			color: #666;
+			padding-top: 30px !important;
+			box-shadow: 0 10px 30px 0px rgb(0 0 0 / 40%)
+		}
+
+		.hljs-ln-numbers {
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-khtml-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			text-align: center;
+			/* color: #aaa;
+	border-right: 1px solid #aaa; */
+			color: #666;
+			border-right: 1px solid #666 !important;
+			vertical-align: top;
+			/*padding-right: 10px !important;*/
+			padding-right: 0.5em !important;
+			/* your custom style here */
+			/*margin: auto;*/
+		}
+
+		/*codecopy*/
+		.codecopy-btn {
+			z-index: 1;
+			position: absolute;
+			transition: all 0.5s;
+			top: 10px;
+			right: 10px;
+			width: 90px;
+			height: 2em;
+			margin: 0;
+			border-radius: 5px;
+			background-color: rgba(221, 221, 221, .1);
+			/* color: #999; */
+			color: #666;
+			border: 1px solid #2f2f2f00;
+			text-align: center;
+			font-weight: 700;
+			font-size: 14px;
+		}
+
+		.codecopy-btn:hover {
+			background-color: rgba(221, 221, 221, .2);
+			/*top: 9px;*/
+		}
+
+		* {
+			color-scheme: light;
+		}
+
 		.avatar {
 			background-color: #e2e8f0;
 			display: flex;
@@ -98,7 +212,7 @@
 
 		.markdown-content pre {
 			background-color: #f1f5f9;
-			padding: 1rem;
+			/* padding: 1rem; */
 			border-radius: 0.5rem;
 			overflow-x: auto;
 			margin-bottom: 1rem;
@@ -687,6 +801,14 @@
 				</div>
 			</div>
 		</main>
+		<footer class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow p-6 mt-6">
+			<div class="max-w-7xl mx-auto px-4">
+				<p class="text-center" style="font-family: 'Long Cang Regular';">{{ getYiyan() }}</p>
+				<p class="text-center text-sm mt-2">© 2025 wbw的社区平台. All rights reserved.</p>
+				<p class="text-center text-sm mt-2">Powered by <a href="https://github.com/wbw121124" target="_blank"
+						class="text-indigo-400 hover:text-indigo-300">wbw121124</a>.</p>
+			</div>
+		</footer>
 	</div>
 
 	<script>
@@ -716,13 +838,88 @@
 
 		// 简单的 Markdown 渲染函数
 		const renderMarkdown = (text) => {
-			return marked.parse(text, {
+			let tmp = document.createElement('div');
+			tmp.innerHTML = marked.parse(text, {
 				mangle: false,    // 不处理自动链接
 				headerIds: false, // 不添加标题ID
 				renderer: renderer,
 				breaks: false,
 				gfm: true,
 			});
+			renderMathInElement(tmp, {
+				delimiters: [
+					{ left: '\\(', right: '\\)', display: true },
+					{ left: '$$', right: '$$', display: true },
+					{ left: '$', right: '$', display: false },
+				],
+				errorCallback: (msg, err) => {
+					console.error('MathJax Error:', msg, err);
+				},
+				errorSettings: {
+					message: ['[MathJax error]'],
+					style: {
+						'font-size': '1.2em',
+						'color': 'red',
+					},
+				}
+			});
+			function fun() {
+				// 获取所有的 <pre><code>...</code></pre> 元素
+				var preElements = document.querySelectorAll('pre code');
+
+				// 遍历这些元素
+				preElements.forEach(function (codeElement) {
+					if (codeElement.classList.contains('hljs')) {
+						// 如果已经是 hljs 渲染的代码块，则跳过
+						return;
+					}
+					// hljs渲染codeElement
+					hljs.highlightElement(codeElement);
+					// 创建复制按钮
+					var button = document.createElement('button');
+					button.textContent = '复制';
+					button.classList.add('codecopy-btn'); // 添加类以便样式化
+
+					// 将按钮添加到 code 元素的父元素（即 pre 元素）中
+					var div = document.createElement('div');
+					div.style = "width:100%;position: relative;";
+					div.appendChild(button);
+					codeElement.before(div);
+					codeElement.parentElement.classList.add("hljs-prt");
+
+					let x = codeElement;
+
+					// 使用 Clipboard.js 初始化复制功能
+					let clipboard = new ClipboardJS(button, {
+						text: function (trigger) {
+							// 返回要复制的文本
+							return x.innerText.replace(/\n\n/g, "\n");
+						}
+					});
+
+					clipboard.on('success', function (e) {
+						console.log('复制成功！', e);
+						// 可以在这里修改按钮的文本或样式来表示成功
+						e.clearSelection(); // 清除选区
+						e.trigger.textContent = '复制成功';
+						setTimeout(() => {
+							e.trigger.textContent = '复制';
+						}, 500);
+					});
+
+					clipboard.on('error', function (e) {
+						console.error('复制失败！', e);
+						// 可以在这里处理错误
+						e.trigger.textContent = '复制失败';
+						setTimeout(() => {
+							e.trigger.textContent = '复制';
+						}, 500);
+					});
+				});
+			}
+			fun();
+			hljs.documentReady();
+			return tmp.innerHTML;
 		};
 
 		function jumpTo(url) {
@@ -735,6 +932,24 @@
 			let tmp = new URLSearchParams(url.split('?')[1]);
 			return tmp.get('path');
 		}
+
+		var yiyan = ["Where there is a will, there is a way.", "Hope for the best, plan for the worst.", "Wisdom is more precious than wealth.", "Action speaks louder than words.", "Time and tide wait for no man.",
+			"Experience is the best teacher.", "All that glitters is not gold.", "Failure is the mother of success.", "A journey of a thousand miles begins with a single step.", "The early bird catches the worm.",
+			"Nothing is impossible to a willing heart.", "Don't put off till tomorrow what you can do today.", "Every cloud has a silver lining.", "Haste makes waste.", "Better late than never.",
+			"Honesty is the best policy.", "Live and learn.", "Health is wealth.", "First impressions are the most lasting.", "One man's meat is another man's poison.", "A friend in need is a friend indeed.",
+			"Life is not all roses.", "Think twice before you act.", "Pride goes before a fall.", "Two heads are better than one.", "Well begun is half done.", "To be, or not to be, that is the question.",
+			"Action speak louder than words.", "An idle youth,a needy age.", "All is well that ends well.", "Misfortune is a good teacher.", "Faith can move mountains.", "He that promises too much means nothing.",
+			"He would climb the ladder must begin at the bottom.", "If you are not inside a house, you don not know about its leaking.", "It is never too late to mend.", "Yesterday will not be called again.",
+			"Men will die for wealth, as bird for food.", "Success belongs to the persevering.", "The man who has made up his mind to win will never say \"impossible\".", "Nothing venture, nothing have.",
+			"If you fail, don't forget to learn your lesson.", "No pain, no gain", "We can only move forward, forward, by any means necessary to move forward.", "Your fearlessness comes from ignorance.",
+			"Intelligence lies in diligence, and genius in accumulation.", "Never be satisfied with learning; never be tired of teaching.", "Books are the ladder of human progress.",
+			"An inch of time is an inch of gold, but you can't buy time with gold.", "学而时习之，不亦说乎？——孔子", "己所不欲，勿施于人。——孔子", "道可道，非常道。——老子", "天下大事，必作于细。——老子", "知彼知己，百战不殆。——孙子",
+			"不战而屈人之兵，善之善者也。——孙子", "天时不如地利，地利不如人和。——孟子", "生于忧患，死于安乐。——孟子", "兼相爱，交相利。——墨子", "非攻。——墨子", "青，取之于蓝，而青于蓝。——荀子", "不积跬步，无以至千里。——荀子", "法不阿贵，绳不挠曲。——韩非子",
+			"千里之堤，溃于蚁穴。——韩非子", "吾生也有涯，而知也无涯。——庄子", "君子之交淡若水。——庄子", "不以规矩，不能成方圆。——孟子", "得道者多助，失道者寡助。——孟子", "工欲善其事，必先利其器。——孔子", "三人行，必有我师焉。——孔子",
+			"祸兮福所倚，福兮祸所伏。——老子", "大器晚成。——老子", "兵无常势，水无常形。——孙子", "攻其无备，出其不意。——孙子", "穷则独善其身，达则兼济天下。——孟子", "老吾老以及人之老，幼吾幼以及人之幼。——孟子", "志不强者智不达。——墨子",
+			"言不信者行不果。——墨子", "不登高山，不知天之高也。——荀子", "锲而不舍，金石可镂。——荀子", "世异则事异，事异则备变。——韩非子", "欲速则不达。——孔子", "人无远虑，必有近忧。——孔子", "上善若水。——老子", "治大国若烹小鲜。——老子",
+			"知彼知己，胜乃不殆。——孙子", "将在外，君命有所不受。——孙子", "天将降大任于斯人也。——孟子", "富贵不能淫，贫贱不能移，威武不能屈。——孟子", "非乐。——墨子", "名不可简而成也，誉不可巧而立也。——墨子", "不闻不若闻之，闻之不若见之。——荀子",
+			"君子博学而日参省乎己。——荀子", "事以密成，语以泄败。——韩非子", "巧诈不如拙诚。——韩非子", "学而不思则罔，思而不学则殆。——孔子", "温故而知新，可以为师矣。——孔子", "大道至简。——老子", "知人者智，自知者明。——老子"];
 
 		const app = {
 			data() {
@@ -1492,6 +1707,11 @@
 					jumpTo('?path=/user/' + userId);
 					this.currentView = 'other-profile';
 					this.fetchOtherUserProfile(userId);
+				},
+
+				getYiyan() {
+					let tmp = yiyan[Math.floor(Math.random() * yiyan.length)];
+					return tmp;
 				}
 			}
 		};
