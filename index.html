@@ -23,12 +23,34 @@
 	<link rel="stylesheet" href="./katex/katex.min.css">
 	<script src="./katex/contrib/copy-tex.min.js"></script>
 	<script src="./katex/contrib/auto-render.min.js"></script>
-	<script src="./highlight/highlight.min.js"></script>
+	<!-- <script src="./highlight/highlight.min.js"></script>
 	<script src="./highlight/highlightjs-line-numbers.js"></script>
-	<link rel="stylesheet" href="./highlight/styles/github.min.css">
+	<link rel="stylesheet" href="./highlight/styles/github.min.css"> -->
 	<script src="./codecopy/clipboard.min.js"></script>
 	<link rel="stylesheet" href="./long-cang-webfont/style.css">
 	<style>
+		.shiki {
+			counter-reset: line;
+		}
+
+		.shiki span.line {
+			position: relative;
+			padding-left: 2.5em;
+			counter-increment: line;
+		}
+
+		.shiki span.line::before {
+			content: counter(line);
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 2em;
+			text-align: right;
+			color: #999;
+			padding-right: 0.5em;
+			border-right: 1px solid #ddd;
+		}
+
 		.hljs::before {
 			content: "";
 			position: absolute;
@@ -86,7 +108,9 @@
 			/* color: #999; */
 			color: #666;
 			padding-top: 30px !important;
-			box-shadow: 0 10px 30px 0px rgb(0 0 0 / 40%)
+			padding-inline: 15px;
+			padding-bottom: 15px;
+			/* box-shadow: 0 10px 30px 0px rgb(0 0 0 / 40%) */
 		}
 
 		.hljs-ln-numbers {
@@ -803,7 +827,7 @@
 		</main>
 		<footer class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow p-6 mt-6">
 			<div class="max-w-7xl mx-auto px-4">
-				<p class="text-center" style="font-family: 'Long Cang Regular';">{{ getYiyan() }}</p>
+				<p class="text-center" id="yiyan" style="font-family: 'Long Cang Regular';" ondblclick="getYiyan()"></p>
 				<p class="text-center text-sm mt-2">© 2025 wbw的社区平台. All rights reserved.</p>
 				<p class="text-center text-sm mt-2">Powered by <a href="https://github.com/wbw121124" target="_blank"
 						class="text-indigo-400 hover:text-indigo-300"><i class="fa fab fa-github"
@@ -812,6 +836,23 @@
 		</footer>
 	</div>
 
+	<script type="module">
+		window.getShiki = async () => {
+			// import { codeToHtml } from './shiki/index.mjs'
+			const { bundledLanguages, bundledThemes, createHighlighter, createOnigurumaEngine } =
+				await import('https://esm.sh/shiki');
+			const engine = await createOnigurumaEngine(import('https://esm.sh/shiki/wasm'));
+			const highlighter = await createHighlighter({
+				themes: [
+					await import('https://esm.sh/shiki@3.0.0/themes/github-light')
+				],
+				langs: Object.keys(bundledLanguages),
+				engine
+			});
+			window.codeToHtml = highlighter.codeToHtml;
+		};
+		window.getShiki();
+	</script>
 	<script>
 		// 初始化 Supabase
 		const supabaseUrl = 'https://oavnsyqhnvsdfrjjdjix.supabase.co';
@@ -864,62 +905,6 @@
 					},
 				}
 			});
-			function fun() {
-				// 获取所有的 <pre><code>...</code></pre> 元素
-				var preElements = document.querySelectorAll('pre code');
-
-				// 遍历这些元素
-				preElements.forEach(function (codeElement) {
-					if (codeElement.classList.contains('hljs')) {
-						// 如果已经是 hljs 渲染的代码块，则跳过
-						return;
-					}
-					// hljs渲染codeElement
-					hljs.highlightElement(codeElement);
-					// 创建复制按钮
-					var button = document.createElement('button');
-					button.textContent = '复制';
-					button.classList.add('codecopy-btn'); // 添加类以便样式化
-
-					// 将按钮添加到 code 元素的父元素（即 pre 元素）中
-					var div = document.createElement('div');
-					div.style = "width:100%;position: relative;";
-					div.appendChild(button);
-					codeElement.before(div);
-					codeElement.parentElement.classList.add("hljs-prt");
-
-					let x = codeElement;
-
-					// 使用 Clipboard.js 初始化复制功能
-					let clipboard = new ClipboardJS(button, {
-						text: function (trigger) {
-							// 返回要复制的文本
-							return x.innerText.replace(/\n\n/g, "\n");
-						}
-					});
-
-					clipboard.on('success', function (e) {
-						console.log('复制成功！', e);
-						// 可以在这里修改按钮的文本或样式来表示成功
-						e.clearSelection(); // 清除选区
-						e.trigger.textContent = '复制成功';
-						setTimeout(() => {
-							e.trigger.textContent = '复制';
-						}, 500);
-					});
-
-					clipboard.on('error', function (e) {
-						console.error('复制失败！', e);
-						// 可以在这里处理错误
-						e.trigger.textContent = '复制失败';
-						setTimeout(() => {
-							e.trigger.textContent = '复制';
-						}, 500);
-					});
-				});
-			}
-			fun();
-			hljs.documentReady();
 			return tmp.innerHTML;
 		};
 
@@ -933,6 +918,80 @@
 			let tmp = new URLSearchParams(url.split('?')[1]);
 			return tmp.get('path');
 		}
+
+		async function fun() {
+			// 获取所有的 <pre><code>...</code></pre> 元素
+			var preElements = document.querySelectorAll('pre code');
+
+			// 遍历这些元素
+			for (let codeElement of preElements) {
+				let code = codeElement.innerText;
+				let lang = null;
+				if (codeElement.className.match(/language\-[a-zA-Z\+\-0-9]+/))
+					lang = codeElement.className.match(/language\-[a-zA-Z\+\-0-9]+/)[0].substring(9);
+				else
+					lang = 'text';
+				// console.log(lang);
+				codeElement = codeElement.parentElement;
+				if (codeElement.classList.contains('shiki')) {
+					// 如果是已经渲染的代码块，则跳过
+					return;
+				}
+				// hljs渲染codeElement
+				// hljs.highlightElement(codeElement);
+				if (window.codeToHtml === undefined) {
+					await window.getShiki();
+				}
+				codeElement.innerHTML = window.codeToHtml(code, {
+					lang: lang,
+					theme: 'github-light'
+				});
+				codeElement.className += ' ' + codeElement.children[0].className;
+				codeElement.innerHTML = codeElement.children[0].innerHTML;
+				// 创建复制按钮
+				var button = document.createElement('button');
+				button.textContent = '复制';
+				button.classList.add('codecopy-btn'); // 添加类以便样式化
+
+				// 将按钮添加到 code 元素的父元素（即 pre 元素）中
+				var div = document.createElement('div');
+				div.style = "width:100%;position: relative;";
+				div.appendChild(button);
+				codeElement.before(div);
+				codeElement.classList.add("hljs-prt");
+				codeElement.children[0].classList.add("hljs");
+
+				let x = codeElement;
+
+				// 使用 Clipboard.js 初始化复制功能
+				let clipboard = new ClipboardJS(button, {
+					text: function (trigger) {
+						// 返回要复制的文本
+						return x.innerText.replace(/\n\n/g, "\n");
+					}
+				});
+
+				clipboard.on('success', function (e) {
+					console.log('复制成功！', e);
+					// 可以在这里修改按钮的文本或样式来表示成功
+					e.clearSelection(); // 清除选区
+					e.trigger.textContent = '复制成功';
+					setTimeout(() => {
+						e.trigger.textContent = '复制';
+					}, 500);
+				});
+
+				clipboard.on('error', function (e) {
+					console.error('复制失败！', e);
+					// 可以在这里处理错误
+					e.trigger.textContent = '复制失败';
+					setTimeout(() => {
+						e.trigger.textContent = '复制';
+					}, 500);
+				});
+			}
+		}
+		// hljs.documentReady();
 
 		var yiyan = ["Where there is a will, there is a way.", "Hope for the best, plan for the worst.", "Wisdom is more precious than wealth.", "Action speaks louder than words.", "Time and tide wait for no man.",
 			"Experience is the best teacher.", "All that glitters is not gold.", "Failure is the mother of success.", "A journey of a thousand miles begins with a single step.", "The early bird catches the worm.",
@@ -951,6 +1010,13 @@
 			"言不信者行不果。——墨子", "不登高山，不知天之高也。——荀子", "锲而不舍，金石可镂。——荀子", "世异则事异，事异则备变。——韩非子", "欲速则不达。——孔子", "人无远虑，必有近忧。——孔子", "上善若水。——老子", "治大国若烹小鲜。——老子",
 			"知彼知己，胜乃不殆。——孙子", "将在外，君命有所不受。——孙子", "天将降大任于斯人也。——孟子", "富贵不能淫，贫贱不能移，威武不能屈。——孟子", "非乐。——墨子", "名不可简而成也，誉不可巧而立也。——墨子", "不闻不若闻之，闻之不若见之。——荀子",
 			"君子博学而日参省乎己。——荀子", "事以密成，语以泄败。——韩非子", "巧诈不如拙诚。——韩非子", "学而不思则罔，思而不学则殆。——孔子", "温故而知新，可以为师矣。——孔子", "大道至简。——老子", "知人者智，自知者明。——老子"];
+
+		function getYiyan() {
+			let tmp = yiyan[Math.floor(Math.random() * yiyan.length)];
+			return document.getElementById("yiyan").innerText = tmp;
+		}
+
+		getYiyan();
 
 		const app = {
 			data() {
@@ -1226,7 +1292,12 @@
 				},
 
 				// 渲染 Markdown
-				renderMarkdown,
+				renderMarkdown(text) {
+					setTimeout(async () => {
+						await fun();
+					}, 1000);
+					return renderMarkdown(text);
+				},
 
 				// 获取用户资料
 				async fetchUserProfile(userId) {
@@ -1708,11 +1779,6 @@
 					jumpTo('?path=/user/' + userId);
 					this.currentView = 'other-profile';
 					this.fetchOtherUserProfile(userId);
-				},
-
-				getYiyan() {
-					let tmp = yiyan[Math.floor(Math.random() * yiyan.length)];
-					return tmp;
 				}
 			}
 		};
