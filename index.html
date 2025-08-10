@@ -41,9 +41,12 @@
 			counter-reset: line;
 		}
 
+		.hljs {
+			padding-left: calc(15px + 1em + var(--data-loglines) * 0.5em) !important;
+		}
+
 		.shiki span.line {
 			position: relative;
-			padding-left: calc(0.5em + var(--data-loglines) * 1em);
 			counter-increment: line;
 		}
 
@@ -51,9 +54,9 @@
 			font-family: var(--font-family-monospace);
 			content: counter(line);
 			position: absolute;
-			left: 0;
+			left: calc(var(--data-loglines) * -0.5em - 1em);
 			/* top: 0; */
-			width: calc(var(--data-loglines) * 1em);
+			width: calc(var(--data-loglines) * 0.5em + 0.5em);
 			text-align: right;
 			color: #999;
 			padding-right: 0.5em;
@@ -382,7 +385,14 @@
 											<span v-if="!article.avatar_url">{{ article.username ?
 												article.username.charAt(0).toUpperCase() : 'U' }}</span>
 										</div>
-										<span class="text-sm text-gray-600">{{ article.username }}</span>
+										<span class="text-sm text-gray-600"><a class="font-medium"
+												:href="`?path=/user/${article.userId}`">{{
+												article.username }}<span v-if="article.userRole"
+													class="text-sm text-gray-500 ml-2" :class="{ 'text-purple-500': article.userRole === 'super_admin',
+										'text-green-500': article.userRole === 'admin',
+										'text-blue-500': article.userRole === 'user',
+										'text-gray-500': article.userRole === '---' || article.userRole === null
+									}">{{ article.userRole }}</span></a></span>
 									</div>
 									<a href="#" @click.prevent="showArticleDetail(article.id)"
 										class="text-sm text-indigo-600 hover:text-indigo-800">阅读更多 →</a>
@@ -428,7 +438,14 @@
 											<span v-if="!discussion.avatar_url">{{ discussion.username ?
 												discussion.username.charAt(0).toUpperCase() : 'U' }}</span>
 										</div>
-										<span class="text-sm text-gray-600">{{ discussion.username }}</span>
+										<span class="text-sm text-gray-600"><a class="font-medium"
+												:href="`?path=/user/${discussion.userId}`">{{
+												discussion.username }}<span v-if="discussion.userRole"
+													class="text-sm text-gray-500 ml-2" :class="{ 'text-purple-500': discussion.userRole === 'super_admin',
+										'text-green-500': discussion.userRole === 'admin',
+										'text-blue-500': discussion.userRole === 'user',
+										'text-gray-500': discussion.userRole === '---' || discussion.userRole === null
+									}">{{ discussion.userRole }}</span></a></span>
 									</div>
 									<a href="#" @click.prevent="showDiscussionDetail(discussion.id)"
 										class="text-sm text-indigo-600 hover:text-indigo-800">查看详情 →</a>
@@ -494,7 +511,8 @@
 							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
 					</div>
 					<button type="submit" disabled="true"
-						class="w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+						class="w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+						style="cursor:not-allowed">
 						<!-- 注册 -->注册请找管理员
 					</button>
 					<div class="mt-4 text-center text-sm text-gray-600">
@@ -638,7 +656,14 @@
 									<span v-if="!currentArticle.avatar_url">{{ currentArticle.username ?
 										currentArticle.username.charAt(0).toUpperCase() : 'U' }}</span>
 								</div>
-								<span class="text-gray-600">{{ currentArticle.username }}</span>
+								<!-- <span class="text-gray-600">{{ currentArticle.username }}</span> -->
+								<a class="font-medium" :href="`?path=/user/${currentArticle.userId}`">{{
+									currentArticle.username }}<span v-if="currentArticle.userRole"
+										class="text-sm text-gray-500 ml-2" :class="{ 'text-purple-500': currentArticle.userRole === 'super_admin',
+										'text-green-500': currentArticle.userRole === 'admin',
+										'text-blue-500': currentArticle.userRole === 'user',
+										'text-gray-500': currentArticle.userRole === '---' || currentArticle.userRole === null
+									}">{{ currentArticle.userRole }}</span></a>
 							</div>
 							<span class="text-sm text-gray-500">{{ formatDate(currentArticle.created_at) }}</span>
 						</div>
@@ -675,7 +700,7 @@
 										<div class="flex items-center justify-between">
 											<a class="font-medium" :href="`?path=/user/${comment.userId}`">{{
 												comment.username }}<span v-if="comment.userRole"
-													class="text-sm text-gray-500 ml-2" :class="{ 'text-purple-500': userRole === 'super_admin',
+													class="text-sm text-gray-500 ml-2" :class="{ 'text-purple-500': comment.userRole === 'super_admin',
 																															'text-green-500': comment.userRole === 'admin',
 																															'text-blue-500': comment.userRole === 'user',
 																															'text-gray-500': comment.userRole === '---' || comment.userRole === null
@@ -711,7 +736,14 @@
 									<span v-if="!currentDiscussion.avatar_url">{{ currentDiscussion.username ?
 										currentDiscussion.username.charAt(0).toUpperCase() : 'U' }}</span>
 								</div>
-								<span class="text-gray-600">{{ currentDiscussion.username }}</span>
+								<!-- <span class="text-gray-600">{{ currentDiscussion.username }}</span> -->
+								<a class="font-medium" :href="`?path=/user/${currentDiscussion.userId}`">{{
+									currentDiscussion.username }}<span v-if="currentDiscussion.userRole"
+										class="text-sm text-gray-500 ml-2" :class="{ 'text-purple-500': currentDiscussion.userRole === 'super_admin',
+										'text-green-500': currentDiscussion.userRole === 'admin',
+										'text-blue-500': currentDiscussion.userRole === 'user',
+										'text-gray-500': currentDiscussion.userRole === '---' || currentDiscussion.userRole === null
+									}">{{ currentDiscussion.userRole }}</span></a>
 							</div>
 							<span class="text-sm text-gray-500">{{ formatDate(currentDiscussion.created_at) }}</span>
 						</div>
@@ -748,7 +780,7 @@
 										<div class="flex items-center justify-between">
 											<a class="font-medium" :href="`?path=/user/${comment.userId}`">{{
 												comment.username }}<span v-if="comment.userRole"
-													class="text-sm text-gray-500 ml-2" :class="{ 'text-purple-500': userRole === 'super_admin',
+													class="text-sm text-gray-500 ml-2" :class="{ 'text-purple-500': comment.userRole === 'super_admin',
 																															'text-green-500': comment.userRole === 'admin',
 																															'text-blue-500': comment.userRole === 'user',
 																															'text-gray-500': comment.userRole === '---' || comment.userRole === null
@@ -860,7 +892,7 @@
 			});
 			window.codeToHtml = highlighter.codeToHtml;
 		};
-		window.getShiki();
+		await window.getShiki();
 	</script>
 	<script>
 		// 初始化 Supabase
@@ -1343,12 +1375,13 @@
 						return;
 					}
 
-					// 合并文章和用户资料
-					this.articles = data.map(article => ({
+					this.articles = await Promise.all(data.map(async article => ({
 						...article,
 						username: article.profiles?.username || '未知用户',
-						avatar_url: article.profiles?.avatar_url || null
-					}));
+						avatar_url: article.profiles?.avatar_url || null,
+						userRole: await this.fetchUserRole(article.user_id),
+						userId: article.user_id
+					})));
 				},
 
 				// 获取讨论列表
@@ -1369,12 +1402,13 @@
 						return;
 					}
 
-					// 合并讨论和用户资料
-					this.discussions = data.map(discussion => ({
+					this.discussions = await Promise.all(data.map(async discussion => ({
 						...discussion,
 						username: discussion.profiles?.username || '未知用户',
-						avatar_url: discussion.profiles?.avatar_url || null
-					}));
+						avatar_url: discussion.profiles?.avatar_url || null,
+						userRole: await this.fetchUserRole(discussion.user_id),
+						userId: discussion.user_id
+					})));
 				},
 
 				// 获取用户文章
@@ -1439,7 +1473,9 @@
 					this.currentArticle = {
 						...data,
 						username: data.profiles?.username || '未知用户',
-						avatar_url: data.profiles?.avatar_url || null
+						avatar_url: data.profiles?.avatar_url || null,
+						userRole: await this.fetchUserRole(data.user_id),
+						userId: data.user_id
 					};
 
 					// 获取评论
@@ -1468,7 +1504,9 @@
 					this.currentDiscussion = {
 						...data,
 						username: data.profiles?.username || '未知用户',
-						avatar_url: data.profiles?.avatar_url || null
+						avatar_url: data.profiles?.avatar_url || null,
+						userRole: await this.fetchUserRole(data.user_id),
+						userId: data.user_id
 					};
 
 					// 获取评论
@@ -1789,6 +1827,37 @@
 					jumpTo('?path=/user/' + userId);
 					this.currentView = 'other-profile';
 					this.fetchOtherUserProfile(userId);
+				},
+
+				// 删除操作
+				deleteArticle(articleId) {
+					if (confirm('确定要删除这篇文章吗？')) {
+						Supabase
+							.from('articles')
+							.delete()
+							.eq('id', articleId)
+							.then(() => {
+								this.fetchArticles();
+							})
+							.catch((error) => {
+								console.error('删除文章失败:', error);
+							});
+					}
+				},
+
+				deleteDiscussion(discussionId) {
+					if (confirm('确定要删除这篇讨论吗？')) {
+						Supabase
+							.from('discussions')
+							.delete()
+							.eq('id', discussionId)
+							.then(() => {
+								this.fetchDiscussions();
+							})
+							.catch((error) => {
+								console.error('删除讨论失败:', error);
+							});
+					}
 				}
 			}
 		};
