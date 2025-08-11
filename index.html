@@ -29,7 +29,7 @@
 	<script src="./codecopy/clipboard.min.js"></script>
 	<link rel="stylesheet" href="./long-cang-webfont/style.css">
 	<script src="./sweetalert.min.js"></script>
-	<link rel="stylesheet" href="./sweetalert.css">
+	<link rel="stylesheet" href="./sweetalert2.css">
 	<style>
 		:root {
 			/* 等宽字体 */
@@ -674,6 +674,12 @@
 									}">{{ currentArticle.userRole }}</span></a>
 							</div>
 							<span class="text-sm text-gray-500">{{ formatDate(currentArticle.created_at) }}</span>
+							<!--管理工具栏，admin&super_admin&作者可以删除文章-->
+							<div
+								v-if="user && (user.role === 'admin' || user.role === 'super_admin' || user.id === currentArticle.userId)">
+								<button @click="deleteArticle(currentArticle.id)"
+									class="text-sm text-red-600 hover:text-red-500">删除</button>
+							</div>
 						</div>
 						<div class="markdown-content" v-html="renderMarkdown(currentArticle.content)"></div>
 					</div>
@@ -715,6 +721,11 @@
 																														}">{{ comment.userRole }}</span></a>
 											<span class="text-xs text-gray-500">{{ formatDate(comment.created_at)
 												}}</span>
+											<!--删除评论按钮-->
+											<button
+												v-if="user && (user.role === 'admin' || user.role === 'super_admin' || user.id === comment.userId || user.id === currentArticle.userId)"
+												@click="deleteComment(comment.id, 'article', currentArticle.id)"
+												class="text-sm text-red-600 hover:text-red-500">删除</button>
 										</div>
 										<p class="text-gray-700 mt-1">{{ comment.content }}</p>
 									</div>
@@ -754,6 +765,12 @@
 									}">{{ currentDiscussion.userRole }}</span></a>
 							</div>
 							<span class="text-sm text-gray-500">{{ formatDate(currentDiscussion.created_at) }}</span>
+							<!--管理工具栏，admin&super_admin&作者可以删除讨论-->
+							<div
+								v-if="user && (user.role === 'admin' || user.role === 'super_admin' || user.id === currentDiscussion.userId)">
+								<button @click="deleteDiscussion(currentDiscussion.id)"
+									class="text-sm text-red-600 hover:text-red-500">删除</button>
+							</div>
 						</div>
 						<div class="markdown-content" v-html="renderMarkdown(currentDiscussion.content)"></div>
 					</div>
@@ -795,6 +812,11 @@
 																														}">{{ comment.userRole }}</span></a>
 											<span class="text-xs text-gray-500">{{ formatDate(comment.created_at)
 												}}</span>
+											<!--删除评论按钮-->
+											<button
+												v-if="user && (user.role === 'admin' || user.role === 'super_admin' || user.id === comment.userId || user.id === currentDiscussion.userId)"
+												@click="deleteComment(comment.id, 'discussion', currentDiscussion.id)"
+												class="text-sm text-red-600 hover:text-red-500">删除</button>
 										</div>
 										<p class="text-gray-700 mt-1">{{ comment.content }}</p>
 									</div>
@@ -1841,8 +1863,8 @@
 				deleteArticle(articleId) {
 					const swalWithBootstrapButtons = swal.mixin({
 						customClass: {
-							confirmButton: "btn btn-success",
-							cancelButton: "btn btn-danger"
+							confirmButton: "px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 mx-1",
+							cancelButton: "px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 mx-1"
 						},
 						buttonsStyling: false
 					});
@@ -1887,8 +1909,8 @@
 				deleteDiscussion(discussionId) {
 					const swalWithBootstrapButtons = swal.mixin({
 						customClass: {
-							confirmButton: "btn btn-success",
-							cancelButton: "btn btn-danger"
+							confirmButton: "px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 mx-1",
+							cancelButton: "px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 mx-1"
 						},
 						buttonsStyling: false
 					});
@@ -1924,6 +1946,62 @@
 							swalWithBootstrapButtons.fire({
 								title: "已取消",
 								text: "您的讨论是安全的 :)",
+								icon: "error"
+							});
+						}
+					});
+				},
+
+				async deleteComment(commentId, parentType, parentId) {
+					const swalWithBootstrapButtons = swal.mixin({
+						customClass: {
+							confirmButton:
+								"px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 mx-1"
+							,
+							cancelButton:
+								"px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 mx-1"
+
+						},
+						buttonsStyling:
+							false
+					});
+					swalWithBootstrapButtons.fire({
+						title: "确定要删除这条评论吗？",
+						text: "您将无法恢复此操作！",
+						icon: "warning",
+						showCancelButton: true,
+						confirmButtonText: "是的，删除它！",
+						cancelButtonText: "不，取消！",
+						reverseButtons: true
+
+					}).then((result) => {
+						if (result.isConfirmed) {
+							// 执行删除评论操作
+							Supabase
+								.from('comments')
+								.delete()
+								.eq('id', commentId)
+								.then(() => {
+									// 重新获取评论列表
+									this.fetchComments(parentType, parentId);
+									swalWithBootstrapButtons.fire({
+										title: "已删除！",
+										text: "评论已被删除。",
+										icon: "success"
+									});
+								})
+								.catch((error) => {
+									console.error('删除评论失败:', error);
+									swalWithBootstrapButtons.fire({
+										title: "删除失败",
+										text: "无法删除评论，请稍后重试。",
+										icon: "error"
+									});
+								});
+						} else if (result.dismiss === swal.DismissReason.cancel) {
+							swalWithBootstrapButtons.fire({
+								title: "已取消",
+								text: "您的评论是安全的 :)",
 								icon: "error"
 							});
 						}
