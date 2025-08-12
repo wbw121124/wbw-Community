@@ -31,6 +31,128 @@
 	<script src="./sweetalert.min.js"></script>
 	<link rel="stylesheet" href="./sweetalert2.css">
 	<style>
+		.align-center {
+			text-align: center;
+		}
+
+		.align-right {
+			text-align: right;
+		}
+
+		.epigraph {
+			width: 40%;
+			margin-left: 60%;
+		}
+
+		.epigraph>:last-child {
+			margin-top: 0;
+			border-top: 1px solid #888;
+			text-align: right;
+		}
+
+		summary {
+			list-style: none;
+			-webkit-user-select: none;
+			user-select: none;
+			outline: 0;
+			margin: 0;
+			position: relative;
+			padding-left: 24px;
+			font-weight: 700;
+			list-style: none;
+			display: list-item;
+			min-height: 1em;
+		}
+
+		.foldable {
+			padding: .5em 1em;
+			margin: 1em 0 1em .2em;
+			border-left-width: 5px;
+			border-left-style: solid;
+			overflow: hidden;
+		}
+
+		.foldable.info {
+			border-left-color: rgb(52, 152, 219);
+		}
+
+		.foldable.warning {
+			border-left-color: rgb(255, 193, 22);
+		}
+
+		.foldable.success {
+			border-left-color: rgb(82, 196, 26);
+		}
+
+		details.info>summary {
+			color: rgb(52, 152, 219);
+		}
+
+		details.warning>summary {
+			color: rgb(255, 193, 22);
+		}
+
+		details.success>summary {
+			color: rgb(82, 196, 26);
+		}
+
+		details.info>summary:before {
+			-webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"%20viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>');
+			mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"%20viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>');
+		}
+
+		details.success>summary:before {
+			-webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"%20viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>');
+			mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"%20viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>');
+		}
+
+		details.warning>summary:before {
+			-webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"%20viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg>');
+			mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"%20viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg>');
+		}
+
+		summary:before {
+			content: "";
+			background-color: currentcolor;
+			-webkit-mask-size: contain;
+			mask-size: contain;
+			-webkit-mask-repeat: no-repeat;
+			mask-repeat: no-repeat;
+			-webkit-mask-position: center;
+			mask-position: center;
+			position: absolute;
+			left: 0;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 16px;
+			height: 16px;
+			margin-right: 8px;
+		}
+
+		summary:after {
+			content: "";
+			background-color: currentcolor;
+			-webkit-mask-size: contain;
+			mask-size: contain;
+			-webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\"%20viewBox=\"0 0 256 512\"><path d=\"M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z\"/></svg>");
+			mask-image: url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\"%20viewBox=\"0 0 256 512\"><path d=\"M246.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-128-128c-9.2-9.2-22.9-11.9-34.9-6.9s-19.8 16.6-19.8 29.6l0 256c0 12.9 7.8 24.6 19.8 29.6s25.7 2.2 34.9-6.9l128-128z\"/></svg>");
+			-webkit-mask-repeat: no-repeat;
+			mask-repeat: no-repeat;
+			-webkit-mask-position: center;
+			mask-position: center;
+			position: absolute;
+			right: 0;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 16px;
+			height: 16px;
+			transition: transform .2s ease;
+		}
+
+		details[open]>summary:after {
+			transform: translateY(-50%) rotate(90deg);
+		}
+
 		:root {
 			/* 等宽字体 */
 			--font-family-monospace: 'Consolas', 'Courier New', monospace;
@@ -941,13 +1063,80 @@
 			return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 		};
 
-		// marked.setOptions({
-		// 	mangle: false,    // 不处理自动链接
-		// 	headerIds: false, // 不添加标题ID
-		// 	renderer: renderer,
-		// 	breaks: false,
-		// 	gfm: true,
-		// });
+		const customExtensions = [
+			{
+				name: 'alignBlock',
+				level: 'block',
+				start(src) { return src.match(/^:::\s*align\s*\{([^}]+)\}/)?.index; },
+				tokenizer(src, tokens) {
+					const match = src.match(/^:::\s*align\s*\{([^}]+)\}([\s\S]*?)\n:::/);
+					if (match) {
+						return {
+							type: 'alignBlock',
+							raw: match[0],
+							align: match[1].trim(),
+							content: match[2].trim()
+						};
+					}
+				},
+				renderer(token) {
+					return `<div class="align-${token.align}">${marked.parse(token.content)}</div>`;
+				}
+			},
+			{
+				name: 'epigraph',
+				level: 'block',
+				start(src) { return src.match(/^:::\s*epigraph(\[([^\]]+)\])?\s*:::/)?.index; },
+				tokenizer(src, tokens) {
+					const match = src.match(/^:::\s*epigraph(\[([^\]]+)\])?\s*([\s\S]*?)\s*:::/);
+					if (match) {
+						return {
+							type: 'epigraph',
+							raw: match[0],
+							author: match[2] || '',
+							content: match[3].trim()
+						};
+					}
+				},
+				renderer(token) {
+					const authorPart = `<p>${token.author ? token.author : 'unknown author'}</p>`;
+					return `<div class="epigraph">${marked.parse(token.content)}${authorPart}</div>`;
+				}
+			},
+			{
+				name: 'foldable',
+				level: 'block',
+				start(src) { return src.match(/^:{3,}/)?.index; },
+				tokenizer(src, tokens) {
+					const match = src.match(/^(:{3,})\s*(\w+)?(\[([^\]]+)\])?(\s*\{([^}]+)\})?\s*([\s\S]*?)\s*\1/);
+					if (match && (match[2] === 'info' || match[2] === 'warning' || match[2] === 'success')) {
+						const colonCount = match[1].length;
+						return {
+							type: 'foldable',
+							raw: match[0],
+							foldType: match[2] || 'info',
+							title: match[4] || '',
+							options: match[6] || '',
+							content: match[7].trim(),
+							level: colonCount - 3 // 计算嵌套层级
+						};
+					}
+				},
+				renderer(token) {
+					const isOpen = token.options.includes('open');
+					const indentStyle = '';// token.level > 0 ? `style="margin-left: ${/*token.level */ 20}px"` : '';
+					return `
+                        <details class="foldable ${token.foldType}" ${indentStyle} ${isOpen ? 'open' : ''}>
+                            <summary>
+                                ${token.title || '点击展开'}
+                            </summary>
+							${marked.parse(token.content)}
+                        </details>
+                    `;
+				}
+			}
+		];
+		marked.use({ extensions: customExtensions });
 
 		// 简单的 Markdown 渲染函数
 		const renderMarkdown = (text) => {
@@ -2011,15 +2200,6 @@
 		};
 
 		Vue.createApp(app).mount('#app');
-	</script>
-	<script defer>
-		// 添加性能监控
-		window.addEventListener('load', () => {
-			if (window.performance) {
-				const timing = window.performance.timing;
-				console.log('页面加载耗时:', timing.loadEventEnd - timing.navigationStart, '毫秒');
-			}
-		});
 	</script>
 </body>
 
