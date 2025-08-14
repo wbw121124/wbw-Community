@@ -31,12 +31,16 @@
 	<script src="./sweetalert.min.js"></script>
 	<link rel="stylesheet" href="./sweetalert2.css">
 	<style>
+		.align-left {
+			text-align: left !important;
+		}
+
 		.align-center {
-			text-align: center;
+			text-align: center !important;
 		}
 
 		.align-right {
-			text-align: right;
+			text-align: right !important;
 		}
 
 		.epigraph {
@@ -84,6 +88,10 @@
 			border-left-color: rgb(82, 196, 26);
 		}
 
+		.foldable.error {
+			border-left-color: rgb(231, 76, 60);
+		}
+
 		details.info>summary {
 			color: rgb(52, 152, 219);
 		}
@@ -94,6 +102,10 @@
 
 		details.success>summary {
 			color: rgb(82, 196, 26);
+		}
+
+		details.error>summary {
+			color: rgb(231, 76, 60);
 		}
 
 		details.info>summary:before {
@@ -109,6 +121,11 @@
 		details.warning>summary:before {
 			-webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"%20viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg>');
 			mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"%20viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg>');
+		}
+
+		details.error>summary:before {
+			-webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"%20viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg>');
+			mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"%20viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg>');
 		}
 
 		summary:before {
@@ -798,7 +815,7 @@
 							<span class="text-sm text-gray-500">{{ formatDate(currentArticle.created_at) }}</span>
 							<!--管理工具栏，admin&super_admin&作者可以删除文章-->
 							<div
-								v-if="user && (user.role === 'admin' || user.role === 'super_admin' || user.id === currentArticle.userId)">
+								v-if="user && (userRole === 'admin' || userRole === 'super_admin' || user.id === currentArticle.userId)">
 								<button @click="deleteArticle(currentArticle.id)"
 									class="text-sm text-red-600 hover:text-red-500">删除</button>
 							</div>
@@ -845,7 +862,7 @@
 												}}</span>
 											<!--删除评论按钮-->
 											<button
-												v-if="user && (user.role === 'admin' || user.role === 'super_admin' || user.id === comment.userId || user.id === currentArticle.userId)"
+												v-if="user && (userRole === 'admin' || userRole === 'super_admin' || user.id === comment.userId || user.id === currentArticle.userId)"
 												@click="deleteComment(comment.id, 'article', currentArticle.id)"
 												class="text-sm text-red-600 hover:text-red-500">删除</button>
 										</div>
@@ -889,7 +906,7 @@
 							<span class="text-sm text-gray-500">{{ formatDate(currentDiscussion.created_at) }}</span>
 							<!--管理工具栏，admin&super_admin&作者可以删除讨论-->
 							<div
-								v-if="user && (user.role === 'admin' || user.role === 'super_admin' || user.id === currentDiscussion.userId)">
+								v-if="user && (userRole === 'admin' || userRole === 'super_admin' || user.id === currentDiscussion.userId)">
 								<button @click="deleteDiscussion(currentDiscussion.id)"
 									class="text-sm text-red-600 hover:text-red-500">删除</button>
 							</div>
@@ -936,7 +953,7 @@
 												}}</span>
 											<!--删除评论按钮-->
 											<button
-												v-if="user && (user.role === 'admin' || user.role === 'super_admin' || user.id === comment.userId || user.id === currentDiscussion.userId)"
+												v-if="user && (userRole === 'admin' || userRole === 'super_admin' || user.id === comment.userId || user.id === currentDiscussion.userId)"
 												@click="deleteComment(comment.id, 'discussion', currentDiscussion.id)"
 												class="text-sm text-red-600 hover:text-red-500">删除</button>
 										</div>
@@ -1109,7 +1126,7 @@
 				start(src) { return src.match(/^:{3,}/)?.index; },
 				tokenizer(src, tokens) {
 					const match = src.match(/^(:{3,})\s*(\w+)?(\[([^\]]+)\])?(\s*\{([^}]+)\})?\s*([\s\S]*?)\s*\1/);
-					if (match && (match[2] === 'info' || match[2] === 'warning' || match[2] === 'success')) {
+					if (match && (match[2] === 'info' || match[2] === 'warning' || match[2] === 'success' || match[2] === 'error')) {
 						const colonCount = match[1].length;
 						return {
 							type: 'foldable',
