@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>wbw的社区平台</title>
+	<title>wbwCE</title>
 	<!-- 添加 CSP 头
 	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: https:;">
 	<!- - 添加 Referrer-Policy - ->
@@ -92,6 +92,14 @@
 			border-left-color: rgb(231, 76, 60);
 		}
 
+		.foldable.bug {
+			border-left-color: rgb(231, 76, 60);
+		}
+
+		.foldable.flask {
+			border-left-color: rgb(155, 89, 182);
+		}
+
 		details.info>summary {
 			color: rgb(52, 152, 219);
 		}
@@ -108,27 +116,45 @@
 			color: rgb(231, 76, 60);
 		}
 
-		details.info>summary:before {
+		details.bug>summary {
+			color: rgb(231, 76, 60);
+		}
+
+		details.flask>summary {
+			color: rgb(155, 89, 182);
+		}
+
+		details.info>summary::before {
 			-webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"%20viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>');
 			mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"%20viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z"/></svg>');
 		}
 
-		details.success>summary:before {
+		details.success>summary::before {
 			-webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"%20viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>');
 			mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"%20viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"/></svg>');
 		}
 
-		details.warning>summary:before {
+		details.warning>summary::before {
 			-webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"%20viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg>');
 			mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"%20viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/></svg>');
 		}
 
-		details.error>summary:before {
+		details.error>summary::before {
 			-webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"%20viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg>');
 			mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"%20viewBox="0 0 512 512"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM175 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"/></svg>');
 		}
 
-		summary:before {
+		details.bug>summary::before {
+			-webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc. --><path d="M256 0c53 0 96 43 96 96l0 3.6c0 15.7-12.7 28.4-28.4 28.4l-135.1 0c-15.7 0-28.4-12.7-28.4-28.4l0-3.6c0-53 43-96 96-96zM41.4 105.4c12.5-12.5 32.8-12.5 45.3 0l64 64c.7 .7 1.3 1.4 1.9 2.1c14.2-7.3 30.4-11.4 47.5-11.4l112 0c17.1 0 33.2 4.1 47.5 11.4c.6-.7 1.2-1.4 1.9-2.1l64-64c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3l-64 64c-.7 .7-1.4 1.3-2.1 1.9c6.2 12 10.1 25.3 11.1 39.5l64.3 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c0 24.6-5.5 47.8-15.4 68.6c2.2 1.3 4.2 2.9 6 4.8l64 64c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0l-63.1-63.1c-24.5 21.8-55.8 36.2-90.3 39.6L272 240c0-8.8-7.2-16-16-16s-16 7.2-16 16l0 239.2c-34.5-3.4-65.8-17.8-90.3-39.6L86.6 502.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l64-64c1.9-1.9 3.9-3.4 6-4.8C101.5 367.8 96 344.6 96 320l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64.3 0c1.1-14.1 5-27.5 11.1-39.5c-.7-.6-1.4-1.2-2.1-1.9l-64-64c-12.5-12.5-12.5-32.8 0-45.3z"/></svg>');
+			mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc. --><path d="M256 0c53 0 96 43 96 96l0 3.6c0 15.7-12.7 28.4-28.4 28.4l-135.1 0c-15.7 0-28.4-12.7-28.4-28.4l0-3.6c0-53 43-96 96-96zM41.4 105.4c12.5-12.5 32.8-12.5 45.3 0l64 64c.7 .7 1.3 1.4 1.9 2.1c14.2-7.3 30.4-11.4 47.5-11.4l112 0c17.1 0 33.2 4.1 47.5 11.4c.6-.7 1.2-1.4 1.9-2.1l64-64c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3l-64 64c-.7 .7-1.4 1.3-2.1 1.9c6.2 12 10.1 25.3 11.1 39.5l64.3 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c0 24.6-5.5 47.8-15.4 68.6c2.2 1.3 4.2 2.9 6 4.8l64 64c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0l-63.1-63.1c-24.5 21.8-55.8 36.2-90.3 39.6L272 240c0-8.8-7.2-16-16-16s-16 7.2-16 16l0 239.2c-34.5-3.4-65.8-17.8-90.3-39.6L86.6 502.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l64-64c1.9-1.9 3.9-3.4 6-4.8C101.5 367.8 96 344.6 96 320l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64.3 0c1.1-14.1 5-27.5 11.1-39.5c-.7-.6-1.4-1.2-2.1-1.9l-64-64c-12.5-12.5-12.5-32.8 0-45.3z"/></svg>');
+		}
+
+		details.flask>summary::before {
+			-webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc. --><path d="M288 0L160 0 128 0C110.3 0 96 14.3 96 32s14.3 32 32 32l0 132.8c0 11.8-3.3 23.5-9.5 33.5L10.3 406.2C3.6 417.2 0 429.7 0 442.6C0 480.9 31.1 512 69.4 512l309.2 0c38.3 0 69.4-31.1 69.4-69.4c0-12.8-3.6-25.4-10.3-36.4L329.5 230.4c-6.2-10.1-9.5-21.7-9.5-33.5L320 64c17.7 0 32-14.3 32-32s-14.3-32-32-32L288 0zM192 196.8L192 64l64 0 0 132.8c0 23.7 6.6 46.9 19 67.1L309.5 320l-171 0L173 263.9c12.4-20.2 19-43.4 19-67.1z"/></svg>');
+			mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc. --><path d="M288 0L160 0 128 0C110.3 0 96 14.3 96 32s14.3 32 32 32l0 132.8c0 11.8-3.3 23.5-9.5 33.5L10.3 406.2C3.6 417.2 0 429.7 0 442.6C0 480.9 31.1 512 69.4 512l309.2 0c38.3 0 69.4-31.1 69.4-69.4c0-12.8-3.6-25.4-10.3-36.4L329.5 230.4c-6.2-10.1-9.5-21.7-9.5-33.5L320 64c17.7 0 32-14.3 32-32s-14.3-32-32-32L288 0zM192 196.8L192 64l64 0 0 132.8c0 23.7 6.6 46.9 19 67.1L309.5 320l-171 0L173 263.9c12.4-20.2 19-43.4 19-67.1z"/></svg>');
+		}
+
+		summary::before {
 			content: "";
 			background-color: currentcolor;
 			-webkit-mask-size: contain;
@@ -146,7 +172,7 @@
 			margin-right: 8px;
 		}
 
-		summary:after {
+		summary::after {
 			content: "";
 			background-color: currentcolor;
 			-webkit-mask-size: contain;
@@ -166,7 +192,7 @@
 			transition: transform .2s ease;
 		}
 
-		details[open]>summary:after {
+		details[open]>summary::after {
 			transform: translateY(-50%) rotate(90deg);
 		}
 
@@ -453,7 +479,7 @@
 	<div id="app" class="container mx-auto px-4 py-8">
 		<!-- 导航栏 -->
 		<nav class="bg-white shadow-sm rounded-lg mb-8 p-4 flex justify-between items-center">
-			<a href="#" @click="showHome" class="text-xl font-bold text-indigo-600">wbw的社区平台</a>
+			<a href="#" @click="showHome" class="text-xl font-bold text-indigo-600">wbwCE</a>
 			<div class="flex items-center space-x-4">
 				<template v-if="user">
 					<div class="flex items-center space-x-2">
@@ -490,8 +516,8 @@
 			<!-- 首页/文章列表 -->
 			<div v-if="currentView === 'home'" class="space-y-8">
 				<div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md">
-					<h2 class="text-2xl font-bold mb-6">欢迎来到wbw的社区平台</h2>
-					<p class="text-gray-600 mb-4">这是一个分享知识和讨论话题的地方。</p>
+					<h2 class="text-2xl font-bold mb-6">欢迎来到 wbwCE</h2>
+					<p class="text-gray-600 mb-4">这是一个叫 wbwCE 的地方。</p>
 
 					<div class="flex space-x-4 mb-6">
 						<button @click="showArticles"
@@ -1038,7 +1064,7 @@
 		<footer class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow p-6 mt-6">
 			<div class="max-w-7xl mx-auto px-4">
 				<p class="text-center" id="yiyan" style="font-family: 'Long Cang Regular';" ondblclick="getYiyan()"></p>
-				<p class="text-center text-sm mt-2">© 2025 wbw的社区平台. All rights reserved.</p>
+				<p class="text-center text-sm mt-2">© 2025 wbwCE. All rights reserved.</p>
 				<p class="text-center text-sm mt-2">Powered by <a href="https://github.com/wbw121124" target="_blank"
 						class="text-indigo-400 hover:text-indigo-300"><i class="fa fab fa-github"
 							aria-hidden="true"></i>wbw121124</a>.</p>
@@ -1048,13 +1074,12 @@
 
 	<script type="module">
 		window.getShiki = async () => {
-			// import { codeToHtml } from './shiki/index.mjs'
 			const { bundledLanguages, bundledThemes, createHighlighter, createOnigurumaEngine } =
-				await import('https://esm.sh/shiki');
-			const engine = await createOnigurumaEngine(import('https://esm.sh/shiki/wasm'));
+				await import('https://esm.sh/shiki@3.11.0');
+			const engine = await createOnigurumaEngine(import('https://esm.sh/shiki@3.11.0/wasm'));
 			const highlighter = await createHighlighter({
 				themes: [
-					await import('https://esm.sh/shiki@3.0.0/themes/github-light')
+					await import('https://esm.sh/shiki@3.11.0/themes/github-light')
 				],
 				langs: Object.keys(bundledLanguages),
 				engine
@@ -1064,85 +1089,86 @@
 		await window.getShiki();
 	</script>
 	<script>
-		// 初始化 Supabase
-		const supabaseUrl = 'https://oavnsyqhnvsdfrjjdjix.supabase.co';
-		const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9hdm5zeXFobnZzZGZyampkaml4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM4NzYzMzIsImV4cCI6MjA2OTQ1MjMzMn0.tFzhp4fDhr5QW9hWUGBpVf_hG71-hMpd_S3nHKr65JQ';
-		const Supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+		(() => {
+			// 初始化 Supabase
+			const supabaseUrl = 'https://oavnsyqhnvsdfrjjdjix.supabase.co';
+			const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9hdm5zeXFobnZzZGZyampkaml4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM4NzYzMzIsImV4cCI6MjA2OTQ1MjMzMn0.tFzhp4fDhr5QW9hWUGBpVf_hG71-hMpd_S3nHKr65JQ';
+			const Supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
-		// 创建自定义渲染器
-		const renderer = new marked.Renderer();
+			// 创建自定义渲染器
+			const renderer = new marked.Renderer();
 
-		// 覆盖所有可能渲染 HTML 的方法
-		renderer.html = function ({ text: html }) {
-			// 直接返回空字符串，完全忽略 HTML
-			// return '';
-			// 或者转义 HTML 标签（显示原始代码）
-			return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-		};
+			// 覆盖所有可能渲染 HTML 的方法
+			renderer.html = function ({ text: html }) {
+				// 直接返回空字符串，完全忽略 HTML
+				// return '';
+				// 或者转义 HTML 标签（显示原始代码）
+				return html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+			};
 
-		const customExtensions = [
-			{
-				name: 'alignBlock',
-				level: 'block',
-				start(src) { return src.match(/^:::\s*align\s*\{([^}]+)\}/)?.index; },
-				tokenizer(src, tokens) {
-					const match = src.match(/^:::\s*align\s*\{([^}]+)\}([\s\S]*?)\n:::/);
-					if (match) {
-						return {
-							type: 'alignBlock',
-							raw: match[0],
-							align: match[1].trim(),
-							content: match[2].trim()
-						};
+			const customExtensions = [
+				{
+					name: 'alignBlock',
+					level: 'block',
+					start(src) { return src.match(/^:::\s*align\s*\{([^}]+)\}/)?.index; },
+					tokenizer(src, tokens) {
+						const match = src.match(/^:::\s*align\s*\{([^}]+)\}([\s\S]*?)\n:::/);
+						if (match) {
+							return {
+								type: 'alignBlock',
+								raw: match[0],
+								align: match[1].trim(),
+								content: match[2].trim()
+							};
+						}
+					},
+					renderer(token) {
+						return `<div class="align-${token.align}">${marked.parse(token.content)}</div>`;
 					}
 				},
-				renderer(token) {
-					return `<div class="align-${token.align}">${marked.parse(token.content)}</div>`;
-				}
-			},
-			{
-				name: 'epigraph',
-				level: 'block',
-				start(src) { return src.match(/^:::\s*epigraph(\[([^\]]+)\])?\s*:::/)?.index; },
-				tokenizer(src, tokens) {
-					const match = src.match(/^:::\s*epigraph(\[([^\]]+)\])?\s*([\s\S]*?)\s*:::/);
-					if (match) {
-						return {
-							type: 'epigraph',
-							raw: match[0],
-							author: match[2] || '',
-							content: match[3].trim()
-						};
+				{
+					name: 'epigraph',
+					level: 'block',
+					start(src) { return src.match(/^:::\s*epigraph(\[([^\]]+)\])?\s*:::/)?.index; },
+					tokenizer(src, tokens) {
+						const match = src.match(/^:::\s*epigraph(\[([^\]]+)\])?\s*([\s\S]*?)\s*:::/);
+						if (match) {
+							return {
+								type: 'epigraph',
+								raw: match[0],
+								author: match[2] || '',
+								content: match[3].trim()
+							};
+						}
+					},
+					renderer(token) {
+						const authorPart = `<p>${token.author ? token.author : 'unknown author'}</p>`;
+						return `<div class="epigraph">${marked.parse(token.content)}${authorPart}</div>`;
 					}
 				},
-				renderer(token) {
-					const authorPart = `<p>${token.author ? token.author : 'unknown author'}</p>`;
-					return `<div class="epigraph">${marked.parse(token.content)}${authorPart}</div>`;
-				}
-			},
-			{
-				name: 'foldable',
-				level: 'block',
-				start(src) { return src.match(/^:{3,}/)?.index; },
-				tokenizer(src, tokens) {
-					const match = src.match(/^(:{3,})\s*(\w+)?(\[([^\]]+)\])?(\s*\{([^}]+)\})?\s*([\s\S]*?)\s*\1/);
-					if (match && (match[2] === 'info' || match[2] === 'warning' || match[2] === 'success' || match[2] === 'error')) {
-						const colonCount = match[1].length;
-						return {
-							type: 'foldable',
-							raw: match[0],
-							foldType: match[2] || 'info',
-							title: match[4] || '',
-							options: match[6] || '',
-							content: match[7].trim(),
-							level: colonCount - 3 // 计算嵌套层级
-						};
-					}
-				},
-				renderer(token) {
-					const isOpen = token.options.includes('open');
-					const indentStyle = '';// token.level > 0 ? `style="margin-left: ${/*token.level */ 20}px"` : '';
-					return `
+				{
+					name: 'foldable',
+					level: 'block',
+					start(src) { return src.match(/^:{3,}/)?.index; },
+					tokenizer(src, tokens) {
+						const match = src.match(/^(:{3,})\s*(\w+)?(\[([^\]]+)\])?(\s*\{([^}]+)\})?\s*([\s\S]*?)\s*\1/);
+						if (match && (match[2] === 'info' || match[2] === 'warning' || match[2] === 'success' || match[2] === 'error' || match[2] === 'bug' || match[2] === 'flask')) {
+							const colonCount = match[1].length;
+							return {
+								type: 'foldable',
+								raw: match[0],
+								foldType: match[2] || 'info',
+								title: match[4] || '',
+								options: match[6] || '',
+								content: match[7].trim(),
+								level: colonCount - 3 // 计算嵌套层级
+							};
+						}
+					},
+					renderer(token) {
+						const isOpen = token.options.includes('open');
+						const indentStyle = '';// token.level > 0 ? `style="margin-left: ${/*token.level */ 20}px"` : '';
+						return `
                         <details class="foldable ${token.foldType}" ${indentStyle} ${isOpen ? 'open' : ''}>
                             <summary>
                                 ${token.title || '点击展开'}
@@ -1150,1073 +1176,1102 @@
 							${marked.parse(token.content)}
                         </details>
                     `;
+					}
 				}
-			}
-		];
-		marked.use({ extensions: customExtensions });
+			];
+			marked.use({ extensions: customExtensions });
 
-		// 简单的 Markdown 渲染函数
-		const renderMarkdown = (text) => {
-			let tmp = document.createElement('div');
-			tmp.innerHTML = marked.parse(text, {
-				mangle: false,    // 不处理自动链接
-				headerIds: false, // 不添加标题ID
-				renderer: renderer,
-				breaks: false,
-				gfm: true,
-			});
-			renderMathInElement(tmp, {
-				delimiters: [
-					{ left: '\\(', right: '\\)', display: true },
-					{ left: '$$', right: '$$', display: true },
-					{ left: '$', right: '$', display: false },
-				],
-				errorCallback: (msg, err) => {
-					console.error('MathJax Error:', msg, err);
-				},
-				errorSettings: {
-					message: ['[MathJax error]'],
-					style: {
-						'font-size': '1.2em',
-						'color': 'red',
-					},
-				}
-			});
-			return tmp.innerHTML;
-		};
-
-		function jumpTo(url) {
-			// 改变浏览器地址栏的URL，但不刷新页面
-			window.history.pushState({}, '', url);
-		}
-
-		// 获取url中的请求内容
-		function getUrlQueryPath(url = location.href) {
-			let tmp = new URLSearchParams(url.split('?')[1]);
-			return tmp.get('path');
-		}
-
-		async function fun() {
-			// 获取所有的 <pre><code>...</code></pre> 元素
-			var preElements = document.querySelectorAll('pre code');
-
-			// 遍历这些元素
-			for (let codeElement of preElements) {
-				let code = codeElement.innerText.substring(0, codeElement.innerText.length - 1);
-				let lang = null;
-				if (codeElement.className.match(/language\-[a-zA-Z\+\-0-9]+/))
-					lang = codeElement.className.match(/language\-[a-zA-Z\+\-0-9]+/)[0].substring(9);
-				else
-					lang = 'text';
-				// console.log(lang);
-				codeElement = codeElement.parentElement;
-				if (codeElement.classList.contains('shiki')) {
-					// 如果是已经渲染的代码块，则跳过
-					return;
-				}
-				// hljs渲染codeElement
-				// hljs.highlightElement(codeElement);
-				if (window.codeToHtml === undefined) {
-					await window.getShiki();
-				}
-				codeElement.style.setProperty('--data-loglines', Math.floor(Math.log10(code.split('\n').length)) + 1);
-				codeElement.innerHTML = window.codeToHtml(code, {
-					lang: lang,
-					theme: 'github-light'
+			// 简单的 Markdown 渲染函数
+			const renderMarkdown = (text) => {
+				let tmp = document.createElement('div');
+				tmp.innerHTML = marked.parse(text, {
+					mangle: false,    // 不处理自动链接
+					headerIds: false, // 不添加标题ID
+					renderer: renderer,
+					breaks: false,
+					gfm: true,
 				});
-				codeElement.className += ' ' + codeElement.children[0].className;
-				codeElement.innerHTML = codeElement.children[0].innerHTML;
-				// 创建复制按钮
-				var button = document.createElement('button');
-				button.textContent = '复制';
-				button.classList.add('codecopy-btn'); // 添加类以便样式化
-
-				// 将按钮添加到 code 元素的父元素（即 pre 元素）中
-				var div = document.createElement('div');
-				div.style = "width:100%;position: relative;";
-				div.appendChild(button);
-				codeElement.before(div);
-				codeElement.classList.add("hljs-prt");
-				codeElement.children[0].classList.add("hljs");
-
-				let x = codeElement;
-
-				// 使用 Clipboard.js 初始化复制功能
-				let clipboard = new ClipboardJS(button, {
-					text: function (trigger) {
-						// 返回要复制的文本
-						return x.innerText.replace(/\n\n/g, "\n");
+				renderMathInElement(tmp, {
+					delimiters: [
+						{ left: '\\(', right: '\\)', display: true },
+						{ left: '$$', right: '$$', display: true },
+						{ left: '$', right: '$', display: false },
+					],
+					errorCallback: (msg, err) => {
+						console.error('MathJax Error:', msg, err);
+					},
+					errorSettings: {
+						message: ['[MathJax error]'],
+						style: {
+							'font-size': '1.2em',
+							'color': 'red',
+						},
 					}
 				});
+				return tmp.innerHTML;
+			};
 
-				clipboard.on('success', function (e) {
-					console.log('复制成功！', e);
-					// 可以在这里修改按钮的文本或样式来表示成功
-					e.clearSelection(); // 清除选区
-					e.trigger.textContent = '复制成功';
-					setTimeout(() => {
-						e.trigger.textContent = '复制';
-					}, 500);
-				});
-
-				clipboard.on('error', function (e) {
-					console.error('复制失败！', e);
-					// 可以在这里处理错误
-					e.trigger.textContent = '复制失败';
-					setTimeout(() => {
-						e.trigger.textContent = '复制';
-					}, 500);
-				});
+			function jumpTo(url) {
+				// 改变浏览器地址栏的URL，但不刷新页面
+				window.history.pushState({}, '', url);
 			}
-		}
-		// hljs.documentReady();
 
-		var yiyan = ["Where there is a will, there is a way.", "Hope for the best, plan for the worst.", "Wisdom is more precious than wealth.", "Action speaks louder than words.", "Time and tide wait for no man.",
-			"Experience is the best teacher.", "All that glitters is not gold.", "Failure is the mother of success.", "A journey of a thousand miles begins with a single step.", "The early bird catches the worm.",
-			"Nothing is impossible to a willing heart.", "Don't put off till tomorrow what you can do today.", "Every cloud has a silver lining.", "Haste makes waste.", "Better late than never.",
-			"Honesty is the best policy.", "Live and learn.", "Health is wealth.", "First impressions are the most lasting.", "One man's meat is another man's poison.", "A friend in need is a friend indeed.",
-			"Life is not all roses.", "Think twice before you act.", "Pride goes before a fall.", "Two heads are better than one.", "Well begun is half done.", "To be, or not to be, that is the question.",
-			"Action speak louder than words.", "An idle youth,a needy age.", "All is well that ends well.", "Misfortune is a good teacher.", "Faith can move mountains.", "He that promises too much means nothing.",
-			"He would climb the ladder must begin at the bottom.", "If you are not inside a house, you don not know about its leaking.", "It is never too late to mend.", "Yesterday will not be called again.",
-			"Men will die for wealth, as bird for food.", "Success belongs to the persevering.", "The man who has made up his mind to win will never say \"impossible\".", "Nothing venture, nothing have.",
-			"If you fail, don't forget to learn your lesson.", "No pain, no gain", "We can only move forward, forward, by any means necessary to move forward.", "Your fearlessness comes from ignorance.",
-			"Intelligence lies in diligence, and genius in accumulation.", "Never be satisfied with learning; never be tired of teaching.", "Books are the ladder of human progress.",
-			"An inch of time is an inch of gold, but you can't buy time with gold.", "学而时习之，不亦说乎？——孔子", "己所不欲，勿施于人。——孔子", "道可道，非常道。——老子", "天下大事，必作于细。——老子", "知彼知己，百战不殆。——孙子",
-			"不战而屈人之兵，善之善者也。——孙子", "天时不如地利，地利不如人和。——孟子", "生于忧患，死于安乐。——孟子", "兼相爱，交相利。——墨子", "非攻。——墨子", "青，取之于蓝，而青于蓝。——荀子", "不积跬步，无以至千里。——荀子", "法不阿贵，绳不挠曲。——韩非子",
-			"千里之堤，溃于蚁穴。——韩非子", "吾生也有涯，而知也无涯。——庄子", "君子之交淡若水。——庄子", "不以规矩，不能成方圆。——孟子", "得道者多助，失道者寡助。——孟子", "工欲善其事，必先利其器。——孔子", "三人行，必有我师焉。——孔子",
-			"祸兮福所倚，福兮祸所伏。——老子", "大器晚成。——老子", "兵无常势，水无常形。——孙子", "攻其无备，出其不意。——孙子", "穷则独善其身，达则兼济天下。——孟子", "老吾老以及人之老，幼吾幼以及人之幼。——孟子", "志不强者智不达。——墨子",
-			"言不信者行不果。——墨子", "不登高山，不知天之高也。——荀子", "锲而不舍，金石可镂。——荀子", "世异则事异，事异则备变。——韩非子", "欲速则不达。——孔子", "人无远虑，必有近忧。——孔子", "上善若水。——老子", "治大国若烹小鲜。——老子",
-			"知彼知己，胜乃不殆。——孙子", "将在外，君命有所不受。——孙子", "天将降大任于斯人也。——孟子", "富贵不能淫，贫贱不能移，威武不能屈。——孟子", "非乐。——墨子", "名不可简而成也，誉不可巧而立也。——墨子", "不闻不若闻之，闻之不若见之。——荀子",
-			"君子博学而日参省乎己。——荀子", "事以密成，语以泄败。——韩非子", "巧诈不如拙诚。——韩非子", "学而不思则罔，思而不学则殆。——孔子", "温故而知新，可以为师矣。——孔子", "大道至简。——老子", "知人者智，自知者明。——老子"];
+			// 获取url中的请求内容
+			function getUrlQueryPath(url = location.href) {
+				let tmp = new URLSearchParams(url.split('?')[1]);
+				return tmp.get('path');
+			}
 
-		function getYiyan() {
-			let tmp = yiyan[Math.floor(Math.random() * yiyan.length)];
-			return document.getElementById("yiyan").innerText = tmp;
-		}
+			async function fun() {
+				// 获取所有的 <pre><code>...</code></pre> 元素
+				var preElements = document.querySelectorAll('pre code');
 
-		getYiyan();
-
-		const app = {
-			data() {
-				return {
-					currentView: 'home',
-					contentType: 'articles',
-					user: null,
-					userRole: null, // 用户角色
-					loading: false,
-
-					// 登录相关
-					login: {
-						email: '',
-						password: '',
-						error: null,
-						loading: false
-					},
-
-					// 注册相关
-					signup: {
-						email: '',
-						password: '',
-						username: '',
-						error: null,
-						loading: false
-					},
-
-					// 文章列表
-					articles: [],
-
-					// 讨论列表
-					discussions: [],
-
-					// 个人资料相关
-					userArticles: [],
-					userDiscussions: [],
-					userArticlesLoading: false,
-					userDiscussionsLoading: false,
-
-					// 新建文章
-					newArticle: {
-						title: '',
-						content: '',
-						error: null,
-						loading: false
-					},
-
-					// 新建讨论
-					newDiscussion: {
-						title: '',
-						content: '',
-						error: null,
-						loading: false
-					},
-
-					// 当前查看的文章/讨论
-					currentArticle: null,
-					currentDiscussion: null,
-					articleLoading: false,
-					discussionLoading: false,
-
-					// 评论相关
-					comments: [],
-					commentsLoading: false,
-					newComment: {
-						content: ''
-					},
-
-					// 用户角色映射
-					userRoleMap: new Map(),
-
-					other_user: null
-				};
-			},
-
-			async mounted() {
-				// 检查用户是否已登录
-				const { data: { user } } = await Supabase.auth.getUser();
-				if (user) {
-					await this.fetchUserProfile(user.id);
-					// 获取用户角色
-					this.userRole = await this.fetchUserRole(user.id);
-					console.log('用户角色:', this.userRole);
-				}
-
-				// 获取文章列表
-				this.fetchArticles();
-
-				// 监听认证状态变化
-				Supabase.auth.onAuthStateChange(async (event, session) => {
-					if (event === 'SIGNED_IN' && session?.user) {
-						await this.fetchUserProfile(session.user.id);
-						this.showHome();
-					} else if (event === 'SIGNED_OUT') {
-						this.user = null;
+				// 遍历这些元素
+				for (let codeElement of preElements) {
+					let code = codeElement.innerText.substring(0, codeElement.innerText.length - 1);
+					let lang = null;
+					if (codeElement.className.match(/language\-[a-zA-Z\+\-0-9]+/))
+						lang = codeElement.className.match(/language\-[a-zA-Z\+\-0-9]+/)[0].substring(9);
+					else
+						lang = 'text';
+					// console.log(lang);
+					codeElement = codeElement.parentElement;
+					if (codeElement.classList.contains('shiki')) {
+						// 如果是已经渲染的代码块，则跳过
+						return;
 					}
-				});
+					// hljs渲染codeElement
+					// hljs.highlightElement(codeElement);
+					if (window.codeToHtml === undefined) {
+						await window.getShiki();
+					}
+					codeElement.style.setProperty('--data-loglines', Math.floor(Math.log10(code.split('\n').length)) + 1);
+					codeElement.innerHTML = window.codeToHtml(code, {
+						lang: lang,
+						theme: 'github-light'
+					});
+					codeElement.className += ' ' + codeElement.children[0].className;
+					codeElement.innerHTML = codeElement.children[0].innerHTML;
+					// 创建复制按钮
+					var button = document.createElement('button');
+					button.textContent = '复制';
+					button.classList.add('codecopy-btn'); // 添加类以便样式化
 
-				let tmp = getUrlQueryPath();
-				if (tmp == "/home" || !tmp)
-					this.showHome();
-				else if (tmp == "/article/new") {
-					this.showNewArticle();
-				} else if (tmp == "/discussion/new") {
-					this.showNewDiscussion();
-				}
-				else if (tmp.substring(0, 9) === "/article/") {
-					this.showArticleDetail(tmp.substring(9));
-				} else if (tmp.substring(0, 11) === "/discussion/") {
-					this.showDiscussionDetail(tmp.substring(11));
-				}
-				else if (tmp == "/profile") {
-					this.showProfile();
-				}
-				else if (tmp == "/auth/login") {
-					this.showLogin();
-				}
-				else if (tmp == "/auth/signup") {
-					this.showSignup();
-				}
-				else if (tmp == "/home/articles") {
-					this.showArticles();
-				}
-				else if (tmp == "/home/discussions") {
-					this.showDiscussions();
-				}
-				else if (tmp.substring(0, 6) === "/user/") {
-					this.showUserProfile(tmp.substring(6));
-				}
-				else {
-					this.showHome();
-				}
-			},
+					// 将按钮添加到 code 元素的父元素（即 pre 元素）中
+					var div = document.createElement('div');
+					div.style = "width:100%;position: relative;";
+					div.appendChild(button);
+					codeElement.before(div);
+					codeElement.classList.add("hljs-prt");
+					codeElement.children[0].classList.add("hljs");
 
-			methods: {
-				cookie() {
-					// 返回一个json，用于操作cookie
-					return {
-						get: (name) => {
-							const value = `; ${document.cookie}`;
-							const parts = value.split(`; ${name}=`);
-							if (parts.length === 2) return parts.pop().split(';').shift();
-						},
-						set: (name, value, days) => {
-							let expires = "";
-							if (days) {
-								const date = new Date();
-								date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-								expires = "; expires=" + date.toUTCString();
-							}
-							document.cookie = name + "=" + (value || "") + expires + "; path=/";
-						},
-						delete: (name) => {
-							document.cookie = name + '=; Max-Age=-99999999;';
-						},
-						getCreateTime: () => {
-							const date = new Date();
-							return date.toISOString().split('T')[0] + ' ' + date.toTimeString().split(' ')[0];
+					let x = codeElement;
+
+					// 使用 Clipboard.js 初始化复制功能
+					let clipboard = new ClipboardJS(button, {
+						text: function (trigger) {
+							// 返回要复制的文本
+							return x.innerText.replace(/\n\n/g, "\n");
 						}
+					});
+
+					clipboard.on('success', function (e) {
+						console.log('复制成功！', e);
+						// 可以在这里修改按钮的文本或样式来表示成功
+						e.clearSelection(); // 清除选区
+						e.trigger.textContent = '复制成功';
+						setTimeout(() => {
+							e.trigger.textContent = '复制';
+						}, 500);
+					});
+
+					clipboard.on('error', function (e) {
+						console.error('复制失败！', e);
+						// 可以在这里处理错误
+						e.trigger.textContent = '复制失败';
+						setTimeout(() => {
+							e.trigger.textContent = '复制';
+						}, 500);
+					});
+				}
+			}
+			// hljs.documentReady();
+
+			var yiyan = ["Where there is a will, there is a way.", "Hope for the best, plan for the worst.", "Wisdom is more precious than wealth.", "Action speaks louder than words.", "Time and tide wait for no man.",
+				"Experience is the best teacher.", "All that glitters is not gold.", "Failure is the mother of success.", "A journey of a thousand miles begins with a single step.", "The early bird catches the worm.",
+				"Nothing is impossible to a willing heart.", "Don't put off till tomorrow what you can do today.", "Every cloud has a silver lining.", "Haste makes waste.", "Better late than never.",
+				"Honesty is the best policy.", "Live and learn.", "Health is wealth.", "First impressions are the most lasting.", "One man's meat is another man's poison.", "A friend in need is a friend indeed.",
+				"Life is not all roses.", "Think twice before you act.", "Pride goes before a fall.", "Two heads are better than one.", "Well begun is half done.", "To be, or not to be, that is the question.",
+				"Action speak louder than words.", "An idle youth,a needy age.", "All is well that ends well.", "Misfortune is a good teacher.", "Faith can move mountains.", "He that promises too much means nothing.",
+				"He would climb the ladder must begin at the bottom.", "If you are not inside a house, you don not know about its leaking.", "It is never too late to mend.", "Yesterday will not be called again.",
+				"Men will die for wealth, as bird for food.", "Success belongs to the persevering.", "The man who has made up his mind to win will never say \"impossible\".", "Nothing venture, nothing have.",
+				"If you fail, don't forget to learn your lesson.", "No pain, no gain", "We can only move forward, forward, by any means necessary to move forward.", "Your fearlessness comes from ignorance.",
+				"Intelligence lies in diligence, and genius in accumulation.", "Never be satisfied with learning; never be tired of teaching.", "Books are the ladder of human progress.",
+				"An inch of time is an inch of gold, but you can't buy time with gold.", "学而时习之，不亦说乎？——孔子", "己所不欲，勿施于人。——孔子", "道可道，非常道。——老子", "天下大事，必作于细。——老子", "知彼知己，百战不殆。——孙子",
+				"不战而屈人之兵，善之善者也。——孙子", "天时不如地利，地利不如人和。——孟子", "生于忧患，死于安乐。——孟子", "兼相爱，交相利。——墨子", "非攻。——墨子", "青，取之于蓝，而青于蓝。——荀子", "不积跬步，无以至千里。——荀子", "法不阿贵，绳不挠曲。——韩非子",
+				"千里之堤，溃于蚁穴。——韩非子", "吾生也有涯，而知也无涯。——庄子", "君子之交淡若水。——庄子", "不以规矩，不能成方圆。——孟子", "得道者多助，失道者寡助。——孟子", "工欲善其事，必先利其器。——孔子", "三人行，必有我师焉。——孔子",
+				"祸兮福所倚，福兮祸所伏。——老子", "大器晚成。——老子", "兵无常势，水无常形。——孙子", "攻其无备，出其不意。——孙子", "穷则独善其身，达则兼济天下。——孟子", "老吾老以及人之老，幼吾幼以及人之幼。——孟子", "志不强者智不达。——墨子",
+				"言不信者行不果。——墨子", "不登高山，不知天之高也。——荀子", "锲而不舍，金石可镂。——荀子", "世异则事异，事异则备变。——韩非子", "欲速则不达。——孔子", "人无远虑，必有近忧。——孔子", "上善若水。——老子", "治大国若烹小鲜。——老子",
+				"知彼知己，胜乃不殆。——孙子", "将在外，君命有所不受。——孙子", "天将降大任于斯人也。——孟子", "富贵不能淫，贫贱不能移，威武不能屈。——孟子", "非乐。——墨子", "名不可简而成也，誉不可巧而立也。——墨子", "不闻不若闻之，闻之不若见之。——荀子",
+				"君子博学而日参省乎己。——荀子", "事以密成，语以泄败。——韩非子", "巧诈不如拙诚。——韩非子", "学而不思则罔，思而不学则殆。——孔子", "温故而知新，可以为师矣。——孔子", "大道至简。——老子", "知人者智，自知者明。——老子"];
+
+			function getYiyan() {
+				let tmp = yiyan[Math.floor(Math.random() * yiyan.length)];
+				return document.getElementById("yiyan").innerText = tmp;
+			}
+
+			getYiyan();
+
+			const app = {
+				data() {
+					return {
+						currentView: 'home',
+						contentType: 'articles',
+						user: null,
+						userRole: null, // 用户角色
+						loading: false,
+
+						// 登录相关
+						login: {
+							email: '',
+							password: '',
+							error: null,
+							loading: false
+						},
+
+						// 注册相关
+						signup: {
+							email: '',
+							password: '',
+							username: '',
+							error: null,
+							loading: false
+						},
+
+						// 文章列表
+						articles: [],
+
+						// 讨论列表
+						discussions: [],
+
+						// 个人资料相关
+						userArticles: [],
+						userDiscussions: [],
+						userArticlesLoading: false,
+						userDiscussionsLoading: false,
+
+						// 新建文章
+						newArticle: {
+							title: '',
+							content: '',
+							error: null,
+							loading: false
+						},
+
+						// 新建讨论
+						newDiscussion: {
+							title: '',
+							content: '',
+							error: null,
+							loading: false
+						},
+
+						// 当前查看的文章/讨论
+						currentArticle: null,
+						currentDiscussion: null,
+						articleLoading: false,
+						discussionLoading: false,
+
+						// 评论相关
+						comments: [],
+						commentsLoading: false,
+						newComment: {
+							content: ''
+						},
+
+						// 用户角色映射
+						userRoleMap: new Map(),
+
+						other_user: null
 					};
 				},
 
-				async readIndexDB() {
-					return await new Promise(async resolve => {
-						let db, name = "roles", ver = 2;
-						const request = indexedDB.open(name, ver);
-						request.onerror = (event) => {
-							console.error("为什么不允许我的 web 应用使用 IndexedDB！");
-							resolve(null);
-						};
-						// 等待 IndexedDB 打开完成
-						await new Promise(resolve => {
-							request.onsuccess = (event) => {
-								db = event.target.result;
-								resolve();
-							};
-							request.onupgradeneeded = (event) => {
-								db = event.target.result;
-								if (!db.objectStoreNames.contains('roles')) {
-									db.createObjectStore('roles', { keyPath: 'userId' });
-								}
-								resolve();
-							};
-						}).then(() => {
-							db.onerror = (event) => {
-								console.error("IndexedDB 错误:", event.target.error);
-							};
-							resolve(db);
-						});
+				async mounted() {
+					// 检查用户是否已登录
+					const { data: { user } } = await Supabase.auth.getUser();
+					if (user) {
+						await this.fetchUserProfile(user.id);
+						// 获取用户角色
+						this.userRole = await this.fetchUserRole(user.id);
+						console.log('用户角色:', this.userRole);
+						if (getUrlQueryPath() == "/auth/login") {
+							this.showHome();
+						}
+					}
+
+					// 获取文章列表
+					this.fetchArticles();
+
+					// 监听认证状态变化
+					Supabase.auth.onAuthStateChange(async (event, session) => {
+						if (event === 'SIGNED_IN' && session?.user) {
+							await this.fetchUserProfile(session.user.id);
+							this.showHome();
+						} else if (event === 'SIGNED_OUT') {
+							this.user = null;
+						}
 					});
+
+					let tmp = getUrlQueryPath();
+					if (tmp == "/home" || !tmp)
+						this.showHome();
+					else if (tmp == "/article/new") {
+						this.showNewArticle();
+					} else if (tmp == "/discussion/new") {
+						this.showNewDiscussion();
+					}
+					else if (tmp.substring(0, 9) === "/article/") {
+						this.showArticleDetail(tmp.substring(9));
+					} else if (tmp.substring(0, 11) === "/discussion/") {
+						this.showDiscussionDetail(tmp.substring(11));
+					}
+					else if (tmp == "/profile") {
+						this.showProfile();
+					}
+					else if (tmp == "/auth/login") {
+						this.showLogin();
+					}
+					else if (tmp == "/auth/signup") {
+						this.showSignup();
+					}
+					else if (tmp == "/home/articles") {
+						this.showArticles();
+					}
+					else if (tmp == "/home/discussions") {
+						this.showDiscussions();
+					}
+					else if (tmp.substring(0, 6) === "/user/") {
+						this.showUserProfile(tmp.substring(6));
+					}
+					else {
+						this.showHome();
+					}
 				},
 
-				// 通过admin_roles表获取用户角色：（user（也可以值为---）,admin,super_admin）
-				async fetchUserRole(userId) {
-					if (!userId) {
-						console.error('用户ID不能为空');
-						return null;
-					}
-					if (this.userRoleMap.has(userId)) {
-						return this.userRoleMap.get(userId);
-					}
+				methods: {
+					cookie() {
+						// 返回一个json，用于操作cookie
+						return {
+							get: (name) => {
+								const value = `; ${document.cookie}`;
+								const parts = value.split(`; ${name}=`);
+								if (parts.length === 2) return parts.pop().split(';').shift();
+							},
+							set: (name, value, days) => {
+								let expires = "";
+								if (days) {
+									const date = new Date();
+									date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+									expires = "; expires=" + date.toUTCString();
+								}
+								document.cookie = name + "=" + (value || "") + expires + "; path=/";
+							},
+							delete: (name) => {
+								document.cookie = name + '=; Max-Age=-99999999;';
+							},
+							getCreateTime: () => {
+								const date = new Date();
+								return date.toISOString().split('T')[0] + ' ' + date.toTimeString().split(' ')[0];
+							}
+						};
+					},
 
-					return await this.readIndexDB().then(async db => {
-						if (this.cookie().get('userRole') === null) {
-							console.log('用户角色缓存已过期，重新获取');
-							this.cookie().delete('userRole');
-							this.userRoleMap = new Map();
+					async readIndexDB() {
+						return await new Promise(async resolve => {
+							let db, name = "roles", ver = 2;
+							const request = indexedDB.open(name, ver);
+							request.onerror = (event) => {
+								console.error("为什么不允许我的 web 应用使用 IndexedDB！");
+								resolve(null);
+							};
+							// 等待 IndexedDB 打开完成
+							await new Promise(resolve => {
+								request.onsuccess = (event) => {
+									db = event.target.result;
+									resolve();
+								};
+								request.onupgradeneeded = (event) => {
+									db = event.target.result;
+									if (!db.objectStoreNames.contains('roles')) {
+										db.createObjectStore('roles', { keyPath: 'userId' });
+									}
+									resolve();
+								};
+							}).then(() => {
+								db.onerror = (event) => {
+									console.error("IndexedDB 错误:", event.target.error);
+								};
+								resolve(db);
+							});
+						});
+					},
+
+					// 通过admin_roles表获取用户角色：（user（也可以值为---）,admin,super_admin）
+					async fetchUserRole(userId) {
+						if (!userId) {
+							console.error('用户ID不能为空');
+							return null;
+						}
+						if (this.userRoleMap.has(userId)) {
+							return this.userRoleMap.get(userId);
+						}
+
+						return await this.readIndexDB().then(async db => {
+							if (this.cookie().get('userRole') === null) {
+								console.log('用户角色缓存已过期，重新获取');
+								this.cookie().delete('userRole');
+								this.userRoleMap = new Map();
+								db.transaction(['roles'], 'readwrite')
+									.objectStore('roles')
+									.clear();
+							}
+
+							// 尝试获取用户角色
+							const transaction = db.transaction(['roles'], 'readonly');
+							const store = transaction.objectStore('roles');
+							const request = store.get(userId);
+							let _result = null;
+							// 等待 IndexedDB 请求完成
+							await new Promise(resolve => {
+								request.onsuccess = () => {
+									const result = request.result;
+									if (result) {
+										console.log("从 IndexedDB 获取到角色:", result);
+										_result = result.role;
+									} else {
+										console.log("未找到角色");
+									}
+									resolve();
+								};
+								request.onerror = () => {
+									console.error("获取角色失败");
+									resolve()
+								};
+							}).then(() => { setTimeout(() => { }, 0) });
+
+							if (_result) {
+								this.userRoleMap.set(userId, _result);
+								return _result;
+							}
+
+							const { data, error } = await Supabase
+								.from('admin_roles')
+								.select('role')
+								.eq('user_id', userId)
+								.single();
+
+							if (error) {
+								console.error('获取用户角色失败:', error);
+								return null;
+							}
+
+							if (this.cookie().get('userRole') === null) {
+								this.cookie().set('userRole', 'has', 1.00 / 24); // 缓存1个小时
+							}
 							db.transaction(['roles'], 'readwrite')
 								.objectStore('roles')
-								.clear();
-						}
+								.put({ userId, role: data.role });
+							this.userRoleMap.set(userId, data.role);
+							return data.role;
+						});
+					},
 
-						// 尝试获取用户角色
-						const transaction = db.transaction(['roles'], 'readonly');
-						const store = transaction.objectStore('roles');
-						const request = store.get(userId);
-						let _result = null;
-						// 等待 IndexedDB 请求完成
-						await new Promise(resolve => {
-							request.onsuccess = () => {
-								const result = request.result;
-								if (result) {
-									console.log("从 IndexedDB 获取到角色:", result);
-									_result = result.role;
-								} else {
-									console.log("未找到角色");
-								}
-								resolve();
-							};
-							request.onerror = () => {
-								console.error("获取角色失败");
-								resolve()
-							};
-						}).then(() => { setTimeout(() => { }, 0) });
+					// 格式化日期
+					formatDate(dateString) {
+						const date = new Date(dateString);
+						return date.toLocaleDateString('zh-CN', {
+							year: 'numeric',
+							month: 'long',
+							day: 'numeric',
+							hour: '2-digit',
+							minute: '2-digit'
+						});
+					},
 
-						if (_result) {
-							this.userRoleMap.set(userId, _result);
-							return _result;
-						}
+					// 渲染 Markdown
+					renderMarkdown(text) {
+						setTimeout(async () => {
+							await fun();
+						}, 1000);
+						return renderMarkdown(text);
+					},
 
+					// 获取用户资料
+					async fetchUserProfile(userId) {
 						const { data, error } = await Supabase
-							.from('admin_roles')
-							.select('role')
-							.eq('user_id', userId)
+							.from('profiles')
+							.select('*')
+							.eq('id', userId)
 							.single();
 
 						if (error) {
-							console.error('获取用户角色失败:', error);
-							return null;
+							console.error('获取用户资料失败:', error);
+							return;
 						}
 
-						if (this.cookie().get('userRole') === null) {
-							this.cookie().set('userRole', 'has', 1.00 / 24); // 缓存1个小时
+						this.user = data;
+					},
+
+					// 获取文章列表
+					async fetchArticles() {
+						this.loading = true;
+						const { data, error } = await Supabase
+							.from('articles')
+							.select(`
+                            *,
+                            profiles:user_id (username, avatar_url)
+                        `)
+							.order('created_at', { ascending: false });
+
+						this.loading = false;
+
+						if (error) {
+							console.error('获取文章失败:', error);
+							return;
 						}
-						db.transaction(['roles'], 'readwrite')
-							.objectStore('roles')
-							.put({ userId, role: data.role });
-						this.userRoleMap.set(userId, data.role);
-						return data.role;
-					});
-				},
 
-				// 格式化日期
-				formatDate(dateString) {
-					const date = new Date(dateString);
-					return date.toLocaleDateString('zh-CN', {
-						year: 'numeric',
-						month: 'long',
-						day: 'numeric',
-						hour: '2-digit',
-						minute: '2-digit'
-					});
-				},
+						this.articles = await Promise.all(data.map(async article => ({
+							...article,
+							username: article.profiles?.username || '未知用户',
+							avatar_url: article.profiles?.avatar_url || null,
+							userRole: await this.fetchUserRole(article.user_id),
+							userId: article.user_id
+						})));
+					},
 
-				// 渲染 Markdown
-				renderMarkdown(text) {
-					setTimeout(async () => {
-						await fun();
-					}, 1000);
-					return renderMarkdown(text);
-				},
-
-				// 获取用户资料
-				async fetchUserProfile(userId) {
-					const { data, error } = await Supabase
-						.from('profiles')
-						.select('*')
-						.eq('id', userId)
-						.single();
-
-					if (error) {
-						console.error('获取用户资料失败:', error);
-						return;
-					}
-
-					this.user = data;
-				},
-
-				// 获取文章列表
-				async fetchArticles() {
-					this.loading = true;
-					const { data, error } = await Supabase
-						.from('articles')
-						.select(`
+					// 获取讨论列表
+					async fetchDiscussions() {
+						this.loading = true;
+						const { data, error } = await Supabase
+							.from('discussions')
+							.select(`
                             *,
                             profiles:user_id (username, avatar_url)
                         `)
-						.order('created_at', { ascending: false });
+							.order('created_at', { ascending: false });
 
-					this.loading = false;
+						this.loading = false;
 
-					if (error) {
-						console.error('获取文章失败:', error);
-						return;
-					}
+						if (error) {
+							console.error('获取讨论失败:', error);
+							return;
+						}
 
-					this.articles = await Promise.all(data.map(async article => ({
-						...article,
-						username: article.profiles?.username || '未知用户',
-						avatar_url: article.profiles?.avatar_url || null,
-						userRole: await this.fetchUserRole(article.user_id),
-						userId: article.user_id
-					})));
-				},
+						this.discussions = await Promise.all(data.map(async discussion => ({
+							...discussion,
+							username: discussion.profiles?.username || '未知用户',
+							avatar_url: discussion.profiles?.avatar_url || null,
+							userRole: await this.fetchUserRole(discussion.user_id),
+							userId: discussion.user_id
+						})));
+					},
 
-				// 获取讨论列表
-				async fetchDiscussions() {
-					this.loading = true;
-					const { data, error } = await Supabase
-						.from('discussions')
-						.select(`
+					// 获取用户文章
+					async fetchUserArticles(userId) {
+						this.userArticlesLoading = true;
+						const { data, error } = await Supabase
+							.from('articles')
+							.select('*')
+							.eq('user_id', userId)
+							.order('created_at', { ascending: false });
+
+						this.userArticlesLoading = false;
+
+						if (error) {
+							console.error('获取用户文章失败:', error);
+							return;
+						}
+
+						this.userArticles = data;
+						// this.userArticles.reverse();
+					},
+
+					// 获取用户讨论
+					async fetchUserDiscussions(userId) {
+						this.userDiscussionsLoading = true;
+						let { data, error } = await Supabase
+							.from('discussions')
+							.select('*')
+							.eq('user_id', userId)
+							.order('created_at', { ascending: false });
+
+						this.userDiscussionsLoading = false;
+
+						if (error) {
+							console.error('获取用户讨论失败:', error);
+							return;
+						}
+
+						this.userDiscussions = data;
+						// this.userDiscussions.reverse();
+					},
+
+					// 获取文章详情
+					async fetchArticleDetail(articleId) {
+						this.articleLoading = true;
+						const { data, error } = await Supabase
+							.from('articles')
+							.select(`
                             *,
                             profiles:user_id (username, avatar_url)
                         `)
-						.order('created_at', { ascending: false });
+							.eq('id', articleId)
+							.single();
 
-					this.loading = false;
+						this.articleLoading = false;
 
-					if (error) {
-						console.error('获取讨论失败:', error);
-						return;
-					}
+						if (error) {
+							console.error('获取文章详情失败:', error);
+							return;
+						}
 
-					this.discussions = await Promise.all(data.map(async discussion => ({
-						...discussion,
-						username: discussion.profiles?.username || '未知用户',
-						avatar_url: discussion.profiles?.avatar_url || null,
-						userRole: await this.fetchUserRole(discussion.user_id),
-						userId: discussion.user_id
-					})));
-				},
+						this.currentArticle = {
+							...data,
+							username: data.profiles?.username || '未知用户',
+							avatar_url: data.profiles?.avatar_url || null,
+							userRole: await this.fetchUserRole(data.user_id),
+							userId: data.user_id
+						};
 
-				// 获取用户文章
-				async fetchUserArticles(userId) {
-					this.userArticlesLoading = true;
-					const { data, error } = await Supabase
-						.from('articles')
-						.select('*')
-						.eq('user_id', userId)
-						.order('created_at', { ascending: false });
+						// 获取评论
+						this.fetchComments('article', articleId);
+					},
 
-					this.userArticlesLoading = false;
-
-					if (error) {
-						console.error('获取用户文章失败:', error);
-						return;
-					}
-
-					this.userArticles = data;
-					// this.userArticles.reverse();
-				},
-
-				// 获取用户讨论
-				async fetchUserDiscussions(userId) {
-					this.userDiscussionsLoading = true;
-					let { data, error } = await Supabase
-						.from('discussions')
-						.select('*')
-						.eq('user_id', userId)
-						.order('created_at', { ascending: false });
-
-					this.userDiscussionsLoading = false;
-
-					if (error) {
-						console.error('获取用户讨论失败:', error);
-						return;
-					}
-
-					this.userDiscussions = data;
-					// this.userDiscussions.reverse();
-				},
-
-				// 获取文章详情
-				async fetchArticleDetail(articleId) {
-					this.articleLoading = true;
-					const { data, error } = await Supabase
-						.from('articles')
-						.select(`
+					// 获取讨论详情
+					async fetchDiscussionDetail(discussionId) {
+						this.discussionLoading = true;
+						const { data, error } = await Supabase
+							.from('discussions')
+							.select(`
                             *,
                             profiles:user_id (username, avatar_url)
                         `)
-						.eq('id', articleId)
-						.single();
+							.eq('id', discussionId)
+							.single();
 
-					this.articleLoading = false;
+						this.discussionLoading = false;
 
-					if (error) {
-						console.error('获取文章详情失败:', error);
-						return;
-					}
+						if (error) {
+							console.error('获取讨论详情失败:', error);
+							return;
+						}
 
-					this.currentArticle = {
-						...data,
-						username: data.profiles?.username || '未知用户',
-						avatar_url: data.profiles?.avatar_url || null,
-						userRole: await this.fetchUserRole(data.user_id),
-						userId: data.user_id
-					};
+						this.currentDiscussion = {
+							...data,
+							username: data.profiles?.username || '未知用户',
+							avatar_url: data.profiles?.avatar_url || null,
+							userRole: await this.fetchUserRole(data.user_id),
+							userId: data.user_id
+						};
+
+						// 获取评论
+						this.fetchComments('discussion', discussionId);
+					},
 
 					// 获取评论
-					this.fetchComments('article', articleId);
-				},
-
-				// 获取讨论详情
-				async fetchDiscussionDetail(discussionId) {
-					this.discussionLoading = true;
-					const { data, error } = await Supabase
-						.from('discussions')
-						.select(`
+					async fetchComments(parentType, parentId) {
+						this.commentsLoading = true;
+						const { data, error } = await Supabase
+							.from('comments')
+							.select(`
                             *,
                             profiles:user_id (username, avatar_url)
                         `)
-						.eq('id', discussionId)
-						.single();
+							.eq('parent_type', parentType)
+							.eq('parent_id', parentId)
+							.order('created_at', { ascending: true });
 
-					this.discussionLoading = false;
+						this.commentsLoading = false;
 
-					if (error) {
-						console.error('获取讨论详情失败:', error);
-						return;
-					}
-
-					this.currentDiscussion = {
-						...data,
-						username: data.profiles?.username || '未知用户',
-						avatar_url: data.profiles?.avatar_url || null,
-						userRole: await this.fetchUserRole(data.user_id),
-						userId: data.user_id
-					};
-
-					// 获取评论
-					this.fetchComments('discussion', discussionId);
-				},
-
-				// 获取评论
-				async fetchComments(parentType, parentId) {
-					this.commentsLoading = true;
-					const { data, error } = await Supabase
-						.from('comments')
-						.select(`
-                            *,
-                            profiles:user_id (username, avatar_url)
-                        `)
-						.eq('parent_type', parentType)
-						.eq('parent_id', parentId)
-						.order('created_at', { ascending: true });
-
-					this.commentsLoading = false;
-
-					if (error) {
-						console.error('获取评论失败:', error);
-						return;
-					}
-
-					this.comments = await Promise.all(data.map(async comment => ({
-						...comment,
-						username: comment.profiles?.username || '未知用户',
-						avatar_url: comment.profiles?.avatar_url || null,
-						userRole: await this.fetchUserRole(comment.user_id),
-						userId: comment.user_id
-					})));
-
-					this.comments.reverse(); // 反转评论顺序，最旧的在底部
-				},
-
-				// 登录
-				async signIn() {
-					if (this.login.loading) return;
-					this.login.error = null;
-					// 先禁用登录按钮
-					this.login.loading = true;
-					const { data, error } = await Supabase.auth.signInWithPassword({
-						email: this.login.email,
-						password: this.login.password
-					});
-					this.login.loading = false;
-
-					if (error) {
-						this.login.error = error.message;
-						return;
-					}
-
-					await this.fetchUserProfile(data.user.id);
-					this.showHome();
-				},
-
-				// 注册
-				async signUp() {
-					if (this.signup.loading) return;
-					this.signup.error = null;
-					this.signup.loading = true;
-
-					// 1. 注册用户
-					const { data: authData, error: authError } = await Supabase.auth.signUp({
-						email: this.signup.email,
-						password: this.signup.password
-					});
-					this.signup.loading = false;
-
-					if (authError) {
-						this.signup.error = authError.message;
-						return;
-					}
-
-					// 2. 创建用户资料
-					const { error: profileError } = await Supabase
-						.from('profiles')
-						.insert({
-							id: authData.user.id,
-							username: this.signup.username,
-							bio: ''
-						});
-
-					if (profileError) {
-						this.signup.error = profileError.message;
-						return;
-					}
-
-					// 3. 获取用户资料并显示首页
-					await this.fetchUserProfile(authData.user.id);
-					this.showHome();
-				},
-
-				// 登出
-				async signOut() {
-					await Supabase.auth.signOut();
-					this.user = null;
-					this.showHome();
-				},
-
-				// 创建文章
-				async createArticle() {
-					if (this.newArticle.loading) return;
-					this.newArticle.loading = true;
-					this.newArticle.error = null;
-
-					if (!this.user) {
-						this.newArticle.error = '请先登录';
-						return;
-					}
-
-					const { error } = await Supabase
-						.from('articles')
-						.insert({
-							user_id: this.user.id,
-							title: this.newArticle.title,
-							content: this.newArticle.content
-						});
-					this.newArticle.loading = false;
-
-					if (error) {
-						this.newArticle.error = error.message;
-						return;
-					}
-
-					// 重置表单并刷新文章列表
-					this.newArticle.title = '';
-					this.newArticle.content = '';
-					this.fetchArticles();
-					this.showHome();
-				},
-
-				// 创建讨论
-				async createDiscussion() {
-					if (this.newDiscussion.loading) return;
-					this.newDiscussion.loading = true;
-					this.newDiscussion.error = null;
-
-					if (!this.user) {
-						this.newDiscussion.error = '请先登录';
-						return;
-					}
-
-					const { error } = await Supabase
-						.from('discussions')
-						.insert({
-							user_id: this.user.id,
-							title: this.newDiscussion.title,
-							content: this.newDiscussion.content
-						});
-					this.newDiscussion.loading = false;
-
-					if (error) {
-						this.newDiscussion.error = error.message;
-						return;
-					}
-
-					// 重置表单并刷新讨论列表
-					this.newDiscussion.title = '';
-					this.newDiscussion.content = '';
-					this.fetchDiscussions();
-					this.showHome();
-				},
-
-				// 添加评论
-				async addComment(parentType) {
-					if (!this.user) {
-						return;
-					}
-
-					const parentId = parentType === 'article'
-						? this.currentArticle.id
-						: this.currentDiscussion.id;
-
-					const { error } = await Supabase
-						.from('comments')
-						.insert({
-							user_id: this.user.id,
-							content: this.newComment.content,
-							parent_type: parentType,
-							parent_id: parentId
-						});
-
-					if (error) {
-						console.error('添加评论失败:', error);
-						return;
-					}
-
-					// 重置评论框并刷新评论列表
-					this.newComment.content = '';
-					this.fetchComments(parentType, parentId);
-				},
-
-				// 视图切换方法
-				showHome() {
-					jumpTo('?path=/home');
-					this.currentView = 'home';
-					this.contentType = 'articles';
-					this.fetchArticles();
-				},
-
-				showLogin() {
-					jumpTo('?path=/auth/login');
-					this.currentView = 'login';
-					this.login.error = null;
-				},
-
-				showSignUp() {
-					jumpTo('?path=/auth/signup');
-					this.currentView = 'signup';
-					this.signup.error = null;
-				},
-
-				showProfile() {
-					jumpTo('?path=/profile');
-					this.currentView = 'profile';
-					if (this.user) {
-						this.fetchUserArticles(this.user.id);
-						this.fetchUserDiscussions(this.user.id);
-					}
-				},
-
-				showArticles() {
-					jumpTo('?path=/home/articles');
-					this.contentType = 'articles';
-					this.fetchArticles();
-				},
-
-				showDiscussions() {
-					jumpTo('?path=/home/discussions');
-					this.contentType = 'discussions';
-					this.fetchDiscussions();
-				},
-
-				showNewPost() {
-					if (this.contentType === 'articles') {
-						this.showNewArticle();
-					} else {
-						this.showNewDiscussion();
-					}
-				},
-
-				showNewArticle() {
-					jumpTo('?path=/article/new');
-					this.currentView = 'new-article';
-					this.newArticle.error = null;
-				},
-
-				showNewDiscussion() {
-					jumpTo('?path=/discussion/new');
-					this.currentView = 'new-discussion';
-					this.newDiscussion.error = null;
-				},
-
-				showArticleDetail(articleId) {
-					jumpTo('?path=/article/' + articleId);
-					this.currentView = 'article-detail';
-					this.fetchArticleDetail(articleId);
-				},
-
-				showDiscussionDetail(discussionId) {
-					jumpTo('?path=/discussion/' + discussionId);
-					this.currentView = 'discussion-detail';
-					this.fetchDiscussionDetail(discussionId);
-				},
-
-				async fetchOtherUserArticles(userId) {
-					const { data, error } = await Supabase
-						.from('articles')
-						.select('*')
-						.eq('user_id', userId);
-
-					if (error) {
-						console.error('获取用户文章失败:', error);
-						return;
-					}
-
-					this.other_user.userArticles = data;
-					this.other_user.userArticles.reverse();
-				},
-
-				async fetchOtherUserDiscussions(userId) {
-					const { data, error } = await Supabase
-						.from('discussions')
-						.select('*')
-						.eq('user_id', userId);
-
-					if (error) {
-						console.error('获取用户讨论失败:', error);
-						return;
-					}
-
-					this.other_user.userDiscussions = data;
-					this.other_user.userDiscussions.reverse();
-				},
-
-				async fetchOtherUserProfile(userId) {
-					const { data, error } = await Supabase
-						.from('profiles')
-						.select('*')
-						.eq('id', userId)
-						.single();
-
-					if (error) {
-						console.error('获取用户资料失败:', error);
-						return;
-					}
-
-					this.other_user = data;
-					this.fetchOtherUserArticles(userId);
-					this.fetchOtherUserDiscussions(userId);
-					this.other_user.userRole = await this.fetchUserRole(userId);
-				},
-
-				showUserProfile(userId) {
-					jumpTo('?path=/user/' + userId);
-					this.currentView = 'other-profile';
-					this.fetchOtherUserProfile(userId);
-				},
-
-				// 删除操作
-				deleteArticle(articleId) {
-					const swalWithBootstrapButtons = swal.mixin({
-						customClass: {
-							confirmButton: "px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 mx-1",
-							cancelButton: "px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 mx-1"
-						},
-						buttonsStyling: false
-					});
-					swalWithBootstrapButtons.fire({
-						title: "确定要删除这篇文章吗？",
-						text: "您将无法恢复此操作！",
-						icon: "warning",
-						showCancelButton: true,
-						confirmButtonText: "是的，删除它！",
-						cancelButtonText: "不，取消！",
-						reverseButtons: true
-					}).then((result) => {
-						if (result.isConfirmed) {
-							Supabase
-								.from('articles')
-								.delete()
-								.eq('id', articleId)
-								.then(() => {
-									this.fetchArticles();
-									swalWithBootstrapButtons.fire({
-										title: "已删除！",
-										text: "文章已被删除。",
-										icon: "success"
-									});
-								})
-								.catch((error) => {
-									console.error('删除文章失败:', error);
-								});
-						} else if (
-							/* Read more about handling dismissals below */
-							result.dismiss === swal.DismissReason.cancel
-						) {
-							swalWithBootstrapButtons.fire({
-								title: "已取消",
-								text: "您的文章是安全的 :)",
-								icon: "error"
-							});
+						if (error) {
+							console.error('获取评论失败:', error);
+							return;
 						}
-					});
-				},
 
-				deleteDiscussion(discussionId) {
-					const swalWithBootstrapButtons = swal.mixin({
-						customClass: {
-							confirmButton: "px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 mx-1",
-							cancelButton: "px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 mx-1"
-						},
-						buttonsStyling: false
-					});
-					swalWithBootstrapButtons.fire({
-						title: "确定要删除这篇讨论吗？",
-						text: "您将无法恢复此操作！",
-						icon: "warning",
-						showCancelButton: true,
-						confirmButtonText: "是的，删除它！",
-						cancelButtonText: "不，取消！",
-						reverseButtons: true
-					}).then((result) => {
-						if (result.isConfirmed) {
-							Supabase
-								.from('discussions')
-								.delete()
-								.eq('id', discussionId)
-								.then(() => {
-									this.fetchDiscussions();
-									swalWithBootstrapButtons.fire({
-										title: "已删除！",
-										text: "讨论已被删除。",
-										icon: "success"
-									});
-								})
-								.catch((error) => {
-									console.error('删除讨论失败:', error);
-								});
-						} else if (
-							/* Read more about handling dismissals below */
-							result.dismiss === swal.DismissReason.cancel
-						) {
-							swalWithBootstrapButtons.fire({
-								title: "已取消",
-								text: "您的讨论是安全的 :)",
-								icon: "error"
-							});
+						this.comments = await Promise.all(data.map(async comment => ({
+							...comment,
+							username: comment.profiles?.username || '未知用户',
+							avatar_url: comment.profiles?.avatar_url || null,
+							userRole: await this.fetchUserRole(comment.user_id),
+							userId: comment.user_id
+						})));
+
+						this.comments.reverse(); // 反转评论顺序，最旧的在底部
+					},
+
+					// 登录
+					async signIn() {
+						if (this.user) {
+							this.showHome();
+							return;
 						}
-					});
-				},
+						if (this.login.loading) return;
+						this.login.error = null;
+						// 先禁用登录按钮
+						this.login.loading = true;
+						const { data, error } = await Supabase.auth.signInWithPassword({
+							email: this.login.email,
+							password: this.login.password
+						});
+						this.login.loading = false;
 
-				async deleteComment(commentId, parentType, parentId) {
-					const swalWithBootstrapButtons = swal.mixin({
-						customClass: {
-							confirmButton:
-								"px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 mx-1"
-							,
-							cancelButton:
-								"px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 mx-1"
-
-						},
-						buttonsStyling:
-							false
-					});
-					swalWithBootstrapButtons.fire({
-						title: "确定要删除这条评论吗？",
-						text: "您将无法恢复此操作！",
-						icon: "warning",
-						showCancelButton: true,
-						confirmButtonText: "是的，删除它！",
-						cancelButtonText: "不，取消！",
-						reverseButtons: true
-
-					}).then((result) => {
-						if (result.isConfirmed) {
-							// 执行删除评论操作
-							Supabase
-								.from('comments')
-								.delete()
-								.eq('id', commentId)
-								.then(() => {
-									// 重新获取评论列表
-									this.fetchComments(parentType, parentId);
-									swalWithBootstrapButtons.fire({
-										title: "已删除！",
-										text: "评论已被删除。",
-										icon: "success"
-									});
-								})
-								.catch((error) => {
-									console.error('删除评论失败:', error);
-									swalWithBootstrapButtons.fire({
-										title: "删除失败",
-										text: "无法删除评论，请稍后重试。",
-										icon: "error"
-									});
-								});
-						} else if (result.dismiss === swal.DismissReason.cancel) {
-							swalWithBootstrapButtons.fire({
-								title: "已取消",
-								text: "您的评论是安全的 :)",
-								icon: "error"
-							});
+						if (error) {
+							this.login.error = error.message;
+							return;
 						}
-					});
+
+						await this.fetchUserProfile(data.user.id);
+						this.showHome();
+					},
+
+					// 注册
+					async signUp() {
+						return;
+						if (this.signup.loading) return;
+						this.signup.error = null;
+						this.signup.loading = true;
+
+						// 1. 注册用户
+						const { data: authData, error: authError } = await Supabase.auth.signUp({
+							email: this.signup.email,
+							password: this.signup.password
+						});
+						this.signup.loading = false;
+
+						if (authError) {
+							this.signup.error = authError.message;
+							return;
+						}
+
+						// 2. 创建用户资料
+						const { error: profileError } = await Supabase
+							.from('profiles')
+							.insert({
+								id: authData.user.id,
+								username: this.signup.username,
+								bio: ''
+							});
+
+						if (profileError) {
+							this.signup.error = profileError.message;
+							return;
+						}
+
+						// 3. 获取用户资料并显示首页
+						await this.fetchUserProfile(authData.user.id);
+						this.showHome();
+					},
+
+					// 登出
+					async signOut() {
+						await Supabase.auth.signOut();
+						this.user = null;
+						this.showHome();
+					},
+
+					// 创建文章
+					async createArticle() {
+						if (this.newArticle.loading) return;
+						this.newArticle.loading = true;
+						this.newArticle.error = null;
+
+						if (!this.user) {
+							this.newArticle.error = '请先登录';
+							return;
+						}
+
+						const { error } = await Supabase
+							.from('articles')
+							.insert({
+								user_id: this.user.id,
+								title: this.newArticle.title,
+								content: this.newArticle.content
+							});
+						this.newArticle.loading = false;
+
+						if (error) {
+							this.newArticle.error = error.message;
+							return;
+						}
+
+						// 重置表单并刷新文章列表
+						this.newArticle.title = '';
+						this.newArticle.content = '';
+						this.fetchArticles();
+						this.showHome();
+					},
+
+					// 创建讨论
+					async createDiscussion() {
+						if (this.newDiscussion.loading) return;
+						this.newDiscussion.loading = true;
+						this.newDiscussion.error = null;
+
+						if (!this.user) {
+							this.newDiscussion.error = '请先登录';
+							return;
+						}
+
+						const { error } = await Supabase
+							.from('discussions')
+							.insert({
+								user_id: this.user.id,
+								title: this.newDiscussion.title,
+								content: this.newDiscussion.content
+							});
+						this.newDiscussion.loading = false;
+
+						if (error) {
+							this.newDiscussion.error = error.message;
+							return;
+						}
+
+						// 重置表单并刷新讨论列表
+						this.newDiscussion.title = '';
+						this.newDiscussion.content = '';
+						this.fetchDiscussions();
+						this.showHome();
+					},
+
+					// 添加评论
+					async addComment(parentType) {
+						if (!this.user) {
+							return;
+						}
+
+						const parentId = parentType === 'article'
+							? this.currentArticle.id
+							: this.currentDiscussion.id;
+
+						const { error } = await Supabase
+							.from('comments')
+							.insert({
+								user_id: this.user.id,
+								content: this.newComment.content,
+								parent_type: parentType,
+								parent_id: parentId
+							});
+
+						if (error) {
+							console.error('添加评论失败:', error);
+							return;
+						}
+
+						// 重置评论框并刷新评论列表
+						this.newComment.content = '';
+						this.fetchComments(parentType, parentId);
+					},
+
+					// 视图切换方法
+					showHome() {
+						this.clearLoading();
+						jumpTo('?path=/home');
+						this.currentView = 'home';
+						this.contentType = 'articles';
+						this.fetchArticles();
+					},
+
+					showLogin() {
+						this.clearLoading();
+						jumpTo('?path=/auth/login');
+						this.currentView = 'login';
+						this.login.error = null;
+					},
+
+					showSignUp() {
+						this.clearLoading();
+						jumpTo('?path=/auth/signup');
+						this.currentView = 'signup';
+						this.signup.error = null;
+					},
+
+					showProfile() {
+						this.clearLoading();
+						jumpTo('?path=/profile');
+						this.currentView = 'profile';
+						if (this.user) {
+							this.fetchUserArticles(this.user.id);
+							this.fetchUserDiscussions(this.user.id);
+						}
+					},
+
+					showArticles() {
+						this.clearLoading();
+						jumpTo('?path=/home/articles');
+						this.contentType = 'articles';
+						this.fetchArticles();
+					},
+
+					showDiscussions() {
+						this.clearLoading();
+						jumpTo('?path=/home/discussions');
+						this.contentType = 'discussions';
+						this.fetchDiscussions();
+					},
+
+					showNewPost() {
+						this.clearLoading();
+						if (this.contentType === 'articles') {
+							this.showNewArticle();
+						} else {
+							this.showNewDiscussion();
+						}
+					},
+
+					showNewArticle() {
+						this.clearLoading();
+						jumpTo('?path=/article/new');
+						this.currentView = 'new-article';
+						this.newArticle.error = null;
+					},
+
+					showNewDiscussion() {
+						this.clearLoading();
+						jumpTo('?path=/discussion/new');
+						this.currentView = 'new-discussion';
+						this.newDiscussion.error = null;
+					},
+
+					showArticleDetail(articleId) {
+						this.clearLoading();
+						jumpTo('?path=/article/' + articleId);
+						this.currentView = 'article-detail';
+						this.fetchArticleDetail(articleId);
+					},
+
+					showDiscussionDetail(discussionId) {
+						this.clearLoading();
+						jumpTo('?path=/discussion/' + discussionId);
+						this.currentView = 'discussion-detail';
+						this.fetchDiscussionDetail(discussionId);
+					},
+
+					async fetchOtherUserArticles(userId) {
+						const { data, error } = await Supabase
+							.from('articles')
+							.select('*')
+							.eq('user_id', userId);
+
+						if (error) {
+							console.error('获取用户文章失败:', error);
+							return;
+						}
+
+						this.other_user.userArticles = data;
+						this.other_user.userArticles.reverse();
+					},
+
+					async fetchOtherUserDiscussions(userId) {
+						const { data, error } = await Supabase
+							.from('discussions')
+							.select('*')
+							.eq('user_id', userId);
+
+						if (error) {
+							console.error('获取用户讨论失败:', error);
+							return;
+						}
+
+						this.other_user.userDiscussions = data;
+						this.other_user.userDiscussions.reverse();
+					},
+
+					async fetchOtherUserProfile(userId) {
+						const { data, error } = await Supabase
+							.from('profiles')
+							.select('*')
+							.eq('id', userId)
+							.single();
+
+						if (error) {
+							console.error('获取用户资料失败:', error);
+							return;
+						}
+
+						this.other_user = data;
+						this.fetchOtherUserArticles(userId);
+						this.fetchOtherUserDiscussions(userId);
+						this.other_user.userRole = await this.fetchUserRole(userId);
+					},
+
+					showUserProfile(userId) {
+						this.clearLoading();
+						jumpTo('?path=/user/' + userId);
+						this.currentView = 'other-profile';
+						this.fetchOtherUserProfile(userId);
+					},
+
+					// 删除操作
+					deleteArticle(articleId) {
+						const swalWithBootstrapButtons = swal.mixin({
+							customClass: {
+								confirmButton: "px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 mx-1",
+								cancelButton: "px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 mx-1"
+							},
+							buttonsStyling: false
+						});
+						swalWithBootstrapButtons.fire({
+							title: "确定要删除这篇文章吗？",
+							text: "您将无法恢复此操作！",
+							icon: "warning",
+							showCancelButton: true,
+							confirmButtonText: "是的，删除它！",
+							cancelButtonText: "不，取消！",
+							reverseButtons: true
+						}).then((result) => {
+							if (result.isConfirmed) {
+								Supabase
+									.from('articles')
+									.delete()
+									.eq('id', articleId)
+									.then(() => {
+										this.fetchArticles();
+										swalWithBootstrapButtons.fire({
+											title: "已删除！",
+											text: "文章已被删除。",
+											icon: "success"
+										});
+									})
+									.catch((error) => {
+										console.error('删除文章失败:', error);
+									});
+							} else if (
+								/* Read more about handling dismissals below */
+								result.dismiss === swal.DismissReason.cancel
+							) {
+								swalWithBootstrapButtons.fire({
+									title: "已取消",
+									text: "您的文章是安全的 :)",
+									icon: "error"
+								});
+							}
+						});
+					},
+
+					deleteDiscussion(discussionId) {
+						const swalWithBootstrapButtons = swal.mixin({
+							customClass: {
+								confirmButton: "px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 mx-1",
+								cancelButton: "px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 mx-1"
+							},
+							buttonsStyling: false
+						});
+						swalWithBootstrapButtons.fire({
+							title: "确定要删除这篇讨论吗？",
+							text: "您将无法恢复此操作！",
+							icon: "warning",
+							showCancelButton: true,
+							confirmButtonText: "是的，删除它！",
+							cancelButtonText: "不，取消！",
+							reverseButtons: true
+						}).then((result) => {
+							if (result.isConfirmed) {
+								Supabase
+									.from('discussions')
+									.delete()
+									.eq('id', discussionId)
+									.then(() => {
+										this.fetchDiscussions();
+										swalWithBootstrapButtons.fire({
+											title: "已删除！",
+											text: "讨论已被删除。",
+											icon: "success"
+										});
+									})
+									.catch((error) => {
+										console.error('删除讨论失败:', error);
+									});
+							} else if (
+								/* Read more about handling dismissals below */
+								result.dismiss === swal.DismissReason.cancel
+							) {
+								swalWithBootstrapButtons.fire({
+									title: "已取消",
+									text: "您的讨论是安全的 :)",
+									icon: "error"
+								});
+							}
+						});
+					},
+
+					async deleteComment(commentId, parentType, parentId) {
+						const swalWithBootstrapButtons = swal.mixin({
+							customClass: {
+								confirmButton:
+									"px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 mx-1"
+								,
+								cancelButton:
+									"px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 mx-1"
+
+							},
+							buttonsStyling:
+								false
+						});
+						swalWithBootstrapButtons.fire({
+							title: "确定要删除这条评论吗？",
+							text: "您将无法恢复此操作！",
+							icon: "warning",
+							showCancelButton: true,
+							confirmButtonText: "是的，删除它！",
+							cancelButtonText: "不，取消！",
+							reverseButtons: true
+
+						}).then((result) => {
+							if (result.isConfirmed) {
+								// 执行删除评论操作
+								Supabase
+									.from('comments')
+									.delete()
+									.eq('id', commentId)
+									.then(() => {
+										// 重新获取评论列表
+										this.fetchComments(parentType, parentId);
+										swalWithBootstrapButtons.fire({
+											title: "已删除！",
+											text: "评论已被删除。",
+											icon: "success"
+										});
+									})
+									.catch((error) => {
+										console.error('删除评论失败:', error);
+										swalWithBootstrapButtons.fire({
+											title: "删除失败",
+											text: "无法删除评论，请稍后重试。",
+											icon: "error"
+										});
+									});
+							} else if (result.dismiss === swal.DismissReason.cancel) {
+								swalWithBootstrapButtons.fire({
+									title: "已取消",
+									text: "您的评论是安全的 :)",
+									icon: "error"
+								});
+							}
+						});
+					},
+
+					clearLoading() {
+						this.loading = false;
+						this.articleLoading = false;
+						this.discussionLoading = false;
+						this.userArticlesLoading = false;
+						this.userDiscussionsLoading = false;
+					}
 				}
-			}
-		};
+			};
 
-		Vue.createApp(app).mount('#app');
+			Vue.createApp(app).mount('#app');
+		})();
 	</script>
 </body>
 
