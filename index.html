@@ -340,6 +340,12 @@
 			color-scheme: light;
 		}
 
+		@media (prefers-color-scheme: dark) {
+			* {
+				color-scheme: dark;
+			}
+		}
+
 		.avatar {
 			background-color: #e2e8f0;
 			display: flex;
@@ -472,13 +478,91 @@
 			padding: 0;
 			margin: 0;
 		}
+
+		@media (prefers-color-scheme: dark) {
+
+			.shiki,
+			.shiki span,
+			.hljs {
+				color: var(--shiki-dark) !important;
+				background-color: #24292e !important;
+				/* 可选，如果你还希望同步字体样式 */
+				font-style: var(--shiki-dark-font-style) !important;
+				font-weight: var(--shiki-dark-font-weight) !important;
+				text-decoration: var(--shiki-dark-text-decoration) !important;
+			}
+
+			.loader1 {
+				background-color: black !important;
+			}
+
+			.loader-overlay {
+				background-color: rgba(0, 0, 0, 0.8) !important;
+			}
+		}
+
+		@keyframes spin {
+			0% {
+				transform: rotate(0deg);
+				opacity: 1;
+			}
+
+			100% {
+				transform: rotate(360deg);
+				opacity: 0.8;
+			}
+		}
+
+		.loader-overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(255, 255, 255, 0.8);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			z-index: 9999;
+			transition: opacity 0.5s ease;
+		}
+
+		.loader {
+			width: 10em;
+			height: 10em;
+			border-radius: 50%;
+			background: conic-gradient(rgb(10, 182, 212) 0% 20%, rgba(0, 0, 0, 0) 20%);
+			animation: spin 1s linear infinite;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+		}
 	</style>
 </head>
 
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen" data-swal2-theme="auto">
+	<div class="loader-overlay" id="loader" style="display: flex; opacity: 1;
+			z-index: 100000000;">
+		<div class="loader" style="
+					display: flex;
+					opacity: 1;
+				"></div>
+		<div class="loader loader1" style="
+					position: fixed;
+					opacity: 1;
+					width: 9.5em;
+					height: 9.5em;
+					opacity: 1 !important;
+					background: white;
+					box-shadow: inset 0 0 0.75em rgba(0, 0, 0, 0.1);
+				"></div>
+		<div style="
+					position: fixed;
+					opacity: 1;
+					z-index:999999999;
+				">loading...</div>
+	</div>
 	<div id="app" class="container mx-auto px-4 py-8">
 		<!-- 导航栏 -->
-		<nav class="bg-white shadow-sm rounded-lg mb-8 p-4 flex justify-between items-center">
+		<nav class="bg-white dark:bg-gray-800 shadow-sm rounded-lg mb-8 p-4 flex justify-between items-center">
 			<a href="#" @click="showHome" class="text-xl font-bold text-indigo-600">wbwCE</a>
 			<div class="flex items-center space-x-4">
 				<template v-if="user">
@@ -491,21 +575,18 @@
 						<span class="hidden md:inline">{{ user.username }}</span>
 					</div>
 					<button @click="showProfile"
-						class="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200">个人资料</button>
+						class="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200 dark:bg-gray-900 dark:hover:bg-gray-950">个人资料</button>
 					<button @click="showNewPost"
-						class="px-3 py-1 text-sm bg-indigo-100 text-indigo-700 rounded hover:bg-indigo-200">新建</button>
-					<button @click="signOut" class="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200">登出</button>
+						class="px-3 py-1 text-sm bg-indigo-100 text-indigo-700 dark:text-indigo-300 rounded hover:bg-indigo-200 dark:bg-indigo-900 dark:hover:bg-indigo-800">新建</button>
+					<button @click="signOut"
+						class="px-3 py-1 text-sm bg-gray-100 rounded hover:bg-gray-200 dark:bg-gray-900 dark:hover:bg-gray-950">登出</button>
 				</template>
 				<template v-else>
 					<button @click="showLogin"
 						class="px-3 py-1 text-sm bg-indigo-600 text-white rounded hover:bg-indigo-700">登录</button>
 					<button
-						class="px-3 py-1 text-sm bg-white border border-indigo-600 text-indigo-600 rounded hover:bg-indigo-50"
-						onclick="swal.fire({
-							title: '注册',
-							text: '注册请找管理员',
-							icon: 'info'
-						})">注册</button>
+						class="px-3 py-1 text-sm bg-white dark:bg-gray-800  border border-indigo-600 text-indigo-600 rounded hover:bg-indigo-50 dark:hover:bg-indigo-950"
+						onclick=" swal.fire({ title: '注册' , text: '注册请找管理员' , icon: 'info' })">注册</button>
 					<!-- @click="showSignUp"-->
 				</template>
 			</div>
@@ -515,15 +596,20 @@
 		<main>
 			<!-- 首页/文章列表 -->
 			<div v-if="currentView === 'home'" class="space-y-8">
-				<div class="bg-white rounded-lg shadow-sm p-6 hover:shadow-md">
+				<div class="bg-white dark:bg-gray-800  rounded-lg shadow-sm p-6 hover:shadow-md">
 					<h2 class="text-2xl font-bold mb-6">欢迎来到 wbwCE</h2>
-					<p class="text-gray-600 mb-4">这是一个叫 wbwCE 的地方。</p>
-
+					<p class="text-gray-600 dark:text-gray-400 mb-4">
+					<pre style="line-height: normal;">██╗    ██╗██████╗ ██╗    ██╗ ██████╗███████╗
+██║    ██║██╔══██╗██║    ██║██╔════╝██╔════╝
+██║ █╗ ██║██████╔╝██║ █╗ ██║██║     █████╗  
+██║███╗██║██╔══██╗██║███╗██║██║     ██╔══╝  
+╚███╔███╔╝██████╔╝╚███╔███╔╝╚██████╗███████╗
+ ╚══╝╚══╝ ╚═════╝  ╚══╝╚══╝  ╚═════╝╚══════╝</pre><br />这是一个叫 wbwCE 的地方。</p>
 					<div class="flex space-x-4 mb-6">
 						<button @click="showArticles"
 							class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">查看文章</button>
 						<button @click="showDiscussions"
-							class="px-4 py-2 bg-white border border-indigo-600 text-indigo-600 rounded hover:bg-indigo-50">查看讨论</button>
+							class="px-4 py-2 bg-white dark:bg-gray-800  border border-indigo-600 text-indigo-600 rounded hover:bg-indigo-50 dark:hover:bg-indigo-950">查看讨论</button>
 					</div>
 				</div>
 
@@ -540,7 +626,7 @@
 
 					<div v-else class="space-y-4">
 						<div v-for="article in articles" :key="article.id"
-							class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+							class="bg-white dark:bg-gray-800  rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
 							<div class="p-6">
 								<div class="flex justify-between items-start">
 									<h3 class="text-lg font-bold mb-2">
@@ -549,7 +635,8 @@
 									</h3>
 									<span class="text-sm text-gray-500">{{ formatDate(article.created_at) }}</span>
 								</div>
-								<p class="text-gray-600 mb-4 line-clamp-2">{{ article.content.substring(0, 200) }}...
+								<p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">{{
+									article.content.substring(0, 200) }}...
 								</p>
 								<div class="flex items-center justify-between">
 									<div class="flex items-center space-x-2">
@@ -558,7 +645,7 @@
 											<span v-if="!article.avatar_url">{{ article.username ?
 												article.username.charAt(0).toUpperCase() : 'U' }}</span>
 										</div>
-										<span class="text-sm text-gray-600"><a class="font-medium"
+										<span class="text-sm text-gray-600 dark:text-gray-400"><a class="font-medium"
 												:href="`?path=/user/${article.userId}`">{{
 												article.username }}<span v-if="article.userRole"
 													class="text-sm text-gray-500 ml-2" :class="{ 'text-purple-500': article.userRole === 'super_admin',
@@ -574,7 +661,7 @@
 						</div>
 
 						<div v-if="articles.length === 0"
-							class="bg-white rounded-lg shadow-sm p-6 text-center text-gray-500">
+							class="bg-white dark:bg-gray-800  rounded-lg shadow-sm p-6 text-center text-gray-500">
 							暂无文章
 						</div>
 					</div>
@@ -593,7 +680,7 @@
 
 					<div v-else class="space-y-4">
 						<div v-for="discussion in discussions" :key="discussion.id"
-							class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+							class="bg-white dark:bg-gray-800  rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow">
 							<div class="p-6">
 								<div class="flex justify-between items-start">
 									<h3 class="text-lg font-bold mb-2">
@@ -602,7 +689,8 @@
 									</h3>
 									<span class="text-sm text-gray-500">{{ formatDate(discussion.created_at) }}</span>
 								</div>
-								<p class="text-gray-600 mb-4 line-clamp-2">{{ discussion.content.substring(0, 200) }}...
+								<p class="text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">{{
+									discussion.content.substring(0, 200) }}...
 								</p>
 								<div class="flex items-center justify-between">
 									<div class="flex items-center space-x-2">
@@ -611,7 +699,7 @@
 											<span v-if="!discussion.avatar_url">{{ discussion.username ?
 												discussion.username.charAt(0).toUpperCase() : 'U' }}</span>
 										</div>
-										<span class="text-sm text-gray-600"><a class="font-medium"
+										<span class="text-sm text-gray-600 dark:text-gray-400"><a class="font-medium"
 												:href="`?path=/user/${discussion.userId}`">{{
 												discussion.username }}<span v-if="discussion.userRole"
 													class="text-sm text-gray-500 ml-2" :class="{ 'text-purple-500': discussion.userRole === 'super_admin',
@@ -627,7 +715,7 @@
 						</div>
 
 						<div v-if="discussions.length === 0"
-							class="bg-white rounded-lg shadow-sm p-6 text-center text-gray-500">
+							class="bg-white dark:bg-gray-800  rounded-lg shadow-sm p-6 text-center text-gray-500">
 							暂无讨论
 						</div>
 					</div>
@@ -635,26 +723,29 @@
 			</div>
 
 			<!-- 登录表单 -->
-			<div v-if="currentView === 'login'" class="max-w-md mx-auto bg-white rounded-lg shadow-sm p-6">
+			<div v-if="currentView === 'login'"
+				class="max-w-md mx-auto bg-white dark:bg-gray-800  rounded-lg shadow-sm p-6">
 				<h2 class="text-2xl font-bold mb-6 text-center">登录</h2>
 				<form @submit.prevent="signIn">
 					<div class="mb-4">
-						<label for="login-email" class="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
+						<label for="login-email"
+							class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">邮箱</label>
 						<input autocomplete="email" v-model="login.email" type="email" id="login-email" required
-							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+							class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
 					</div>
 					<div class="mb-6">
-						<label for="login-password" class="block text-sm font-medium text-gray-700 mb-1">密码</label>
+						<label for="login-password"
+							class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">密码</label>
 						<input autocomplete="current-password" v-model="login.password" type="password"
 							id="login-password" required
-							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+							class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
 					</div>
 					<!-- 在关键交互元素上添加 aria 属性 -->
 					<button type="submit" :disabled="login.loading" :aria-busy="login.loading"
 						class="w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
 						{{ login.loading ? '登录中...' : '登录' }}
 					</button>
-					<div class="mt-4 text-center text-sm text-gray-600">
+					<div class="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
 						还没有账号？ <a href="#" @click.prevent="showSignUp"
 							class="text-indigo-600 hover:text-indigo-800">注册</a>
 					</div>
@@ -665,30 +756,31 @@
 			</div>
 
 			<!-- 注册表单 -->
-			<div v-if="currentView === 'signup'" class="max-w-md mx-auto bg-white rounded-lg shadow-sm p-6">
+			<div v-if="currentView === 'signup'"
+				class="max-w-md mx-auto bg-white dark:bg-gray-800  rounded-lg shadow-sm p-6">
 				<h2 class="text-2xl font-bold mb-6 text-center">注册</h2>
 				<form @submit.prevent="signUp">
 					<!-- <div class="mb-4">
-						<label for="signup-email" class="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
+						<label for="signup-email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">邮箱</label>
 						<input autocomplete="email" v-model="signup.email" type="email" id="signup-email" required
-							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+							class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
 					</div>
 					<div class="mb-4">
-						<label for="signup-password" class="block text-sm font-medium text-gray-700 mb-1">密码</label>
+						<label for="signup-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">密码</label>
 						<input v-model="signup.password" type="password" id="signup-password" required
-							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+							class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
 					</div>
 					<div class="mb-4">
-						<label for="signup-username" class="block text-sm font-medium text-gray-700 mb-1">用户名</label>
+						<label for="signup-username" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">用户名</label>
 						<input v-model="signup.username" type="text" id="signup-username" required
-							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+							class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
 					</div> -->
 					<button type="submit" disabled="true"
 						class="w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
 						style="cursor:not-allowed">
 						<!-- 注册 -->注册请找管理员
 					</button>
-					<div class="mt-4 text-center text-sm text-gray-600">
+					<div class="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
 						已有账号？ <a href="#" @click.prevent="showLogin"
 							class="text-indigo-600 hover:text-indigo-800">登录</a>
 					</div>
@@ -699,7 +791,8 @@
 			</div>
 
 			<!-- 个人资料 -->
-			<div v-if="currentView === 'profile'" class="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-6">
+			<div v-if="currentView === 'profile'"
+				class="max-w-3xl mx-auto bg-white dark:bg-gray-800  rounded-lg shadow-sm p-6">
 				<div class="flex items-center space-x-6 mb-6">
 					<div class="w-20 h-20 rounded-full avatar"
 						:style="user.avatar_url ? `background-image: url(${user.avatar_url}); background-size: cover;` : ''">
@@ -715,7 +808,7 @@
 									'text-gray-500': userRole === '---' || userRole === null
 								}">{{ userRole }}</span>
 						</h2>
-						<p class="text-gray-600">{{ user.bio || '这个人很懒，什么都没留下' }}</p>
+						<p class="text-gray-600 dark:text-gray-400">{{ user.bio || '这个人很懒，什么都没留下' }}</p>
 						<p class="text-sm text-gray-500">加入时间: {{ formatDate(user.created_at) }}</p>
 					</div>
 				</div>
@@ -761,23 +854,26 @@
 			</div>
 
 			<!-- 新建文章 -->
-			<div v-if="currentView === 'new-article'" class="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-6">
+			<div v-if="currentView === 'new-article'"
+				class="max-w-3xl mx-auto bg-white dark:bg-gray-800  rounded-lg shadow-sm p-6">
 				<h2 class="text-2xl font-bold mb-6">写文章</h2>
 				<form @submit.prevent="createArticle">
 					<div class="mb-4">
-						<label for="article-title" class="block text-sm font-medium text-gray-700 mb-1">标题</label>
+						<label for="article-title"
+							class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">标题</label>
 						<input v-model="newArticle.title" type="text" id="article-title" required
-							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+							class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
 					</div>
 					<div class="mb-4">
-						<label for="article-content" class="block text-sm font-medium text-gray-700 mb-1">内容
+						<label for="article-content"
+							class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">内容
 							(支持Markdown)</label>
 						<textarea v-model="newArticle.content" id="article-content" rows="10" required
-							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono"></textarea>
+							class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono"></textarea>
 					</div>
 					<div class="flex justify-end space-x-3">
 						<button type="button" @click="showHome"
-							class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50">取消</button>
+							class="px-4 py-2 bg-white dark:bg-gray-800  border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50">取消</button>
 						<button type="submit"
 							class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">{{
 							newArticle.loading ? '发布中...' : '发布' }}</button>
@@ -789,22 +885,25 @@
 			</div>
 
 			<!-- 新建讨论 -->
-			<div v-if="currentView === 'new-discussion'" class="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-6">
+			<div v-if="currentView === 'new-discussion'"
+				class="max-w-3xl mx-auto bg-white dark:bg-gray-800  rounded-lg shadow-sm p-6">
 				<h2 class="text-2xl font-bold mb-6">发起讨论</h2>
 				<form @submit.prevent="createDiscussion">
 					<div class="mb-4">
-						<label for="discussion-title" class="block text-sm font-medium text-gray-700 mb-1">标题</label>
+						<label for="discussion-title"
+							class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">标题</label>
 						<input v-model="newDiscussion.title" type="text" id="discussion-title" required
-							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+							class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
 					</div>
 					<div class="mb-4">
-						<label for="discussion-content" class="block text-sm font-medium text-gray-700 mb-1">内容</label>
+						<label for="discussion-content"
+							class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">内容</label>
 						<textarea v-model="newDiscussion.content" id="discussion-content" rows="6" required
-							class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+							class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
 					</div>
 					<div class="flex justify-end space-x-3">
 						<button type="button" @click="showHome"
-							class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50">取消</button>
+							class="px-4 py-2 bg-white dark:bg-gray-800  border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-50">取消</button>
 						<button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
 							@click="createDiscussion">{{ newDiscussion.loading ? '发布中...' : '发布' }}</button>
 					</div>
@@ -815,7 +914,8 @@
 			</div>
 
 			<!-- 文章详情 -->
-			<div v-if="currentView === 'article-detail'" class="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-6">
+			<div v-if="currentView === 'article-detail'"
+				class="max-w-3xl mx-auto bg-white dark:bg-gray-800  rounded-lg shadow-sm p-6">
 				<div v-if="articleLoading" class="flex justify-center py-8">
 					<div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
 				</div>
@@ -829,7 +929,7 @@
 									<span v-if="!currentArticle.avatar_url">{{ currentArticle.username ?
 										currentArticle.username.charAt(0).toUpperCase() : 'U' }}</span>
 								</div>
-								<!-- <span class="text-gray-600">{{ currentArticle.username }}</span> -->
+								<!-- <span class="text-gray-600 dark:text-gray-400">{{ currentArticle.username }}</span> -->
 								<a class="font-medium" :href="`?path=/user/${currentArticle.userId}`">{{
 									currentArticle.username }}<span v-if="currentArticle.userRole"
 										class="text-sm text-gray-500 ml-2" :class="{ 'text-purple-500': currentArticle.userRole === 'super_admin',
@@ -854,7 +954,7 @@
 
 						<div v-if="user" class="mb-6">
 							<textarea v-model="newComment.content" placeholder="写下你的评论..." rows="3"
-								class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+								class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
 							<div class="flex justify-end mt-2">
 								<button @click="addComment('article')"
 									class="px-3 py-1 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">{{
@@ -892,7 +992,7 @@
 												@click="deleteComment(comment.id, 'article', currentArticle.id)"
 												class="text-sm text-red-600 hover:text-red-500">删除</button>
 										</div>
-										<p class="text-gray-700 mt-1">{{ comment.content }}</p>
+										<p class="text-gray-700 dark:text-gray-300 mt-1">{{ comment.content }}</p>
 									</div>
 								</div>
 							</div>
@@ -906,7 +1006,8 @@
 			</div>
 
 			<!-- 讨论详情 -->
-			<div v-if="currentView === 'discussion-detail'" class="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-6">
+			<div v-if="currentView === 'discussion-detail'"
+				class="max-w-3xl mx-auto bg-white dark:bg-gray-800  rounded-lg shadow-sm p-6">
 				<div v-if="discussionLoading" class="flex justify-center py-8">
 					<div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
 				</div>
@@ -920,7 +1021,7 @@
 									<span v-if="!currentDiscussion.avatar_url">{{ currentDiscussion.username ?
 										currentDiscussion.username.charAt(0).toUpperCase() : 'U' }}</span>
 								</div>
-								<!-- <span class="text-gray-600">{{ currentDiscussion.username }}</span> -->
+								<!-- <span class="text-gray-600 dark:text-gray-400">{{ currentDiscussion.username }}</span> -->
 								<a class="font-medium" :href="`?path=/user/${currentDiscussion.userId}`">{{
 									currentDiscussion.username }}<span v-if="currentDiscussion.userRole"
 										class="text-sm text-gray-500 ml-2" :class="{ 'text-purple-500': currentDiscussion.userRole === 'super_admin',
@@ -945,7 +1046,7 @@
 
 						<div v-if="user" class="mb-6">
 							<textarea v-model="newComment.content" placeholder="写下你的回复..." rows="3"
-								class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+								class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
 							<div class="flex justify-end mt-2">
 								<button @click="addComment('discussion')"
 									class="px-3 py-1 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">{{
@@ -983,7 +1084,7 @@
 												@click="deleteComment(comment.id, 'discussion', currentDiscussion.id)"
 												class="text-sm text-red-600 hover:text-red-500">删除</button>
 										</div>
-										<p class="text-gray-700 mt-1">{{ comment.content }}</p>
+										<p class="text-gray-700 dark:text-gray-300 mt-1">{{ comment.content }}</p>
 									</div>
 								</div>
 							</div>
@@ -997,7 +1098,8 @@
 			</div>
 
 			<!-- other's profile -->
-			<div v-if="currentView === 'other-profile'" class="max-w-3xl mx-auto bg-white rounded-lg shadow-sm p-6">
+			<div v-if="currentView === 'other-profile'"
+				class="max-w-3xl mx-auto bg-white dark:bg-gray-800  rounded-lg shadow-sm p-6">
 				<div class="flex items-center space-x-6 mb-6">
 					<div class="w-20 h-20 rounded-full avatar"
 						:style="other_user.avatar_url ? `background-image: url(${other_user.avatar_url}); background-size: cover;` : ''">
@@ -1014,7 +1116,7 @@
 												'text-gray-500': other_user.userRole === '---' || other_user.userRole === null
 											}">{{ other_user.userRole }}</span>
 						</h2>
-						<p class="text-gray-600">{{ other_user.bio || '这个人很懒，什么都没留下' }}</p>
+						<p class="text-gray-600 dark:text-gray-400">{{ other_user.bio || '这个人很懒，什么都没留下' }}</p>
 						<p class="text-sm text-gray-500">加入时间: {{ formatDate(other_user.created_at) }}</p>
 					</div>
 				</div>
@@ -1061,7 +1163,8 @@
 				</div>
 			</div>
 		</main>
-		<footer class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow p-6 mt-6">
+		<footer
+			class="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow p-6 mt-6">
 			<div class="max-w-7xl mx-auto px-4">
 				<p class="text-center" id="yiyan" style="font-family: 'Long Cang Regular';" ondblclick="getYiyan()"></p>
 				<p class="text-center text-sm mt-2">© 2025 wbwCE. All rights reserved.</p>
@@ -1079,7 +1182,8 @@
 			const engine = await createOnigurumaEngine(import('https://esm.sh/shiki@3.11.0/wasm'));
 			const highlighter = await createHighlighter({
 				themes: [
-					await import('https://esm.sh/shiki@3.11.0/themes/github-light')
+					await import('https://esm.sh/shiki@3.11.0/themes/github-light'),
+					await import('https://esm.sh/shiki@3.11.0/themes/github-dark')
 				],
 				langs: Object.keys(bundledLanguages),
 				engine
@@ -1089,6 +1193,31 @@
 		await window.getShiki();
 	</script>
 	<script>
+		var yiyan = [
+			"Where there is a will, there is a way.", "Hope for the best, plan for the worst.", "Wisdom is more precious than wealth.", "Action speaks louder than words.", "Time and tide wait for no man.",
+			"Experience is the best teacher.", "All that glitters is not gold.", "Failure is the mother of success.", "A journey of a thousand miles begins with a single step.", "The early bird catches the worm.",
+			"Nothing is impossible to a willing heart.", "Don't put off till tomorrow what you can do today.", "Every cloud has a silver lining.", "Haste makes waste.", "Better late than never.",
+			"Honesty is the best policy.", "Live and learn.", "Health is wealth.", "First impressions are the most lasting.", "One man's meat is another man's poison.", "A friend in need is a friend indeed.",
+			"Life is not all roses.", "Think twice before you act.", "Pride goes before a fall.", "Two heads are better than one.", "Well begun is half done.", "To be, or not to be, that is the question.",
+			"Action speak louder than words.", "An idle youth,a needy age.", "All is well that ends well.", "Misfortune is a good teacher.", "Faith can move mountains.", "He that promises too much means nothing.",
+			"He would climb the ladder must begin at the bottom.", "If you are not inside a house, you don not know about its leaking.", "It is never too late to mend.", "Yesterday will not be called again.",
+			"Men will die for wealth, as bird for food.", "Success belongs to the persevering.", "The man who has made up his mind to win will never say \"impossible\".", "Nothing venture, nothing have.",
+			"If you fail, don't forget to learn your lesson.", "No pain, no gain", "We can only move forward, forward, by any means necessary to move forward.", "Your fearlessness comes from ignorance.",
+			"Intelligence lies in diligence, and genius in accumulation.", "Never be satisfied with learning; never be tired of teaching.", "Books are the ladder of human progress.",
+			"An inch of time is an inch of gold, but you can't buy time with gold.", "学而时习之，不亦说乎？——孔子", "己所不欲，勿施于人。——孔子", "道可道，非常道。——老子", "天下大事，必作于细。——老子", "知彼知己，百战不殆。——孙子",
+			"不战而屈人之兵，善之善者也。——孙子", "天时不如地利，地利不如人和。——孟子", "生于忧患，死于安乐。——孟子", "兼相爱，交相利。——墨子", "非攻。——墨子", "青，取之于蓝，而青于蓝。——荀子", "不积跬步，无以至千里。——荀子", "法不阿贵，绳不挠曲。——韩非子",
+			"千里之堤，溃于蚁穴。——韩非子", "吾生也有涯，而知也无涯。——庄子", "君子之交淡若水。——庄子", "不以规矩，不能成方圆。——孟子", "得道者多助，失道者寡助。——孟子", "工欲善其事，必先利其器。——孔子", "三人行，必有我师焉。——孔子",
+			"祸兮福所倚，福兮祸所伏。——老子", "大器晚成。——老子", "兵无常势，水无常形。——孙子", "攻其无备，出其不意。——孙子", "穷则独善其身，达则兼济天下。——孟子", "老吾老以及人之老，幼吾幼以及人之幼。——孟子", "志不强者智不达。——墨子",
+			"言不信者行不果。——墨子", "不登高山，不知天之高也。——荀子", "锲而不舍，金石可镂。——荀子", "世异则事异，事异则备变。——韩非子", "欲速则不达。——孔子", "人无远虑，必有近忧。——孔子", "上善若水。——老子", "治大国若烹小鲜。——老子",
+			"知彼知己，胜乃不殆。——孙子", "将在外，君命有所不受。——孙子", "天将降大任于斯人也。——孟子", "富贵不能淫，贫贱不能移，威武不能屈。——孟子", "非乐。——墨子", "名不可简而成也，誉不可巧而立也。——墨子", "不闻不若闻之，闻之不若见之。——荀子",
+			"君子博学而日参省乎己。——荀子", "事以密成，语以泄败。——韩非子", "巧诈不如拙诚。——韩非子", "学而不思则罔，思而不学则殆。——孔子", "温故而知新，可以为师矣。——孔子", "大道至简。——老子", "知人者智，自知者明。——老子", "路漫漫其修远兮，吾将上下而求索。——屈原",
+		];
+		function getYiyan() {
+			let tmp = yiyan[Math.floor(Math.random() * yiyan.length)];
+			return document.getElementById("yiyan").innerText = tmp;
+		}
+		getYiyan();
+
 		(() => {
 			// 初始化 Supabase
 			const supabaseUrl = 'https://oavnsyqhnvsdfrjjdjix.supabase.co';
@@ -1248,7 +1377,10 @@
 					codeElement.style.setProperty('--data-loglines', Math.floor(Math.log10(code.split('\n').length)) + 1);
 					codeElement.innerHTML = window.codeToHtml(code, {
 						lang: lang,
-						theme: 'github-light'
+						themes: {
+							light: 'github-light',
+							dark: 'github-dark'
+						}
 					});
 					codeElement.className += ' ' + codeElement.children[0].className;
 					codeElement.innerHTML = codeElement.children[0].innerHTML;
@@ -1296,31 +1428,6 @@
 				}
 			}
 			// hljs.documentReady();
-
-			var yiyan = ["Where there is a will, there is a way.", "Hope for the best, plan for the worst.", "Wisdom is more precious than wealth.", "Action speaks louder than words.", "Time and tide wait for no man.",
-				"Experience is the best teacher.", "All that glitters is not gold.", "Failure is the mother of success.", "A journey of a thousand miles begins with a single step.", "The early bird catches the worm.",
-				"Nothing is impossible to a willing heart.", "Don't put off till tomorrow what you can do today.", "Every cloud has a silver lining.", "Haste makes waste.", "Better late than never.",
-				"Honesty is the best policy.", "Live and learn.", "Health is wealth.", "First impressions are the most lasting.", "One man's meat is another man's poison.", "A friend in need is a friend indeed.",
-				"Life is not all roses.", "Think twice before you act.", "Pride goes before a fall.", "Two heads are better than one.", "Well begun is half done.", "To be, or not to be, that is the question.",
-				"Action speak louder than words.", "An idle youth,a needy age.", "All is well that ends well.", "Misfortune is a good teacher.", "Faith can move mountains.", "He that promises too much means nothing.",
-				"He would climb the ladder must begin at the bottom.", "If you are not inside a house, you don not know about its leaking.", "It is never too late to mend.", "Yesterday will not be called again.",
-				"Men will die for wealth, as bird for food.", "Success belongs to the persevering.", "The man who has made up his mind to win will never say \"impossible\".", "Nothing venture, nothing have.",
-				"If you fail, don't forget to learn your lesson.", "No pain, no gain", "We can only move forward, forward, by any means necessary to move forward.", "Your fearlessness comes from ignorance.",
-				"Intelligence lies in diligence, and genius in accumulation.", "Never be satisfied with learning; never be tired of teaching.", "Books are the ladder of human progress.",
-				"An inch of time is an inch of gold, but you can't buy time with gold.", "学而时习之，不亦说乎？——孔子", "己所不欲，勿施于人。——孔子", "道可道，非常道。——老子", "天下大事，必作于细。——老子", "知彼知己，百战不殆。——孙子",
-				"不战而屈人之兵，善之善者也。——孙子", "天时不如地利，地利不如人和。——孟子", "生于忧患，死于安乐。——孟子", "兼相爱，交相利。——墨子", "非攻。——墨子", "青，取之于蓝，而青于蓝。——荀子", "不积跬步，无以至千里。——荀子", "法不阿贵，绳不挠曲。——韩非子",
-				"千里之堤，溃于蚁穴。——韩非子", "吾生也有涯，而知也无涯。——庄子", "君子之交淡若水。——庄子", "不以规矩，不能成方圆。——孟子", "得道者多助，失道者寡助。——孟子", "工欲善其事，必先利其器。——孔子", "三人行，必有我师焉。——孔子",
-				"祸兮福所倚，福兮祸所伏。——老子", "大器晚成。——老子", "兵无常势，水无常形。——孙子", "攻其无备，出其不意。——孙子", "穷则独善其身，达则兼济天下。——孟子", "老吾老以及人之老，幼吾幼以及人之幼。——孟子", "志不强者智不达。——墨子",
-				"言不信者行不果。——墨子", "不登高山，不知天之高也。——荀子", "锲而不舍，金石可镂。——荀子", "世异则事异，事异则备变。——韩非子", "欲速则不达。——孔子", "人无远虑，必有近忧。——孔子", "上善若水。——老子", "治大国若烹小鲜。——老子",
-				"知彼知己，胜乃不殆。——孙子", "将在外，君命有所不受。——孙子", "天将降大任于斯人也。——孟子", "富贵不能淫，贫贱不能移，威武不能屈。——孟子", "非乐。——墨子", "名不可简而成也，誉不可巧而立也。——墨子", "不闻不若闻之，闻之不若见之。——荀子",
-				"君子博学而日参省乎己。——荀子", "事以密成，语以泄败。——韩非子", "巧诈不如拙诚。——韩非子", "学而不思则罔，思而不学则殆。——孔子", "温故而知新，可以为师矣。——孔子", "大道至简。——老子", "知人者智，自知者明。——老子"];
-
-			function getYiyan() {
-				let tmp = yiyan[Math.floor(Math.random() * yiyan.length)];
-				return document.getElementById("yiyan").innerText = tmp;
-			}
-
-			getYiyan();
 
 			const app = {
 				data() {
@@ -1397,30 +1504,30 @@
 				},
 
 				async mounted() {
-					// 检查用户是否已登录
-					const { data: { user } } = await Supabase.auth.getUser();
-					if (user) {
-						await this.fetchUserProfile(user.id);
-						// 获取用户角色
-						this.userRole = await this.fetchUserRole(user.id);
-						console.log('用户角色:', this.userRole);
-						if (getUrlQueryPath() == "/auth/login") {
-							this.showHome();
-						}
-					}
+					(async () => {
+						// 检查用户是否已登录
+						const { data: { user } } = await Supabase.auth.getUser();
 
-					// 获取文章列表
-					this.fetchArticles();
-
-					// 监听认证状态变化
-					Supabase.auth.onAuthStateChange(async (event, session) => {
-						if (event === 'SIGNED_IN' && session?.user) {
-							await this.fetchUserProfile(session.user.id);
-							this.showHome();
-						} else if (event === 'SIGNED_OUT') {
-							this.user = null;
+						if (user) {
+							await this.fetchUserProfile(user.id);
+							// 获取用户角色
+							this.userRole = await this.fetchUserRole(user.id);
+							console.log('用户角色:', this.userRole);
+							if (getUrlQueryPath() == "/auth/login") {
+								this.showHome();
+							}
 						}
-					});
+
+						// 监听认证状态变化
+						Supabase.auth.onAuthStateChange(async (event, session) => {
+							if (event === 'SIGNED_IN' && session?.user) {
+								await this.fetchUserProfile(session.user.id);
+								this.showHome();
+							} else if (event === 'SIGNED_OUT') {
+								this.user = null;
+							}
+						});
+					})();
 
 					let tmp = getUrlQueryPath();
 					if (tmp == "/home" || !tmp)
@@ -1456,6 +1563,12 @@
 					else {
 						this.showHome();
 					}
+
+					const loader = document.getElementById('loader');
+					loader.style.opacity = '0';
+					setTimeout(() => {
+						loader.style.display = 'none';
+					}, 500);
 				},
 
 				methods: {
@@ -1982,6 +2095,8 @@
 					},
 
 					showLogin() {
+						if (this.user)
+							return;
 						this.clearLoading();
 						jumpTo('?path=/auth/login');
 						this.currentView = 'login';
@@ -2113,13 +2228,7 @@
 
 					// 删除操作
 					deleteArticle(articleId) {
-						const swalWithBootstrapButtons = swal.mixin({
-							customClass: {
-								confirmButton: "px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 mx-1",
-								cancelButton: "px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 mx-1"
-							},
-							buttonsStyling: false
-						});
+						const swalWithBootstrapButtons = swal.mixin();
 						swalWithBootstrapButtons.fire({
 							title: "确定要删除这篇文章吗？",
 							text: "您将无法恢复此操作！",
@@ -2159,13 +2268,7 @@
 					},
 
 					deleteDiscussion(discussionId) {
-						const swalWithBootstrapButtons = swal.mixin({
-							customClass: {
-								confirmButton: "px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 mx-1",
-								cancelButton: "px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 mx-1"
-							},
-							buttonsStyling: false
-						});
+						const swalWithBootstrapButtons = swal.mixin();
 						swalWithBootstrapButtons.fire({
 							title: "确定要删除这篇讨论吗？",
 							text: "您将无法恢复此操作！",
@@ -2205,18 +2308,7 @@
 					},
 
 					async deleteComment(commentId, parentType, parentId) {
-						const swalWithBootstrapButtons = swal.mixin({
-							customClass: {
-								confirmButton:
-									"px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 mx-1"
-								,
-								cancelButton:
-									"px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 mx-1"
-
-							},
-							buttonsStyling:
-								false
-						});
+						const swalWithBootstrapButtons = swal.mixin();
 						swalWithBootstrapButtons.fire({
 							title: "确定要删除这条评论吗？",
 							text: "您将无法恢复此操作！",
@@ -2273,6 +2365,7 @@
 			Vue.createApp(app).mount('#app');
 		})();
 	</script>
+	<script src="./RibbonsEffect.js"></script>
 </body>
 
 </html>
