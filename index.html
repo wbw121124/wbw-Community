@@ -30,6 +30,7 @@
 	<link rel="stylesheet" href="./long-cang-webfont/style.css">
 	<script src="./sweetalert.min.js"></script>
 	<link rel="stylesheet" href="./sweetalert2.css">
+	<script src="./RibbonsEffect.js"></script>
 	<style>
 		.align-left {
 			text-align: left !important;
@@ -1162,6 +1163,22 @@
 					</div>
 				</div>
 			</div>
+
+			<!-- 关于 -->
+			<div v-if="currentView === 'about'" class="space-y-8">
+				<div class="bg-white dark:bg-gray-800  rounded-lg shadow-sm p-6 hover:shadow-md">
+					<h2 class="text-2xl font-bold mb-6">关于 wbwCE</h2>
+					<p class="text-gray-600 dark:text-gray-400 mb-4">
+					<pre style="line-height: normal;" class="text-shadow-sm text-shadow-current">██╗    ██╗██████╗ ██╗    ██╗ ██████╗███████╗
+██║    ██║██╔══██╗██║    ██║██╔════╝██╔════╝
+██║ █╗ ██║██████╔╝██║ █╗ ██║██║     █████╗  
+██║███╗██║██╔══██╗██║███╗██║██║     ██╔══╝  
+╚███╔███╔╝██████╔╝╚███╔███╔╝╚██████╗███████╗
+ ╚══╝╚══╝ ╚═════╝  ╚══╝╚══╝  ╚═════╝╚══════╝</pre><br />这是一个叫 wbwCE 的地方。<br />由<a href="https://github.com/wbw121124"
+						target="_blank" class="text-indigo-400 hover:text-indigo-300"><i class="fa fab fa-github"
+							aria-hidden="true"></i>wbw121124</a>开发！<br />显然这一段有多句废话，包括这一句。</p>
+				</div>
+			</div>
 		</main>
 		<footer
 			class="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow p-6 mt-6">
@@ -1170,7 +1187,7 @@
 				<p class="text-center text-sm mt-2">© 2025 wbwCE. All rights reserved.</p>
 				<p class="text-center text-sm mt-2">Powered by <a href="https://github.com/wbw121124" target="_blank"
 						class="text-indigo-400 hover:text-indigo-300"><i class="fa fab fa-github"
-							aria-hidden="true"></i>wbw121124</a>.</p>
+							aria-hidden="true"></i>wbw121124</a>, <a href="?path=/about">about this page</a>.</p>
 			</div>
 		</footer>
 	</div>
@@ -1559,6 +1576,9 @@
 					}
 					else if (tmp.substring(0, 6) === "/user/") {
 						this.showUserProfile(tmp.substring(6));
+					}
+					else if (tmp == "/about") {
+						this.showAbout();
 					}
 					else {
 						this.showHome();
@@ -2171,6 +2191,12 @@
 						this.fetchDiscussionDetail(discussionId);
 					},
 
+					showAbout() {
+						this.clearLoading();
+						jumpTo('?path=/about');
+						this.currentView = 'about';
+					},
+
 					async fetchOtherUserArticles(userId) {
 						const { data, error } = await Supabase
 							.from('articles')
@@ -2365,7 +2391,6 @@
 			Vue.createApp(app).mount('#app');
 		})();
 	</script>
-	<script src="./RibbonsEffect.js"></script>
 </body>
 
 </html>
